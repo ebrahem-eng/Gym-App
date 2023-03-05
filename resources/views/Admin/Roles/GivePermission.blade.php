@@ -91,10 +91,12 @@
                             </form>
 
                             <div class="row">
-                                <div class="col-md-4 col-sm-4 p-4">
+                                <div class="col-md-7 col-sm-5 p-5">
                                     <h4 class="card-title">Role Permission</h4>
-                                    <div class="list-group"> <a href="javascript:void(0)"
+                                    <div class="list-group">
+                                         <a href="javascript:void(0)"
                                             class="list-group-item active">{{ $role->name }}</a>
+                                            <br>
 
                                         @if ($role->permissions)
                                             @foreach ($role->permissions as $role_permission)
@@ -103,7 +105,7 @@
                                                     @method('Delete')
                                                     @csrf
 
-                                                    <button class="list-group-item">
+                                                    <button class=" list-group-item list-group-item-action btn-danger ">
                                                         {{ $role_permission->name }}</button>
 
                                                 </form>

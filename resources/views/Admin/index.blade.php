@@ -1,11 +1,10 @@
 @extends('Admin.empty')
-@include('layouts.adminHeader')
+
 
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        @include('layouts.adminHeader')
         <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
+        
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">

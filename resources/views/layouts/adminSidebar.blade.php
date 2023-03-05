@@ -85,26 +85,6 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                                aria-expanded="false"><i data-feather="activity" class="feather-icon"></i><span
-                                    class="hide-menu">Manage Exersice</span></a>
-
-                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                            class="hide-menu"> Exersice List
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                            class="hide-menu"> Add Exersice
-                                        </span></a>
-                                </li>
-                                <li class="sidebar-item"><a href="form-checkbox-radio.html"
-                                        class="sidebar-link"><span class="hide-menu">Exersice Archive
-
-                                        </span></a>
-                                </li>
-                            </ul>
-                        </li>
 
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                                 aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i><span

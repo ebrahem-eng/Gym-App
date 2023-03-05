@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets2/images/features-first-icon.png')}}">
-    <title> @yield('title','Role Table')</title>
+    <title> @yield('title','Update Employe')</title>
     <!-- Custom CSS -->
     <link href="{{asset('assets2/extra-libs/c3/c3.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets2/libs/chartist/dist/chartist.min.css')}}" rel="stylesheet">
@@ -160,19 +160,7 @@
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-right">
-                        <!-- ============================================================== -->
-                        <!-- Search -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item d-none d-md-block">
-                            <a class="nav-link" href="javascript:void(0)">
-                                <form>
-                                    <div class="customize-input">
-                                        <input class="form-control custom-shadow custom-radius border-0 bg-white" type="search" placeholder="Search" aria-label="Search">
-                                        <i class="form-control-icon" data-feather="search"></i>
-                                    </div>
-                                </form>
-                            </a>
-                        </li>
+
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -213,14 +201,15 @@
 
 
         <div class="page-wrapper">
+
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Permission Manage</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Update Employe</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0 p-0">
-                                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">Dashboard/Permissions/Permission Table</a>
+                                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">Dashboard/Employe/Update Employe</a>
                                     </li>
                                 </ol>
                             </nav>
@@ -231,59 +220,134 @@
             </div>
 
             <div class="container-fluid">
-                <div class="table-responsive">
-                    <table style="width: 650px; margin-left:200px;" class="table">
-                        <thead class="bg-info text-white">
-                            <tr>
-                                <th>#</th>
-                                <th >Name</th>                                     
-                                <th></th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody class="border border-info">
-                            <tr>
-                                @foreach ($permissions as $permission)
-                                    
-                          
-                                <td>{{$permission->id}}</td>
-                                <td>{{$permission->name}}</td>
-                                <td>
-                                    <a type="button" style="margin-left: 450px;" class="btn btn-circle btn-dark" href="{{route('admin.go.permissions.roles' , $permission->id)}}"><i data-feather="key" class="feather-icon"></i> </a>
-                                </td>
-                            </tr>
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-11">
+                        <div class="card">
+                            <div class="card-body">
+                                @if(session("message_success_update"))
+                                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{session("message_success_update")}}
+                                </div>
+                                @endif
+                                @if(session("message_err_update"))
+                                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{session("message_err_update")}}
+                                </div>
+                                @endif
+                                <form action="{{route('admin.employe.update' , $employe->id)}}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">First Name:</label>
+                                                    <input type="text" class="form-control" id="nametext" aria-describedby="name" placeholder="First Name" name="firstName" value="{{$employe->first_name}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="form-label">Last Name:</label>
+                                                    <input type="text" class="form-control" placeholder="Last Name" name="lastName" value="{{$employe->last_name}}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                <label class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" placeholder="Email" name="email" value="{{$employe->email}}" required>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                <label class="form-label">Phone:</label>
+                                                    <input type="tel" class="form-control" placeholder="Phone" name="phone" value="{{$employe->phone}}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="form-label">Salary:</label>
+                                                    <input type="text" class="form-control" placeholder="Salary" name="salary" value="{{$employe->salary}}" required>
+                                                </div>
+                                            </div>
 
-                            @endforeach
-
-                        </tbody>
-                    </table>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                <label class="form-label">Age:</label>
+                                                    <input type="number" class="form-control" placeholder="Age" name="age" value="{{$employe->age}}" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                          
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="form-label">Work Time Start:</label>
+                                                    <input type="time" class="form-control" placeholder="Work Time Start" name="WorkTimeStart" value="{{$employe->work_time_start}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="form-label">Work Time End:</label>
+                                                    <input type="time" class="form-control" placeholder="Work Time End" name="WorkTimeEnd" value="{{$employe->work_time_end}}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
+                                            <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
+    </div>
 
 
 
 
-        <script src="{{asset('assets2/libs/jquery/dist/jquery.min.js')}}"></script>
-        <script src="{{asset('assets2/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-        <script src="{{asset('assets2/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-        <!-- apps -->
-        <!-- apps -->
-        <script src="{{asset('dist/js/app-style-switcher.js')}}"></script>
-        <script src="{{asset('dist/js/feather.min.js')}}"></script>
-        <script src="{{asset('assets2/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
-        <script src="{{asset('dist/js/sidebarmenu.js')}}"></script>
-        <!--Custom JavaScript -->
-        <script src="{{asset('dist/js/custom.min.js')}}"></script>
-        <!--This page JavaScript -->
-        <script src="{{asset('assets2/extra-libs/c3/d3.min.js')}}"></script>
-        <script src="{{asset('assets2/extra-libs/c3/c3.min.js')}}"></script>
-        <script src="{{asset('assets2/libs/chartist/dist/chartist.min.js')}}"></script>
-        <script src="{{asset('assets2/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js')}}"></script>
-        <script src="{{asset('assets2/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js')}}"></script>
-        <script src="{{asset('assets2/extra-libs/jvector/jquery-jvectormap-world-mill-en.js')}}"></script>
-        <script src="{{asset('dist/js/pages/dashboards/dashboard1.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/popper.js/dist/umd/popper.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <!-- apps -->
+    <!-- apps -->
+    <script src="{{asset('dist/js/app-style-switcher.js')}}"></script>
+    <script src="{{asset('dist/js/feather.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
+    <script src="{{asset('dist/js/sidebarmenu.js')}}"></script>
+    <!--Custom JavaScript -->
+    <script src="{{asset('dist/js/custom.min.js')}}"></script>
+    <!--This page JavaScript -->
+    <script src="{{asset('assets2/extra-libs/c3/d3.min.js')}}"></script>
+    <script src="{{asset('assets2/extra-libs/c3/c3.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/chartist/dist/chartist.min.js')}}"></script>
+    <script src="{{asset('assets2/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js')}}"></script>
+    <script src="{{asset('assets2/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js')}}"></script>
+    <script src="{{asset('assets2/extra-libs/jvector/jquery-jvectormap-world-mill-en.js')}}"></script>
+    <script src="{{asset('dist/js/pages/dashboards/dashboard1.min.js')}}"></script>
 </body>
 
 </html>

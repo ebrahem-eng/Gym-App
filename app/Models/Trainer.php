@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
-class Employe extends Model
+class Trainer extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
-    
+    use HasApiTokens, HasFactory, Notifiable , HasRoles;
+    use SoftDeletes;
     
     protected $fillable = [
         'first_name',
         'last_name',
         'phone',
+        'class',
         'age',
         'salary',
         'work_time_start',

@@ -242,14 +242,17 @@
                             
                         </thead>
                         <tbody class="border border-info">
+                            @foreach ($roles as $role)
+                                
                             <tr>
-                                <td>1</td>
-                                <td>Nigam</td>
+                                <td>{{$role->id}}</td>
+                                <td>{{$role->name}}</td>
                                 <td>
-                                    <button  style="margin-left: 450px;" class="btn btn-circle btn-dark"><i data-feather="key" class="feather-icon"></i> </button>
+                                    <a type="button" style="margin-left: 450px;" class="btn btn-circle btn-dark" href="{{route('admin.go.roles.permissions' , $role->id)}}"><i data-feather="key" class="feather-icon"></i> </a>
                                 </td>
                             </tr>
 
+                            @endforeach
                             
 
                         </tbody>

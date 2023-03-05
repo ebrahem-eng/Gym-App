@@ -52,6 +52,24 @@ https://templatemo.com/tm-548-training-studio
                         <a href="{{url('/')}}" class="logo">Gym<em> Spu</em></a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
+                        @if(session("message_success_report"))
+                        <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                            role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{session("message_success_report")}}
+                        </div>
+                        @endif
+                        @if(session("message_err_report"))
+                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                            role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{session("message_err_report")}}
+                        </div>
+                        @endif
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="#features">About</a></li>
@@ -402,7 +420,8 @@ https://templatemo.com/tm-548-training-studio
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="contact-form">
-                        <form id="contact" action="" method="post">
+                        <form id="contact" action="{{route('admin.report.store')}}" method="post">
+                            @csrf
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <fieldset>

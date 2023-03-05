@@ -82,7 +82,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)" id="bell" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span><i data-feather="bell" class="svg-icon"></i></span>
-                                <span class="badge badge-primary notify-no rounded-circle">5</span>
+                                <span class="badge badge-primary notify-no rounded-circle">0</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-left mailbox animated bounceInDown">
                                 <ul class="list-style-none">
@@ -230,8 +230,50 @@
 
                 </div>
             </div>
+            
+            <!-- =======  message restore  -->
 
             <div class="container-fluid">
+                @if(session("message_success_restore"))
+                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                    role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{session("message_success_restore")}}
+                </div>
+                @endif
+                @if(session("message_err_restore"))
+                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                    role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{session("message_err_restore")}}
+                </div>
+                @endif
+
+                <!-- message force delete -->
+
+                @if(session("message_success_forcedelete"))
+                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                    role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{session("message_success_forcedelete")}}
+                </div>
+                @endif
+                @if(session("message_err_forcedelete"))
+                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                    role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{session("message_err_forcedelete")}}
+                </div>
+                @endif
+
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="bg-info text-white">
@@ -241,39 +283,36 @@
                                 <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Age</th>
-                                <th>Phone</th>
-                                <th>City</th>                          
+                                <th>Phone</th>                       
                                 <th>Salary</th>
                                 <th>Work Time Start</th> 
                                 <th>Work Time End </th>
                                 <th>Created at</th>   
                                 <th>Deleted at</th>                          
                                 <th></th>
-
-
                             </tr>
                             
                         </thead>
                         <tbody class="border border-info">
+                            @foreach($trashed_employes as $trashed_employe)
                             <tr>
-                                <td>1</td>
-                                <td>Nigam</td>
-                                <td>Eichmann</td>
-                                <td>@Sonu</td>
-                                <td>@Sonu</td>
-                                <td>@Sonu</td>
-                                <td>@Sonu</td>
-                                <td>scdc</td>
-                                <td>nfv</td>
-                                <td>dfv</td>
-                                <td>nfv</td>
-                                <td>dfv</td>
-                                <td><button class="btn btn-circle btn-success mt-2 mr-2 "><i data-feather="refresh-ccw" class="feather-icon"></i></button>
-                                    <button class="btn btn-circle btn-danger mt-2"><i data-feather="x" class="feather-icon"></i></button>
-
+                                <td>{{$trashed_employe->id}}</td>
+                                <td>{{$trashed_employe->first_name}}</td>
+                                <td>{{$trashed_employe->last_name}}</td>
+                                <td>{{$trashed_employe->email}}</td>
+                                <td>{{$trashed_employe->age}}</td>
+                                <td>{{$trashed_employe->phone}}</td>
+                                <td>{{$trashed_employe->salary}}</td>
+                                <td>{{$trashed_employe->work_time_start}}</td>
+                                <td>{{$trashed_employe->work_time_end}}</td>
+                                <td>{{$trashed_employe->created_at}}</td>
+                                <td>{{$trashed_employe->deleted_at}}</td>
+                                <td>
+                                    <a type="button" class="btn btn-circle btn-success mt-2 mr-2" href="{{route('admin.employe.restore' , $trashed_employe->id)}}"><i data-feather="refresh-ccw" class="feather-icon"></i></a>
+                                    <a type="button" class="btn btn-circle btn-danger mt-2" href="{{route('admin.employe.forcedelete' , $trashed_employe->id)}}"><i data-feather="x" class="feather-icon"></i></a>
                                 </td>
                             </tr>
-
+                             @endforeach
                             
 
                         </tbody>

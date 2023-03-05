@@ -3,21 +3,112 @@
 namespace App\Http\Controllers\Admin\Trainer;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassT;
+use App\Models\Trainer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class TrainerController extends Controller
 {
     public function index()
     {
-        return view('Admin/Trainer/index');
+        $trainers = Trainer::all();
+        return view('Admin/Trainer/index' , compact('trainers'));
     }
 
     public function create()
     {
-        return view('Admin/Trainer/create');
+        $classes = ClassT::all();
+        return view('Admin/Trainer/create', compact('classes'));
     }
+
+    public function store(Request $request)
+    {
+        try{
+            Trainer::create([
+                'first_name' => $request->firstName,
+                'last_name' => $request->lastName,
+                'email' => $request->email,
+                'password' => Hash::make('password'),
+                'class'=>$request->class,
+                'phone' => $request->phone,
+                'age' => $request->age,
+                'salary' => $request->salary,
+                'work_time_start' => $request->WorkTimeStart,
+                'work_time_end' => $request->WorkTimeEnd,
+             ]);
+             return redirect()->back()->with('message_success', ' Trainer Add Successfully!');
+
+        }
+        catch(\Exception $ex)
+        {
+              return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
+        }
+      
+    }
+
+
+    public function edit(Trainer $trainer)
+    {
+        try {
+            $classes = ClassT::all();
+            return view('Admin/Trainer/edit', compact('trainer','classes'));
+        } catch (\Exception $ex) {
+        }
+    }
+
+    public function update(Request $request, Trainer $trainer)
+    {
+        try {
+            $trainer->update([
+                'first_name' => $request->firstName,
+                'last_name' => $request->lastName,
+                'email' => $request->email,
+                'class'=>$request->class,
+                'phone' => $request->phone,
+                'age' => $request->age,
+                'salary' => $request->salary,
+                'work_time_start' => $request->WorkTimeStart,
+                'work_time_end' => $request->WorkTimeEnd,
+            ]);
+            return redirect()->back()->with('message_success_update', 'Trainer Updated Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
+        }
+    }
+
+    public function destroy(Trainer $trainer)
+    {
+            $trainer->delete();
+            return redirect()->back()->with('message_success', 'Trainer Deleted Successfully');
+    }
+
     public function Archive()
     {
-        return view('Admin/Trainer/Archive');
+        $trainer_deleted = Trainer::onlyTrashed()->get();
+        return view('Admin/Trainer/Archive' , compact('trainer_deleted'));
     }
+
+    public function restore($id)
+    {
+        try {
+            Trainer::withTrashed()->where('id', $id)->restore();
+            return redirect()->back()->with('message_success_restore', 'Trainer Restored Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
+        }
+    }
+
+
+    public function force_delete($id)
+    {
+        try {
+            Trainer::withTrashed()->where('id', $id)->forcedelete();
+            return redirect()->back()->with('message_success_forcedelete', 'Trainer deleted Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
+        }
+    }
+
+  
 }

@@ -227,8 +227,25 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                
-                                <form action="#" method="post">
+                                @if(session("message_success"))
+                                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{session("message_success")}}
+                                </div>
+                                @endif
+                                @if(session("message_err"))
+                                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{session("message_err")}}
+                                </div>
+                                @endif
+                                <form action="{{route('admin.employe.store')}}" method="post">
                                     @csrf
                                     <div class="form-body">
                                         <div class="row">

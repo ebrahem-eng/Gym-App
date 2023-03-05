@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets2/images/features-first-icon.png') }}">
-    <title> @yield('title', 'Report Table')</title>
+    <title> @yield('title', 'Role Permission')</title>
     <!-- Custom CSS -->
     <link href="{{ asset('assets2/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets2/libs/chartist/dist/chartist.min.css') }}" rel="stylesheet">
@@ -183,20 +183,7 @@
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-right">
-                        <!-- ============================================================== -->
-                        <!-- Search -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item d-none d-md-block">
-                            <a class="nav-link" href="javascript:void(0)">
-                                <form>
-                                    <div class="customize-input">
-                                        <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                            type="search" placeholder="Search" aria-label="Search">
-                                        <i class="form-control-icon" data-feather="search"></i>
-                                    </div>
-                                </form>
-                            </a>
-                        </li>
+
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -251,13 +238,12 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Reports Manage</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Assign Permission</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0 p-0">
                                     <li class="breadcrumb-item"><a
-                                            href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Reports/Reports
-                                            Table</a>
+                                            href="{{ route('admin.index') }}">Dashboard/Roles/Assign Permission</a>
                                     </li>
                                 </ol>
                             </nav>
@@ -268,87 +254,123 @@
             </div>
 
             <div class="container-fluid">
-                @if(session("message_success_delete_report"))
-                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{session("message_success_delete_report")}}
-                </div>
-                @endif
-                @if(session("message_err_delete_report"))
-                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{session("message_err_delete_report")}}
-                </div>
-                @endif
+                <div class="row">
+                    <div class="col-10">
+                        <div class="card">
+                            @if (session('message_success'))
+                                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{ session('message_success') }}
+                                </div>
+                            @endif
+                            @if (session('message_err'))
+                                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                                    role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{ session('message_err') }}
+                                </div>
+                            @endif
+                            <div class="card-body">
 
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="bg-info text-white">
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th>Message</th>
-                                <th>Date</th>
-                                <th></th>
+                                <form action="{{route('admin.roles.permissions' , $role->id)}}" method="POST">
+                                    @csrf
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Role Name:</label>
+                                                    <input type="text" class="form-control" id="nametext"
+                                                        aria-describedby="name" placeholder="Name" name="Name"
+                                                        value="{{ $role->name }}" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-4">
+                                                    <label class="form-label">Permissions:</label>
+
+                                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+                                                        name="permission">
+                                                        @foreach ($permissions as $permission)
+                                                            <option selected>{{ $permission->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
 
-                            </tr>
+                                                <div class="form-actions">
+                                                    <div class="text-left">
+                                                        <button type="submit"
+                                                            class="btn btn-rounded  btn-info ">Assign</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
 
-                        </thead>
-                        <tbody class="border border-info">
-                            @foreach ($reports as $report)
-                                <tr>
-                                    <td>{{ $report->id }}</td>
-                                    <td>{{ $report->name }}</td>
-                                    <td>{{ $report->email }}</td>
-                                    <td>{{ $report->subject }}</td>
-                                    <td>{{ $report->message }}</td>
-                                    <td>{{ $report->created_at }}</td>
-                                    <td>
-                                        <form action="{{ route('admin.report.destroy', $report->id) }}"
-                                            method="POST">
-                                            @method('delete')
-                                            @csrf
-                                            <button type="submit" class="btn btn-circle btn-danger "><i
-                                                    data-feather="x" class="feather-icon"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 p-4">
+                                                <h4 class="card-title">Role Permission</h4>
+                                                <div class="list-group"> <a href="javascript:void(0)"
+                                                        class="list-group-item active">{{ $role->name }}</a>
+                                                        
+                                                        @if($role->permissions)
+                                                        @foreach($role->permissions as $role_permission)
+                                                        <form method="POST" action="{{route('admin.roles.permissions.revoke',[$role->id , $role_permission->id])}}">
+                                                            @method('Delete')
+                                                            @csrf
+                                                           
+                                                            <button class="list-group-item"> {{$role_permission->name}}</button>
+                                                        
+                                                        </form>
+                                                        @endforeach
+                                                        @endif
+
+                                                        
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-        </div>
 
-        <script src="{{ asset('assets2/libs/jquery/dist/jquery.min.js') }}"></script>
-        <script src="{{ asset('assets2/libs/popper.js/dist/umd/popper.min.js') }}"></script>
-        <script src="{{ asset('assets2/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-        <!-- apps -->
-        <!-- apps -->
-        <script src="{{ asset('dist/js/app-style-switcher.js') }}"></script>
-        <script src="{{ asset('dist/js/feather.min.js') }}"></script>
-        <script src="{{ asset('assets2/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
-        <script src="{{ asset('dist/js/sidebarmenu.js') }}"></script>
-        <!--Custom JavaScript -->
-        <script src="{{ asset('dist/js/custom.min.js') }}"></script>
-        <!--This page JavaScript -->
-        <script src="{{ asset('assets2/extra-libs/c3/d3.min.js') }}"></script>
-        <script src="{{ asset('assets2/extra-libs/c3/c3.min.js') }}"></script>
-        <script src="{{ asset('assets2/libs/chartist/dist/chartist.min.js') }}"></script>
-        <script src="{{ asset('assets2/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
-        <script src="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js') }}"></script>
-        <script src="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
-        <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
+        </div>
+    </div>
+
+
+
+
+    <script src="{{ asset('assets2/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets2/libs/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('assets2/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!-- apps -->
+    <!-- apps -->
+    <script src="{{ asset('dist/js/app-style-switcher.js') }}"></script>
+    <script src="{{ asset('dist/js/feather.min.js') }}"></script>
+    <script src="{{ asset('assets2/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ asset('dist/js/sidebarmenu.js') }}"></script>
+    <!--Custom JavaScript -->
+    <script src="{{ asset('dist/js/custom.min.js') }}"></script>
+    <!--This page JavaScript -->
+    <script src="{{ asset('assets2/extra-libs/c3/d3.min.js') }}"></script>
+    <script src="{{ asset('assets2/extra-libs/c3/c3.min.js') }}"></script>
+    <script src="{{ asset('assets2/libs/chartist/dist/chartist.min.js') }}"></script>
+    <script src="{{ asset('assets2/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+    <script src="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js') }}"></script>
+    <script src="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
 </body>
 
 </html>

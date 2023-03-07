@@ -12,6 +12,7 @@ class ClassController extends Controller
     public function index()
     {
         $classes = ClassT::all();
+        
         return view('Admin/Class/index', compact('classes'));
     }
 

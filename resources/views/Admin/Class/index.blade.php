@@ -79,9 +79,12 @@
                                 <td>{{ $class->updated_at }}</td>
 
                                 <td>
+                              
                                     <a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
-                                        href="{{ route('admin.class.edit', $class->id) }}"><i data-feather="edit-2"
-                                            class="feather-icon"></i></a>
+                                    href="{{ route('admin.class.edit', $class->id ) }}"><i data-feather="edit-2"
+                                        class="feather-icon"></i></a>
+                                   
+                                   
                                     <form action="{{ route('admin.class.destroy', $class->id) }}" , method="POST">
                                         @method('delete')
                                         @csrf

@@ -92,14 +92,16 @@
                                         <div class="row">
 
                                             <div class="col-md-4">
-                                                
+       
                                                 @foreach ($days as $day)
                                                 <fieldset class="checkbox">
                                                     <label>
-                                                        <input type="checkbox" value="{{$day->name}}"  name="day[]" required> {{$day->name}}
-                                                    </label>
-                                                </fieldset>
-                                                @endforeach
+                                                    <input type="checkbox" name="day[]" value="{{ $day->name }}" {{ in_array($day->name, explode(',', $class->day)) ? 'checked' : '' }}>
+                                                    {{ $day->name }}
+                                                </label>
+                                            </fieldset>
+                                            @endforeach
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -116,5 +118,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    {{-- </div> --}}
 

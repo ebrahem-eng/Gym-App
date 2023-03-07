@@ -1,6 +1,5 @@
 @extends('Admin.empty')
 
-
 <div class="preloader">
     <div class="lds-ripple">
         <div class="lds-pos"></div>
@@ -164,4 +163,4 @@
             </div>
         </div>
     </div>
-</div>
+{{-- </div> --}}

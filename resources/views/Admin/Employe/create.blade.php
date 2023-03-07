@@ -1,4 +1,4 @@
-@extends('Admin.empty')
+@extends('layouts.adminSidebar')
 
     <div class="preloader">
         <div class="lds-ripple">
@@ -7,7 +7,6 @@
         </div>
     </div>
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
-   
         @include('layouts.adminHeader')
 
         <div class="page-wrapper">
@@ -30,13 +29,13 @@
             </div>
 
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
+              
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
+
+                                {{--  message section  --}}
                                 @if(session("message_success"))
                                 <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                     role="alert">
@@ -55,6 +54,9 @@
                                     {{session("message_err")}}
                                 </div>
                                 @endif
+
+                                {{--  end message section  --}}
+                                
                                 <form action="{{route('admin.employe.store')}}" method="post">
                                     @csrf
                                     <div class="form-body">
@@ -136,4 +138,4 @@
                 </div>
             </div>
         </div>
-    </div>
+    {{-- </div> --}}

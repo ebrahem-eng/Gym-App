@@ -29,25 +29,36 @@
 
             </div>
         </div>
+        
 
-        <div class="container-fluid">
-            <div class="table-responsive">
-                <table style="width: 650px; margin-left:200px;" class="table">
-                    <thead class="bg-info text-white">
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th></th>
-                        </tr>
+    <div class="row">
+        <div class="col-8">
 
-                    </thead>
-                    <tbody class="border border-info">
-                        @foreach ($roles as $role)
+            <div class="card-body">
+
+                {{-- message section --}}
+
+                {{-- end message section --}}
+
+                <div class="table-responsive">
+
+                    <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                        style="width:100%">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+    
+                        </thead>
+                        <tbody>
+                            @foreach ($roles as $role)
                             <tr>
                                 <td>{{ $role->id }}</td>
                                 <td>{{ $role->name }}</td>
                                 <td>
-                                    <a type="button" style="margin-left: 450px;" class="btn btn-circle btn-dark"
+                                    <a type="button" class="btn btn-circle btn-dark"
                                         href="{{ route('admin.go.roles.permissions', $role->id) }}"><i
                                             data-feather="key" class="feather-icon"></i> </a>
                                 </td>
@@ -55,9 +66,10 @@
                         @endforeach
 
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
+    </div>
     </div>

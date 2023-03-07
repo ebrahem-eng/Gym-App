@@ -108,10 +108,10 @@
                                     <td>{{ $class_delete->deleted_at }}</td>
 
                                     <td>
-                                        <a type="button" class="btn btn-circle btn-success mt-2 mr-2 "
+                                        <a type="button" class="btn btn-circle btn-success  mr-2 "
                                             href="{{ route('admin.class.restore', $class_delete->id) }}"><i
                                                 data-feather="refresh-ccw" class="feather-icon"></i></a>
-                                        <a type="button" class="btn btn-circle btn-danger mt-2"
+                                        <a type="button" class="btn btn-circle btn-danger "
                                             href="{{ route('admin.class.forcedelete', $class_delete->id) }}"><i
                                                 data-feather="x" class="feather-icon"></i></a>
 

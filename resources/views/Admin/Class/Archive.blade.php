@@ -33,6 +33,13 @@
 
             <div class="container-fluid">
 
+            <div class="row">
+                <div class="col-12">
+    
+                    <div class="card-body">
+    
+                {{-- message section  --}}
+
                 @if (session('message_success_restore'))
                     <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                         role="alert">
@@ -71,23 +78,26 @@
                     </div>
                 @endif
 
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="bg-info text-white">
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Day</th>
-                                <th>Class Time Start</th>
-                                <th>Class Time End </th>
-                                <th>Created</th>
-                                <th>Deleted</th>
-                                <th></th>
-                            </tr>
+                {{-- end message section --}}
 
-                        </thead>
-                        <tbody class="border border-info">
-                            @foreach ($class_deleted as $class_delete)
+                        <div class="table-responsive">
+    
+                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                style="width:100%">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Day</th>
+                                        <th>Class Time Start</th>
+                                        <th>Class Time End </th>
+                                        <th>Created</th>
+                                        <th>Deleted</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($class_deleted as $class_delete)
                                 <tr>
                                     <td>{{ $class_delete->id }}</td>
                                     <td>{{ $class_delete->name }}</td>
@@ -108,10 +118,11 @@
                                     </td>
                                 </tr>
                             @endforeach
-
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
+    </div>

@@ -32,80 +32,90 @@
         </div>
 
         <div class="container-fluid">
-            @if (session('message_success'))
-                <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ session('message_success') }}
+        
+            <div class="row">
+                <div class="col-12">
+    
+                    <div class="card-body">
+    
+    
+                        {{-- message section --}}
+                        @if (session('message_success'))
+                        <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                            role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ session('message_success') }}
+                        </div>
+                    @endif
+                    @if (session('message_err'))
+                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                            role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ session('message_err') }}
+                        </div>
+                    @endif
+                        {{-- end message section --}}
+    
+                        <div class="table-responsive">
+    
+                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                style="width:100%">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Age</th>
+                                        <th>Phone</th>
+                                        <th>Class</th>
+                                        <th>Salary</th>
+                                        <th>Work Time Start</th>
+                                        <th>Work Time End </th>
+                                        <th>Created </th>
+                                        <th>Updated </th>
+                                        <th></th>       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($trainers as $trainer)
+                                    <tr>
+                                        <td>{{ $trainer->id }}</td>
+                                        <td>{{ $trainer->first_name }}</td>
+                                        <td>{{ $trainer->last_name }}</td>
+                                        <td>{{ $trainer->email }}</td>
+                                        <td>{{ $trainer->age }}</td>
+                                        <td>{{ $trainer->phone }}</td>
+                                        <td>{{ $trainer->class }}</td>
+                                        <td>{{ $trainer->salary }}</td>
+                                        <td>{{ $trainer->work_time_start }}</td>
+                                        <td>{{ $trainer->work_time_end }}</td>
+                                        <td>{{ $trainer->created_at }}</td>
+                                        <td>{{ $trainer->updated_at }}</td>
+                                        <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
+                                                href="{{ route('admin.trainer.edit', $trainer->id) }}"><i data-feather="edit-2"
+                                                    class="feather-icon"></i></a>
+                                            <button class="btn btn-circle btn-dark mt-2 mr-2 "><i data-feather="key"
+                                                    class="feather-icon"></i> </button>
+                                            <form method="POST" action="{{ route('admin.trainer.destroy', $trainer->id) }}">
+                                                @method('delete')
+                                                @csrf
+                                                <button type="submit" class="btn btn-circle btn-danger mt-2"><i
+                                                        data-feather="x" class="feather-icon"></i></button>
+                                            </form>
+        
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            @endif
-            @if (session('message_err'))
-                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ session('message_err') }}
-                </div>
-            @endif
-            <div class="table-responsive">
-                <table class="table">
-                    <thead class="bg-info text-white">
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Age</th>
-                            <th>Phone</th>
-                            <th>Class</th>
-                            <th>Salary</th>
-                            <th>Work Time Start</th>
-                            <th>Work Time End </th>
-                            <th>Created </th>
-                            <th>Updated </th>
-                            <th></th>
-
-
-                        </tr>
-
-                    </thead>
-                    <tbody class="border border-info">
-
-                        @foreach ($trainers as $trainer)
-                            <tr>
-                                <td>{{ $trainer->id }}</td>
-                                <td>{{ $trainer->first_name }}</td>
-                                <td>{{ $trainer->last_name }}</td>
-                                <td>{{ $trainer->email }}</td>
-                                <td>{{ $trainer->age }}</td>
-                                <td>{{ $trainer->phone }}</td>
-                                <td>{{ $trainer->class }}</td>
-                                <td>{{ $trainer->salary }}</td>
-                                <td>{{ $trainer->work_time_start }}</td>
-                                <td>{{ $trainer->work_time_end }}</td>
-                                <td>{{ $trainer->created_at }}</td>
-                                <td>{{ $trainer->updated_at }}</td>
-                                <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
-                                        href="{{ route('admin.trainer.edit', $trainer->id) }}"><i data-feather="edit-2"
-                                            class="feather-icon"></i></a>
-                                    <button class="btn btn-circle btn-dark mt-2 mr-2 "><i data-feather="key"
-                                            class="feather-icon"></i> </button>
-                                    <form method="POST" action="{{ route('admin.trainer.destroy', $trainer->id) }}">
-                                        @method('delete')
-                                        @csrf
-                                        <button type="submit" class="btn btn-circle btn-danger mt-2"><i
-                                                data-feather="x" class="feather-icon"></i></button>
-                                    </form>
-
-                                </td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
             </div>
         </div>
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Class\ClassController;
 use App\Http\Controllers\Admin\Employe\EmployeController;
 use App\Http\Controllers\Admin\Permission\PermissionController;
@@ -22,17 +24,13 @@ use Spatie\Permission\Models\Permission;
 //<=====Admin Section======>
 
 // Route::get('/dashboard', function () {
-//  
-//     return view('admin.index')
+ 
+//     return view('admin.index');
 // })->middleware(['auth', 'verified' , 'role:Admin'])->name('dashboard');
 
-Route::get('/admin', function () {
-    $trainer_count = Trainer::all()->count();
-    $employe_count = Employe::all()->count();
-    return view('admin.index',compact('trainer_count','employe_count'));
-})->middleware(['auth', 'verified','role:Admin'])->name('admin.index');
+Route::get('/admin', [AdminController::class , 'index'])->middleware(['admin'])->name('admin.index');
 
-Route::middleware(['auth', 'verified','role:Admin'])->name('admin.')->prefix('admin')->group(function(){
+Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function(){
     //============ Admin Employe ==========
 
 Route::get('/employe/archive',[EmployeController::class , 'Archive'])->name('employe.archive');
@@ -81,10 +79,20 @@ Route::resource('/permissions',PermissionController::class);
 
 //============ Admin Report ============
 
+
+});
+Route::name('admin.')->prefix('admin')->group(function(){
 Route::resource('/report',ReportController::class);
 });
 
 
+//=================Admin Atuh section ==============
+
+Route::get('admin/login',[AuthController::class , 'index'])->name('admin.show.login');
+Route::post('admin/login/store',[AuthController::class , 'store'])->name('admin.store.login');
+Route::post('admin/logout',[AuthController::class , 'logout'])->name('admin.logout');
+
+//=================end admin auth section ========== 
 
 
 //<========end Admin section =========>

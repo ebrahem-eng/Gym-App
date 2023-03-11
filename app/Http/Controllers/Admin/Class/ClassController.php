@@ -6,75 +6,138 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassT;
 use App\Models\Day;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ClassController extends Controller
 {
+
+    //عرض صفحة جدول الصفوف
+
     public function index()
     {
-        $classes = ClassT::all();
-        
-        return view('Admin/Class/index', compact('classes'));
+        try {
+            $classes = ClassT::all();
+            return view('Admin/Class/index', compact('classes'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة انشاء صف جديد
 
     public function create()
     {
-        $days = Day::all();
-        return view('Admin/Class/create', compact('days'));
+        try {
+            $days = Day::all();
+            return view('Admin/Class/create', compact('days'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //تخزين الصفوف في قاعدة البيانات
 
     public function store(Request $request)
     {
-        try {
+       try{
+            // $validator = Validator::make($request->all(), [
+            //     'name' => 'required',
+            //     'class_time_start' => 'required',
+            //     'class_time_end' => 'required',
+            //     'day' => 'required',
+             
+            // ]);
+            
+            // if ($validator->fails()) {
+            //     return redirect('admin/class/create')
+            //         ->withErrors($validator)
+            //         ->withInput();
+            // }
+       
             ClassT::create([
                 'name' => $request->Name,
                 'class_time_start' => $request->ClassTimeStart,
                 'class_time_end' => $request->ClassTimeEnd,
                 'day' => implode(',', $request->day),
             ]);
-
-
-            return redirect()->back()->with('message_success', 'Class Add Successfully!');
+            return redirect()->back()->with('message_success', 'Class added successfully!');
+        
         } catch (\Exception $ex) {
-            return redirect()->back()->with('message_err', 'Somthing Worning , Try Again !');
+            return redirect()->back()->with('message_err', 'Something went wrong. Please try again.');
         }
     }
+    
+
+    //عرض صفحة تعديل الصف
 
     public function edit(ClassT $class)
     {
-        $days = Day::all();
-        return view('Admin/Class/edit', compact('class', 'days'));
+        try {
+            $days = Day::all();
+            return view('Admin/Class/edit', compact('class', 'days'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //تخزين التحديثات في قاعدة البيانات
 
     public function update(Request $request, ClassT $class)
     {
-
         try {
-
+            // $validator = Validator::make($request->all(), [
+            //     'name' => 'required',
+            //     'class_time_start' => 'required',
+            //     'class_time_end' => 'required',
+            //     'day' => 'required|array',
+            // ]);
+            
+            // if ($validator->fails()) {
+            //     return redirect()->back()
+            //         ->withErrors($validator)
+            //         ->withInput();
+            // }
+    
             $class->update([
-                'name' => $request->Name,
+                'name' => $request->input('Name'),
                 'class_time_start' => $request->ClassTimeStart,
                 'class_time_end' => $request->ClassTimeEnd,
                 'day' => implode(',', $request->day),
             ]);
-            return redirect()->back()->with('message_success_update', 'Class Update Successfully!');
+    
+            return redirect()->back()->with('message_success_update', 'Class updated successfully!');
         } catch (\Exception $ex) {
-
-            return redirect()->back()->with('message_err_update',  'Somthing Worning , Try Again !');
+            return redirect()->back()->with('message_err_update', 'Something went wrong. Please try again.');
         }
     }
+    
 
+    //حذف صف ونقله الى الارشيف
 
     public function destroy(ClassT $class)
     {
-        $class->delete();
-        return redirect()->back()->with('message_success_delete', 'Class Deleted Successfully!');
+        try {
+
+            $class->delete();
+            return redirect()->back()->with('message_success_delete', 'Class Deleted Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_delete', 'Deleting error please try agin!');
+        }
     }
+
+    //عرض صفحة الارشيف
 
     public function Archive()
     {
-        $class_deleted = ClassT::onlyTrashed()->get();
-        return view('Admin/Class/Archive', compact('class_deleted'));
+        try {
+            $class_deleted = ClassT::onlyTrashed()->get();
+            return view('Admin/Class/Archive', compact('class_deleted'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //استعادة الصفوف الممحذوفة
 
     public function restore($id)
     {
@@ -87,6 +150,8 @@ class ClassController extends Controller
     }
 
 
+    //حذف الصفوف بشكل نهائي
+    
     public function force_delete($id)
     {
         try {

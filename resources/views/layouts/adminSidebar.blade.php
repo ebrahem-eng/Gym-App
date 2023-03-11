@@ -168,7 +168,7 @@
 
                         <li class="list-divider"></li>
                         <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{route('admin.logout')}}">
                             @csrf
                             <li class="sidebar-item">
                                 <a class="sidebar-link sidebar-link" aria-expanded="false" type="button">

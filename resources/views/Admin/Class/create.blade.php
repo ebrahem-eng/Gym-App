@@ -36,6 +36,8 @@
             <div class="row">
                 <div class="col-10">
                     <div class="card">
+
+                        {{-- message section --}}
                         @if (session('message_success'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
@@ -54,24 +56,36 @@
                                 {{ session('message_err') }}
                             </div>
                         @endif
+                        {{-- end message section --}}
+
                         <div class="card-body">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <form action="{{ route('admin.class.store') }}" method="POST">
                                 @csrf
+
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Name:</label>
                                                 <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="Name" name="Name">
+                                                    aria-describedby="name" placeholder="Name" name="Name" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Class Time Start:</label>
                                                 <input type="time" class="form-control"
-                                                    placeholder="Class Time Start" name="ClassTimeStart">
+                                                    placeholder="Class Time Start" name="ClassTimeStart" required>
                                             </div>
                                         </div>
                                     </div>
@@ -82,7 +96,7 @@
                                             <div class="form-group">
                                                 <label class="form-label">Class Time End:</label>
                                                 <input type="time" class="form-control" placeholder="Class Time End"
-                                                    name="ClassTimeEnd">
+                                                    name="ClassTimeEnd" required>
                                             </div>
                                         </div>
                                     </div>
@@ -117,4 +131,4 @@
             </div>
         </div>
     </div>
-{{-- </div> --}}
+    {{-- </div> --}}

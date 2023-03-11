@@ -49,6 +49,7 @@
                             {{ session('message_success') }}
                         </div>
                     @endif
+                    
                     @if (session('message_err'))
                         <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                             role="alert">

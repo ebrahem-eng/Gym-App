@@ -12,23 +12,43 @@ use Spatie\Permission\Models\Role;
 
 class EmployeController extends Controller
 {
-    //
+    //عرض الصفحة الرئيسة للموظفين
+
     public function index()
     {
-        $employes = Employe::all();
-        return view('Admin/Employe/index', compact('employes'));
+        try {
+            $employes = Employe::all();
+            return view('Admin/Employe/index', compact('employes'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة اضافة موظف
 
     public function create()
     {
-        return view('Admin/Employe/create');
+
+        try {
+            return view('Admin/Employe/create');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة ارشيف الموظفين
 
     public function Archive()
     {
-        $trashed_employes = Employe::onlyTrashed()->get();
-        return view('Admin/Employe/Archive', compact('trashed_employes'));
+        try {
+            $trashed_employes = Employe::onlyTrashed()->get();
+            return view('Admin/Employe/Archive', compact('trashed_employes'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //تخزين بيانات موظف في قاعدة البيانات
 
     public function store(Request $request, Employe $employe)
     {
@@ -51,11 +71,19 @@ class EmployeController extends Controller
         }
     }
 
+    //حذف موظف ونقله الى الارشيف
+
     public function destroy(Employe $employe)
     {
-        $employe->delete();
-        return redirect()->back()->with('message_success', 'Employe Deleted Successfully');
+        try {
+            $employe->delete();
+            return redirect()->back()->with('message_success', 'Employe Deleted Successfully');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //استعادة بيانات موظف بعد حذفه
 
     public function restore($id)
     {
@@ -68,6 +96,8 @@ class EmployeController extends Controller
     }
 
 
+    //حذف موظف نهائيا من الارشيف
+
     public function force_delete($id)
     {
         try {
@@ -78,13 +108,19 @@ class EmployeController extends Controller
         }
     }
 
+    //عرض صفحة تعديل بيانات موظف
+
     public function edit(Employe $employe)
     {
         try {
             return view('Admin/Employe/edit', compact('employe'));
         } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
         }
     }
+
+    //تعديل بياناات موظف في قاعدة البيانات
 
     public function update(Request $request, Employe $employe)
     {
@@ -106,13 +142,22 @@ class EmployeController extends Controller
     }
 
 
+    //عرض صفحة اعطاء الادوار والصلاحيات لموظف
+
     public function show(Employe $employe)
     {
-        $roles = Role::get();
-        $permissions = Permission::get();
+        try {
+            $roles = Role::get();
+            $permissions = Permission::get();
 
-        return view('Admin/employe/role', compact('employe', 'roles', 'permissions'));
+            return view('Admin/employe/role', compact('employe', 'roles', 'permissions'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+
+    //اعطاء الادوار الى الموظف
 
     public function assignrole(Request $request, Employe $employe)
     {

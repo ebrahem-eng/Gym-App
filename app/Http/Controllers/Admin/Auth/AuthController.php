@@ -22,21 +22,39 @@ class AuthController extends Controller
   
  }
 
+ //التحقق من عملية تسجيل الدخول
+
  public function store(Request $request)
  {
-    $check = $request->all();
-    if(FacadesAuth::guard('admin')->attempt(['email'=>$check['email'],
-    'password'=>$check['password']])){
+    try{
+        $check = $request->all();
+        if(FacadesAuth::guard('admin')->attempt(['email'=>$check['email'],
+        'password'=>$check['password']])){
+    
+            return redirect()->route('admin.index');
+        }else{
+            return redirect()->route('admin.show.login')->with('login_error_message','error login please enter valid username and password');
+        }
 
-        return redirect()->route('admin.index');
-    }else{
-        return redirect()->route('admin.show.login')->with('login_error_message','error login please enter valid username and password');
+    }catch(\Exception)
+    {
+    return redirect()->route('notfound');
     }
+
  }
+
+ //تسجيل الخروج
 
  public function logout()
  {
-    FacadesAuth::guard('admin')->logout();
-    return redirect()->route('admin.show.login');
+    try{
+        FacadesAuth::guard('admin')->logout();
+        return redirect()->route('admin.show.login');
+
+    }catch(\Exception $ex)
+    {
+    return redirect()->route('notfound');
+    }
+  
  }
 }

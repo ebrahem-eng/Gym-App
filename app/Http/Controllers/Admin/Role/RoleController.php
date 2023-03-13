@@ -9,34 +9,60 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+
+    //عرض صفحة الادوار 
+
     public function index()
     {
-        $roles = Role::all();
-        return view('Admin/Roles/index' , compact('roles'));
+        try {
+            $roles = Role::all();
+            return view('Admin/Roles/index', compact('roles'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة اسناد الصلاحيات الى دور معين 
 
     public function go_to_give_permissions(Role $role)
     {
-       $permissions = Permission::get();
-       return view('Admin/Roles/GivePermission' , compact('role' , 'permissions'));
+        try {
+
+            $permissions = Permission::get();
+            return view('Admin/Roles/GivePermission', compact('role', 'permissions'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
 
-    public function givepermission(Request $request,Role $role)
+    //اسناد صلاحيات الى دور معين
+
+    public function givepermission(Request $request, Role $role)
     {
-        if ($role->hasPermissionTo($request->permission)) {
-            return back()->with('message_err', 'Permission Is Already Assign');
+        try {
+            if ($role->hasPermissionTo($request->permission)) {
+                return back()->with('message_err', 'Permission Is Already Assign');
+            }
+            $role->givePermissionTo($request->permission);
+            return back()->with('message_success', 'permission assign successful');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
         }
-        $role->givePermissionTo($request->permission);
-        return back()->with('message_success' , 'permission assign successful');
     }
 
-    public function revokepermission(Role $role , Permission $permission)
+    //سحب صلاحية من دور معين 
+
+    public function revokepermission(Role $role, Permission $permission)
     {
-        if ($role->hasPermissionTo($permission)) {
-            $role->revokePermissionTo($permission);
-            return back()->with('message_success' , 'Permission Revok Success');
+        try {
+            if ($role->hasPermissionTo($permission)) {
+                $role->revokePermissionTo($permission);
+                return back()->with('message_success', 'Permission Revok Success');
+            }
+
+            return back()->with('message_err', 'Permission Not Found');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
         }
-   
-        return back()->with('message_err' , 'Permission Not Found');
     }
 }

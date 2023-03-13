@@ -9,55 +9,58 @@ use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
+    //عرض صفحة الشكاوي 
+
     public function index()
     {
-        $reports = Report::all();
-        return view('Admin/Report/index' , compact('reports'));
+        try {
+            $reports = Report::all();
+            return view('Admin/Report/index', compact('reports'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //تخزين الشكاوي في قاعدة البيانات 
 
     public function store(Request $request)
     {
-        try{
+        try {
 
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required',
                 'subject' => 'required',
                 'message' => 'required',
-             
+
             ]);
-            
+
             if ($validator->fails()) {
                 return redirect('/')
                     ->withErrors($validator)
                     ->withInput();
             }
             Report::create([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'subject'=>$request->subject,
-                'message'=>$request->message,
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
             ]);
-            return redirect()->back()->with('message_success_report' , 'Report Adding Successfully!');
-
-        }catch(\Exception $ex)
-        {
-            return redirect()->back()->with('message_err_report' , 'Somthing Worning , Try Again !');
+            return redirect()->back()->with('message_success_report', 'Report Adding Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_report', 'Somthing Worning , Try Again !');
         }
-      
     }
+
+    //حذف الشكاوي بشكل نهائي
 
     public function destroy(Report $report)
     {
-        try{
+        try {
             $report->delete();
-            return redirect()->back()->with('message_success_delete_report' , 'Report Deleting Successfully!');
+            return redirect()->back()->with('message_success_delete_report', 'Report Deleting Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_delete_report', 'Somthing Worning , Try Again !');
         }
-        catch(\Exception $ex)
-        {
-            return redirect()->back()->with('message_err_delete_report' , 'Somthing Worning , Try Again !');
-        }
-    
-
-    }   
+    }
 }

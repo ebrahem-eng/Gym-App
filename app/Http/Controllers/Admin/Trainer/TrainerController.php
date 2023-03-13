@@ -10,52 +10,69 @@ use Illuminate\Support\Facades\Hash;
 
 class TrainerController extends Controller
 {
+    //عرض صفحة المدربين 
+
     public function index()
     {
-        $trainers = Trainer::all();
-        return view('Admin/Trainer/index' , compact('trainers'));
+        try {
+
+            $trainers = Trainer::all();
+            return view('Admin/Trainer/index', compact('trainers'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة انشاء مدرب جديد 
 
     public function create()
     {
-        $classes = ClassT::all();
-        return view('Admin/Trainer/create', compact('classes'));
+        try {
+            $classes = ClassT::all();
+            return view('Admin/Trainer/create', compact('classes'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //تخزين بيانات المدرب في قاعدة البيانات
 
     public function store(Request $request)
     {
-        try{
+        try {
             Trainer::create([
                 'first_name' => $request->firstName,
                 'last_name' => $request->lastName,
                 'email' => $request->email,
                 'password' => Hash::make('password'),
-                'class'=>$request->class,
+                'class' => $request->class,
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,
                 'work_time_start' => $request->WorkTimeStart,
                 'work_time_end' => $request->WorkTimeEnd,
-             ]);
-             return redirect()->back()->with('message_success', ' Trainer Add Successfully!');
-
+            ]);
+            return redirect()->back()->with('message_success', ' Trainer Add Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
         }
-        catch(\Exception $ex)
-        {
-              return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
-        }
-      
     }
 
+
+    //عرض صفحة تعديل بيانات مدرب
 
     public function edit(Trainer $trainer)
     {
         try {
             $classes = ClassT::all();
-            return view('Admin/Trainer/edit', compact('trainer','classes'));
+            return view('Admin/Trainer/edit', compact('trainer', 'classes'));
         } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
         }
     }
+
+    //تخزين التعديلات في قاعدة البيانات 
 
     public function update(Request $request, Trainer $trainer)
     {
@@ -64,7 +81,7 @@ class TrainerController extends Controller
                 'first_name' => $request->firstName,
                 'last_name' => $request->lastName,
                 'email' => $request->email,
-                'class'=>$request->class,
+                'class' => $request->class,
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,
@@ -77,17 +94,31 @@ class TrainerController extends Controller
         }
     }
 
+    //حذف بيانات مدرب ونقلها الى الارشيف
+
     public function destroy(Trainer $trainer)
     {
+        try {
             $trainer->delete();
             return redirect()->back()->with('message_success', 'Trainer Deleted Successfully');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //عرض صفحة ارشيف المدربين 
 
     public function Archive()
     {
-        $trainer_deleted = Trainer::onlyTrashed()->get();
-        return view('Admin/Trainer/Archive' , compact('trainer_deleted'));
+        try {
+            $trainer_deleted = Trainer::onlyTrashed()->get();
+            return view('Admin/Trainer/Archive', compact('trainer_deleted'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
+
+    //استعادة بيانات المدرب بعد حذفه
 
     public function restore($id)
     {
@@ -100,6 +131,8 @@ class TrainerController extends Controller
     }
 
 
+    //حذف بيانات المدرب نهائيا من الارشيف
+
     public function force_delete($id)
     {
         try {
@@ -109,6 +142,4 @@ class TrainerController extends Controller
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }
     }
-
-  
 }

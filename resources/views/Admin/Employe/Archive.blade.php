@@ -87,54 +87,60 @@
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-
-                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
-                                style="width:100%">
-                                <thead class="bg-info text-white">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Age</th>
-                                        <th>Phone</th>
-                                        <th>Salary</th>
-                                        <th>Work Time Start</th>
-                                        <th>Work Time End </th>
-                                        <th>Created at</th>
-                                        <th>Deleted at</th>
-                                        <th></th>
-                                    </tr>
-
-
-                                </thead>
-                                <tbody>
-                                    @foreach ($trashed_employes as $trashed_employe)
+                            @if (count($trashed_employes)>0)
+                                <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                    style="width:100%">
+                                    <thead class="bg-info text-white">
                                         <tr>
-                                            <td>{{ $trashed_employe->id }}</td>
-                                            <td>{{ $trashed_employe->first_name }}</td>
-                                            <td>{{ $trashed_employe->last_name }}</td>
-                                            <td>{{ $trashed_employe->email }}</td>
-                                            <td>{{ $trashed_employe->age }}</td>
-                                            <td>{{ $trashed_employe->phone }}</td>
-                                            <td>{{ $trashed_employe->salary }}</td>
-                                            <td>{{ $trashed_employe->work_time_start }}</td>
-                                            <td>{{ $trashed_employe->work_time_end }}</td>
-                                            <td>{{ $trashed_employe->created_at }}</td>
-                                            <td>{{ $trashed_employe->deleted_at }}</td>
-                                            <td>
-                                                <a type="button" class="btn btn-circle btn-success mt-2 mr-2"
-                                                    href="{{ route('admin.employe.restore', $trashed_employe->id) }}"><i
-                                                        data-feather="refresh-ccw" class="feather-icon"></i></a>
-                                                <a type="button" class="btn btn-circle btn-danger mt-2"
-                                                    href="{{ route('admin.employe.forcedelete', $trashed_employe->id) }}"><i
-                                                        data-feather="x" class="feather-icon"></i></a>
-                                            </td>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Age</th>
+                                            <th>Phone</th>
+                                            <th>Salary</th>
+                                            <th>Work Time Start</th>
+                                            <th>Work Time End </th>
+                                            <th>Created at</th>
+                                            <th>Deleted at</th>
+                                            <th></th>
                                         </tr>
-                                    @endforeach
 
 
-                                </tbody>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($trashed_employes as $trashed_employe)
+                                            <tr>
+                                                <td>{{ $trashed_employe->id }}</td>
+                                                <td>{{ $trashed_employe->first_name }}</td>
+                                                <td>{{ $trashed_employe->last_name }}</td>
+                                                <td>{{ $trashed_employe->email }}</td>
+                                                <td>{{ $trashed_employe->age }}</td>
+                                                <td>{{ $trashed_employe->phone }}</td>
+                                                <td>{{ $trashed_employe->salary }}</td>
+                                                <td>{{ $trashed_employe->work_time_start }}</td>
+                                                <td>{{ $trashed_employe->work_time_end }}</td>
+                                                <td>{{ $trashed_employe->created_at }}</td>
+                                                <td>{{ $trashed_employe->deleted_at }}</td>
+                                                <td>
+                                                    <a type="button" class="btn btn-circle btn-success mt-2 mr-2"
+                                                        href="{{ route('admin.employe.restore', $trashed_employe->id) }}"><i
+                                                            data-feather="refresh-ccw" class="feather-icon"></i></a>
+                                                    <a type="button" class="btn btn-circle btn-danger mt-2"
+                                                        href="{{ route('admin.employe.forcedelete', $trashed_employe->id) }}"><i
+                                                            data-feather="x" class="feather-icon"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <div style="text-align: center;" class="card">
+                                            <h2
+                                                style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                                No Data</h2>
+                                        </div>
+                            @endif
+
+                            </tbody>
                             </table>
                         </div>
                     </div>

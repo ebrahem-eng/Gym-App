@@ -18,12 +18,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Employe Roles</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Admin Roles</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}">Dashboard/Employe/Employe Roles</a>
+                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Admin/Admin
+                                        Roles</a>
                                 </li>
                             </ol>
                         </nav>
@@ -67,17 +67,17 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Employe Name:</label>
+                                            <label class="form-label">Admin Name:</label>
                                             <input type="text" class="form-control" id="nametext"
-                                                aria-describedby="name" name="Name"
-                                                value="{{ $employe->first_name }}" readonly>
+                                                aria-describedby="name" name="Name" value="{{ $admin->name }}"
+                                                readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Employe Email:</label>
+                                            <label class="form-label">Admin Email:</label>
                                             <input type="text" class="form-control" aria-describedby="email"
-                                                name="email" value="{{ $employe->email }}" readonly>
+                                                name="email" value="{{ $admin->email }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                 <div class="row">
 
 
-                                    <form action="{{ route('admin.employe.roles', $employe->id) }}" method="POST">
+                                    <form action="{{ route('admin.admin.roles', $admin->id) }}" method="POST">
                                         @csrf
                                         <div class="col-md-10">
                                             <div class="form-group mb-5">
@@ -101,25 +101,25 @@
 
                                         </div>
                                         <div class="form-actions">
-                                            <div class="text-left">
+                                            <div class="text-center">
                                                 <button type="submit"
                                                     class="btn btn-rounded  btn-info ">Assign</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div class="col-md-4 col-sm-4 p-4">
                                             <h4 class="card-title">Role:</h4>
                                             <div class="list-group">
-                                                @if ($employe->roles)
-                                                    @foreach ($employe->roles as $employe_roles)
+                                                @if ($admin->roles)
+                                                    @foreach ($admin->roles as $admin_roles)
                                                         <form method="post"
-                                                            action="{{ route('admin.users.roles.remove', [$employe->id, $employe_roles->id]) }}">
+                                                            action="{{ route('admin.admin.roles.remove', [$admin->id, $admin_roles->id]) }}">
                                                             @csrf
                                                             @method('delete')
                                                             <button
                                                                 class="list-group-item list-group-item-action btn-danger">
-                                                                {{ $employe_roles->name }}
+                                                                {{ $admin_roles->name }}
                                                             </button>
                                                         </form>
                                                     @endforeach

@@ -105,7 +105,7 @@
                                                     @method('Delete')
                                                     @csrf
 
-                                                    <button class=" list-group-item list-group-item-action btn-danger ">
+                                                    <button class="list-group-item list-group-item-action btn-danger">
                                                         {{ $role_permission->name }}</button>
 
                                                 </form>

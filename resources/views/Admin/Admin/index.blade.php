@@ -16,12 +16,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Reports Manage</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Admin Manage</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Reports/Reports
+                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Admin/Admin
                                         Table</a>
                                 </li>
                             </ol>
@@ -39,30 +39,33 @@
 
                     <div class="card-body">
 
+
                         {{-- message section --}}
-                        @if (session('message_success_delete_report'))
+                        @if (session('message_success'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_success_delete_report') }}
+                                {{ session('message_success') }}
                             </div>
                         @endif
-                        @if (session('message_err_delete_report'))
+                        @if (session('message_err'))
                             <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_err_delete_report') }}
+                                {{ session('message_err') }}
                             </div>
                         @endif
 
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-                            @if (count($reports) > 0)
+                            @if (count($admins) > 0)
+
+
                                 <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                     style="width:100%">
                                     <thead class="bg-info text-white">
@@ -70,31 +73,39 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Subject</th>
-                                            <th>Message</th>
-                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Created at</th>
+                                            <th>Updated at</th>
                                             <th></th>
+
 
                                         </tr>
 
                                     </thead>
                                     <tbody>
-                                        @foreach ($reports as $report)
+                                        @foreach ($admins as $admin)
                                             <tr>
-                                                <td>{{ $report->id }}</td>
-                                                <td>{{ $report->name }}</td>
-                                                <td>{{ $report->email }}</td>
-                                                <td>{{ $report->subject }}</td>
-                                                <td>{{ $report->message }}</td>
-                                                <td>{{ $report->created_at }}</td>
-                                                <td>
-                                                    <form action="{{ route('admin.report.destroy', $report->id) }}"
-                                                        method="POST">
+                                                <td>{{ $admin->id }}</td>
+                                                <td>{{ $admin->name }}</td>
+                                                <td>{{ $admin->email }}</td>
+                                                <td>{{ $admin->status }}</td>
+                                                <td>{{ $admin->created_at }}</td>
+                                                <td>{{ $admin->updated_at }}</td>
+                                                <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
+                                                        href="#"><i data-feather="edit-2"
+                                                            class="feather-icon"></i></a>
+
+                                                    <a type="button" class="btn btn-circle btn-dark mt-2 mr-2 "
+                                                        href="{{ route('admin.admin.show.roles', $admin->id) }}"><i
+                                                            data-feather="key" class="feather-icon"></i>
+                                                    </a>
+                                                    <form method="post" action="#">
                                                         @method('delete')
                                                         @csrf
-                                                        <button type="submit" class="btn btn-circle btn-danger "><i
+                                                        <button class="btn btn-circle btn-danger mt-2" type="submit"><i
                                                                 data-feather="x" class="feather-icon"></i></button>
                                                     </form>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -112,4 +123,5 @@
                 </div>
             </div>
         </div>
+
     </div>

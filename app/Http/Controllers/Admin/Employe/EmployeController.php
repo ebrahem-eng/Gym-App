@@ -111,16 +111,15 @@ class EmployeController extends Controller
         $roles = Role::get();
         $permissions = Permission::get();
 
-        return view('/Admin/employe/role',compact('employe' , 'roles' , 'permissions'));
+        return view('Admin/employe/role', compact('employe', 'roles', 'permissions'));
     }
 
-    public function assignrole(Request $request,Employe $employe)
+    public function assignrole(Request $request, Employe $employe)
     {
         if ($employe->hasRole($request->role)) {
             return back()->with('message_err', 'Role Is Already Assign');
         }
         $employe->assignRole($request->role);
-        return back()->with('message_success' , 'Role Assign Successfully');
+        return back()->with('message_success', 'Role Assign Successfully');
     }
-
 }

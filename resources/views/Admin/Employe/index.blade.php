@@ -63,61 +63,70 @@
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-
-                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
-                                style="width:100%">
-                                <thead class="bg-info text-white">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Age</th>
-                                        <th>Phone</th>
-                                        <th>Salary</th>
-                                        <th>Work Time Start</th>
-                                        <th>Work Time End </th>
-                                        <th>Created at</th>
-                                        <th>Updated at</th>
-                                        <th></th>
+                            @if (count($employes) > 0)
 
 
-                                    </tr>
-
-                                </thead>
-                                <tbody>
-                                    @foreach ($employes as $employe)
+                                <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                    style="width:100%">
+                                    <thead class="bg-info text-white">
                                         <tr>
-                                            <td>{{ $employe->id }}</td>
-                                            <td>{{ $employe->first_name }}</td>
-                                            <td>{{ $employe->last_name }}</td>
-                                            <td>{{ $employe->email }}</td>
-                                            <td>{{ $employe->age }}</td>
-                                            <td>{{ $employe->phone }}</td>
-                                            <td>{{ $employe->salary }}</td>
-                                            <td>{{ $employe->work_time_start }}</td>
-                                            <td>{{ $employe->work_time_end }}</td>
-                                            <td>{{ $employe->created_at }}</td>
-                                            <td>{{ $employe->updated_at }}</td>
-                                            <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
-                                                    href="{{ route('admin.employe.edit', $employe->id) }}"><i
-                                                        data-feather="edit-2" class="feather-icon"></i></a>
-                                                <a type="button" class="btn btn-circle btn-dark mt-2 mr-2 "
-                                                    href="#"><i data-feather="key" class="feather-icon"></i> </a>
-                                                <form method="post"
-                                                    action="{{ route('admin.employe.destroy', $employe->id) }}">
-                                                    @method('delete')
-                                                    @csrf
-                                                    <button class="btn btn-circle btn-danger mt-2" type="submit"><i
-                                                            data-feather="x" class="feather-icon"></i></button>
-                                                </form>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Age</th>
+                                            <th>Phone</th>
+                                            <th>Salary</th>
+                                            <th>Work Time Start</th>
+                                            <th>Work Time End </th>
+                                            <th>Created at</th>
+                                            <th>Updated at</th>
+                                            <th></th>
 
-                                            </td>
+
                                         </tr>
-                                    @endforeach
 
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($employes as $employe)
+                                            <tr>
+                                                <td>{{ $employe->id }}</td>
+                                                <td>{{ $employe->first_name }}</td>
+                                                <td>{{ $employe->last_name }}</td>
+                                                <td>{{ $employe->email }}</td>
+                                                <td>{{ $employe->age }}</td>
+                                                <td>{{ $employe->phone }}</td>
+                                                <td>{{ $employe->salary }}</td>
+                                                <td>{{ $employe->work_time_start }}</td>
+                                                <td>{{ $employe->work_time_end }}</td>
+                                                <td>{{ $employe->created_at }}</td>
+                                                <td>{{ $employe->updated_at }}</td>
+                                                <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
+                                                        href="{{ route('admin.employe.edit', $employe->id) }}"><i
+                                                            data-feather="edit-2" class="feather-icon"></i></a>
 
-                                </tbody>
+                                                    <a type="button" class="btn btn-circle btn-dark mt-2 mr-2 "
+                                                        href="{{route('admin.employe.show.roles' , $employe->id)}}"><i data-feather="key" class="feather-icon"></i>
+                                                    </a>
+                                                    <form method="post"
+                                                        action="{{ route('admin.employe.destroy', $employe->id) }}">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button class="btn btn-circle btn-danger mt-2" type="submit"><i
+                                                                data-feather="x" class="feather-icon"></i></button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <div style="text-align: center;" class="card">
+                                            <h2
+                                                style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                                No Data</h2>
+                                        </div>
+                            @endif
+                            </tbody>
                             </table>
                         </div>
                     </div>

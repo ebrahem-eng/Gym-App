@@ -37,6 +37,9 @@
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <div class="text-center">
+
+                            {{-- Message section --}}
+
                             @if (session('login_error_message'))
                                 <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                     role="alert">
@@ -46,6 +49,9 @@
                                     {{ session('login_error_message') }}
                                 </div>
                             @endif
+
+                            {{-- End message section --}}
+
                             <img src="{{ asset('assets2/images/big/features-first-icon.png') }}" alt="wrapkit">
                         </div>
                         <h2 class="mt-3 text-center">Sign In</h2>

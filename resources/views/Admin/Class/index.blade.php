@@ -64,51 +64,57 @@
                     {{-- end message section --}}
 
                     <div class="table-responsive">
+                        @if (count($classes) > 0)
 
-                        <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
-                            style="width:100%">
-                            <thead class="bg-info text-white">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Day</th>
-                                    <th>Class Time Start</th>
-                                    <th>Class Time End </th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($classes as $class)
+                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                style="width:100%">
+                                <thead class="bg-info text-white">
                                     <tr>
-                                        <td>{{ $class->id }}</td>
-                                        <td>{{ $class->name }}</td>
-                                        <td>{{ $class->day }}</td>
-                                        <td>{{ $class->class_time_start }}</td>
-                                        <td>{{ $class->class_time_end }}</td>
-                                        <td>{{ $class->created_at }}</td>
-                                        <td>{{ $class->updated_at }}</td>
-                                        <td>
-                                            <a type="button" class="btn btn-circle btn-primary "
-                                                href="{{ route('admin.class.edit', $class->id) }}"><i
-                                                    data-feather="edit-2" class="feather-icon"></i></a>
-                                            <form action="{{ route('admin.class.destroy', $class->id) }}" ,
-                                                method="POST">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-circle btn-danger mt-2"><i
-                                                        data-feather="x" class="feather-icon"></i></button>
-                                            </form>
-                                        </td>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Day</th>
+                                        <th>Class Time Start</th>
+                                        <th>Class Time End </th>
+                                        <th>Created</th>
+                                        <th>Updated</th>
+                                        <th></th>
                                     </tr>
-                                @endforeach
-                            </tbody>
+                                </thead>
+                                <tbody>
+                                    @foreach ($classes as $class)
+                                        <tr>
+                                            <td>{{ $class->id }}</td>
+                                            <td>{{ $class->name }}</td>
+                                            <td>{{ $class->day }}</td>
+                                            <td>{{ $class->class_time_start }}</td>
+                                            <td>{{ $class->class_time_end }}</td>
+                                            <td>{{ $class->created_at }}</td>
+                                            <td>{{ $class->updated_at }}</td>
+                                            <td>
+                                                <a type="button" class="btn btn-circle btn-primary "
+                                                    href="{{ route('admin.class.edit', $class->id) }}"><i
+                                                        data-feather="edit-2" class="feather-icon"></i></a>
+                                                <form action="{{ route('admin.class.destroy', $class->id) }}" ,
+                                                    method="POST">
+                                                    @method('delete')
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-circle btn-danger mt-2"><i
+                                                            data-feather="x" class="feather-icon"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <div style="text-align: center;" class="card">
+                                        <h2
+                                            style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                            No Data</h2>
+                                    </div>
+                        @endif
+                        </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  
-  

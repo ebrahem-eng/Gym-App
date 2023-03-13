@@ -62,6 +62,8 @@
                         {{-- end message section --}}
     
                         <div class="table-responsive">
+    @if (count($trainers)>0)
+        
     
                             <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                 style="width:100%">
@@ -112,6 +114,13 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @else
+                                <div style="text-align: center;" class="card">
+                                    <h2
+                                        style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                        No Data</h2>
+                                </div>
+                                @endif
                                 </tbody>
                             </table>
                         </div>

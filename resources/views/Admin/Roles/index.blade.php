@@ -29,47 +29,54 @@
 
             </div>
         </div>
-        
 
-    <div class="row">
-        <div class="col-8">
 
-            <div class="card-body">
+        <div class="row">
+            <div class="col-8">
 
-                {{-- message section --}}
+                <div class="card-body">
 
-                {{-- end message section --}}
+                    {{-- message section --}}
 
-                <div class="table-responsive">
+                    {{-- end message section --}}
 
-                    <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
-                        style="width:100%">
-                        <thead class="bg-info text-white">
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th></th>
-                            </tr>
-    
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $role)
-                            <tr>
-                                <td>{{ $role->id }}</td>
-                                <td>{{ $role->name }}</td>
-                                <td>
-                                    <a type="button" class="btn btn-circle btn-dark"
-                                        href="{{ route('admin.go.roles.permissions', $role->id) }}"><i
-                                            data-feather="key" class="feather-icon"></i> </a>
-                                </td>
-                            </tr>
-                        @endforeach
+                    <div class="table-responsive">
 
+                        @if (count($roles) > 0)
+                            <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
+                                style="width:100%">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach ($roles as $role)
+                                        <tr>
+                                            <td>{{ $role->id }}</td>
+                                            <td>{{ $role->name }}</td>
+                                            <td>
+                                                <a type="button" class="btn btn-circle btn-dark"
+                                                    href="{{ route('admin.go.roles.permissions', $role->id) }}"><i
+                                                        data-feather="key" class="feather-icon"></i> </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <div style="text-align: center;" class="card">
+                                        <h2
+                                            style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                            No Data</h2>
+                                    </div>
+                        @endif
 
                         </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>

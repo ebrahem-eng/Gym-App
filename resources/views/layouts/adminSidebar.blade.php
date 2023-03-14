@@ -56,7 +56,7 @@
                                     class="sidebar-link"><span class="hide-menu"> Add Employe
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{ route('admin.employe.create') }}"
+                            <li class="sidebar-item"><a href="#"
                                     class="sidebar-link"><span class="hide-menu"> Reset Password
                                     </span></a>
                             </li>
@@ -148,7 +148,7 @@
                                         Admin List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}" class="sidebar-link"><span class="hide-menu">
                                         Add Admin
                                     </span></a>
                             </li>

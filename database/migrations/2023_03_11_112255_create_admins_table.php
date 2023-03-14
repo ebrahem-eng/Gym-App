@@ -20,8 +20,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('age');
+            $table->string('phone');
+            $table->string('salary')->default('-');
+            $table->string('address');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

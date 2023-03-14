@@ -73,9 +73,13 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Status</th>
+                                            <th>Age</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Salary</th>
                                             <th>Created at</th>
                                             <th>Updated at</th>
+                                            <th>Status</th>
                                             <th></th>
 
 
@@ -88,24 +92,32 @@
                                                 <td>{{ $admin->id }}</td>
                                                 <td>{{ $admin->name }}</td>
                                                 <td>{{ $admin->email }}</td>
-                                                <td>{{ $admin->status }}</td>
+                                                <td>{{ $admin->age }}</td>
+                                                <td>{{ $admin->phone }}</td>
+                                                <td>{{ $admin->address }}</td>
+                                                <td>{{ $admin->salary }}</td>
                                                 <td>{{ $admin->created_at }}</td>
                                                 <td>{{ $admin->updated_at }}</td>
-                                                <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
-                                                        href="#"><i data-feather="edit-2"
+                                                <td>
+                                                    @if ($admin->status == 0)
+                                                        <span style="color: red;">Not Active</span>
+                                                    @elseif ($admin->status == 1)
+                                                        <span style="color: green;">Active</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
+                                                        href="{{route('admin.admin.edit' , $admin->id)}}"><i data-feather="edit-2"
                                                             class="feather-icon"></i></a>
-
-                                                    <a type="button" class="btn btn-circle btn-dark mt-2 mr-2 "
+                                                    <a type="button" class="btn btn-circle btn-dark mt-2"
                                                         href="{{ route('admin.admin.show.roles', $admin->id) }}"><i
-                                                            data-feather="key" class="feather-icon"></i>
-                                                    </a>
+                                                            data-feather="key" class="feather-icon"></i></a>
                                                     <form method="post" action="#">
                                                         @method('delete')
                                                         @csrf
                                                         <button class="btn btn-circle btn-danger mt-2" type="submit"><i
                                                                 data-feather="x" class="feather-icon"></i></button>
                                                     </form>
-
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -67,7 +67,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Admin Name:</label>
+                                            <label class="form-label">Name:</label>
                                             <input type="text" class="form-control" id="nametext"
                                                 aria-describedby="name" name="Name" value="{{ $admin->name }}"
                                                 readonly>
@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="form-label">Admin Email:</label>
+                                            <label class="form-label">Email:</label>
                                             <input type="text" class="form-control" aria-describedby="email"
                                                 name="email" value="{{ $admin->email }}" readonly>
                                         </div>

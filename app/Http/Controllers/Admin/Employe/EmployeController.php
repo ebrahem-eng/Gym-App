@@ -50,7 +50,7 @@ class EmployeController extends Controller
 
     //تخزين بيانات موظف في قاعدة البيانات
 
-    public function store(Request $request, Employe $employe)
+    public function store(Request $request)
     {
 
         try {

@@ -19,13 +19,17 @@ class Admin
     
     public function handle(Request $request, Closure $next)
     {
-      
-        if(!FacadesAuth::guard('admin')->check())
+        try{
+            if(!FacadesAuth::guard('admin')->check() && FacadesAuth::guard('admin')->user()->status == 0)
+            {
+                return redirect()->route('admin.login');
+            }
+            return $next($request);
+
+        }catch(\Exception $ex)
         {
-            return redirect()->route('admin.login');
+            return redirect()->route('notfound');
         }
-        return $next($request);
-     
 
     }
 }

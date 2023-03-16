@@ -16,13 +16,13 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Admin Manage</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Employe Manage</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Admin/Admin
-                                        Table</a>
+                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Employe/ResetPassword
+                                        </a>
                                 </li>
                             </ol>
                         </nav>
@@ -41,7 +41,6 @@
 
 
                         {{-- message section --}}
-                        
                         @if (session('message_success'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
@@ -61,31 +60,10 @@
                             </div>
                         @endif
 
-
-                        @if (session('message_success_update'))
-                        <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
-                            role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            {{ session('message_success_update') }}
-                        </div>
-                    @endif
-                    @if (session('message_err_update'))
-                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
-                            role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            {{ session('message_err_update') }}
-                        </div>
-                    @endif
-
-
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-                            @if (count($admins) > 0)
+                            @if (count($employes) > 0)
 
 
                                 <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
@@ -93,52 +71,41 @@
                                     <thead class="bg-info text-white">
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Age</th>
                                             <th>Phone</th>
-                                            <th>Address</th>
                                             <th>Salary</th>
+                                            <th>Work Time Start</th>
+                                            <th>Work Time End </th>
                                             <th>Created at</th>
                                             <th>Updated at</th>
-                                            <th>Status</th>
                                             <th></th>
+
+
                                         </tr>
 
                                     </thead>
                                     <tbody>
-                                        @foreach ($admins as $admin)
+                                        @foreach ($employes as $employe)
                                             <tr>
-                                                <td>{{ $admin->id }}</td>
-                                                <td>{{ $admin->name }}</td>
-                                                <td>{{ $admin->email }}</td>
-                                                <td>{{ $admin->age }}</td>
-                                                <td>{{ $admin->phone }}</td>
-                                                <td>{{ $admin->address }}</td>
-                                                <td>{{ $admin->salary }}</td>
-                                                <td>{{ $admin->created_at }}</td>
-                                                <td>{{ $admin->updated_at }}</td>
-                                                <td>
-                                                    @if ($admin->status == 0)
-                                                        <span style="color: red;">Not Active</span>
-                                                    @elseif ($admin->status == 1)
-                                                        <span style="color: green;">Active</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
-                                                        href="{{ route('admin.admin.edit', $admin->id) }}"><i
-                                                            data-feather="edit-2" class="feather-icon"></i></a>
-                                                    <a type="button" class="btn btn-circle btn-dark mt-2"
-                                                        href="{{ route('admin.admin.show.roles', $admin->id) }}"><i
-                                                            data-feather="key" class="feather-icon"></i></a>
-                                                    <form method="post"
-                                                        action="{{ route('admin.admin.destroy', $admin->id) }}">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button class="btn btn-circle btn-danger mt-2" type="submit"><i
-                                                                data-feather="x" class="feather-icon"></i></button>
-                                                    </form>
+                                                <td>{{ $employe->id }}</td>
+                                                <td>{{ $employe->first_name }}</td>
+                                                <td>{{ $employe->last_name }}</td>
+                                                <td>{{ $employe->email }}</td>
+                                                <td>{{ $employe->age }}</td>
+                                                <td>{{ $employe->phone }}</td>
+                                                <td>{{ $employe->salary }}</td>
+                                                <td>{{ $employe->work_time_start }}</td>
+                                                <td>{{ $employe->work_time_end }}</td>
+                                                <td>{{ $employe->created_at }}</td>
+                                                <td>{{ $employe->updated_at }}</td>
+                                                <td>    <a type="button" class="btn btn-circle btn-danger mr-2"
+                                                    href="{{ route('admin.employe.reset.password.edit', $employe->id) }}"><i
+                                                        data-feather="shield" class="feather-icon"></i></a>
+
+
                                                 </td>
                                             </tr>
                                         @endforeach

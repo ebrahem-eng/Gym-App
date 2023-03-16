@@ -142,4 +142,44 @@ class TrainerController extends Controller
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }
     }
+
+    //عرض صفحة تعديل كلمة سر المدرب
+
+    public function reset_password_show()
+    {
+        try {
+            $trainers = Trainer::all();
+            return view('Admin/Trainer/reset_password', compact('trainers'));
+        } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
+        }
+    }
+
+    //عرض صفحة تعديل كلمة سر المدرب
+
+    public function reset_password_edit(Trainer $trainer)
+    {
+        try {
+            return view('Admin/Trainer/reset_password_edit', compact('trainer'));
+        } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
+        }
+    }
+
+    //  تعديل كلمة سر المدرب
+
+    public function reset_password_update(Request $request, Trainer $trainer)
+    {
+        try {
+            $new_password = $request->new_password;
+            $trainer->update([
+                'password' => Hash::make($new_password),
+            ]);
+            return redirect()->route('admin.trainer.index')->with('message_success_update', 'Trainer Update Password Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
+        }
+    }
 }

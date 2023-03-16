@@ -54,11 +54,12 @@ class EmployeController extends Controller
     {
 
         try {
+            $password = $request->password;
             Employe::create([
                 'first_name' => $request->firstName,
                 'last_name' => $request->lastName,
                 'email' => $request->email,
-                'password' => Hash::make('password'),
+                'password' => Hash::make($password),
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,
@@ -141,6 +142,46 @@ class EmployeController extends Controller
         }
     }
 
+    //عرض صفحة تعديل كلمة سر موظف
+
+    public function reset_password_show()
+    {
+        try {
+            $employes = Employe::all();
+            return view('Admin/Employe/reset_password', compact('employes'));
+        } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
+        }
+    }
+
+      //عرض صفحة تعديل كلمة سر موظف
+
+      public function reset_password_edit(Employe $employe)
+      {
+          try {
+              return view('Admin/Employe/reset_password_edit', compact('employe'));
+          } catch (\Exception $ex) {
+  
+              return redirect()->route('notfound');
+          }
+      }
+
+      //  تعديل كلمة سر موظف
+
+      public function reset_password_update(Request $request, Employe $employe)
+      {
+          try {
+            $new_password = $request->new_password;
+              $employe->update([
+                'password' => Hash::make($new_password),
+              ]);
+              return redirect()->route('admin.employe.index')->with('message_success_update', 'Employe Update Password Successfully!');
+          } catch (\Exception $ex) {
+              return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
+          }
+
+        }
 
     //عرض صفحة اعطاء الادوار والصلاحيات لموظف
 

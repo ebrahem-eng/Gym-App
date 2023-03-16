@@ -21,7 +21,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}">Dashboard/Trainer/Trainer Table</a>
+                                        href="{{ route('admin.index') }}">Dashboard/Trainer/Trainer ResetPassword</a>
                                 </li>
                             </ol>
                         </nav>
@@ -119,19 +119,10 @@
                                                 <td>{{ $trainer->work_time_end }}</td>
                                                 <td>{{ $trainer->created_at }}</td>
                                                 <td>{{ $trainer->updated_at }}</td>
-                                                <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
-                                                        href="{{ route('admin.trainer.edit', $trainer->id) }}"><i
-                                                            data-feather="edit-2" class="feather-icon"></i></a>
-                                                    <button class="btn btn-circle btn-dark mt-2 mr-2 "><i
-                                                            data-feather="key" class="feather-icon"></i> </button>
-                                                    <form method="POST"
-                                                        action="{{ route('admin.trainer.destroy', $trainer->id) }}">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-circle btn-danger mt-2"><i
-                                                                data-feather="x" class="feather-icon"></i></button>
-                                                    </form>
-
+                                                <td><a type="button" class="btn btn-circle btn-danger mr-2"
+                                                    href="{{ route('admin.trainer.reset.password.edit', $trainer->id) }}"><i
+                                                        data-feather="shield" class="feather-icon"></i></a>
+                                                   
                                                 </td>
                                             </tr>
                                         @endforeach

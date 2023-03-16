@@ -22,7 +22,7 @@ class Admin
         try{
             if(!FacadesAuth::guard('admin')->check() && FacadesAuth::guard('admin')->user()->status == 0)
             {
-                return redirect()->route('admin.login');
+                return redirect()->route('admin.show.login');
             }
             return $next($request);
 

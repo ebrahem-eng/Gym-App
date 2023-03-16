@@ -26,5 +26,16 @@ class AdminSeeder extends Seeder
             'age'=>'23',
             'address'=>'Damascus',
         ])->assignRole('Admin');
+
+        Admin::create([
+            'name' => 'ebrahem',
+            'email' => 'ebrahem@gmail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'phone'=>'0987654321',
+            'status'=>'1',
+            'age'=>'23',
+            'address'=>'Damascus',
+        ])->assignRole('Admin');
     }
 }

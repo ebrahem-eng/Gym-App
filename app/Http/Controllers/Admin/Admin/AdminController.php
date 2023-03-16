@@ -41,17 +41,21 @@ class AdminController extends Controller
     {
 
         try {
+            
+            $password = $request->password;
+            
             Admin::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make('password'),
+                'password' => Hash::make($password),
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,
                 'address' => $request->address,
-
+                'email_verified_at' => now(),
             ]);
-            return redirect()->back()->with('message_success', 'Employe Add Successfully');
+            
+            return redirect()->back()->with('message_success', 'Admin Add Successfully');
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
         }
@@ -82,12 +86,102 @@ class AdminController extends Controller
                 'salary' => $request->salary,
                 'address' => $request->address,
             ]);
-            return redirect()->back()->with('message_success_update', 'Employe Updated Successfully!');
+            return redirect()->back()->with('message_success_update', 'Admin Updated Successfully!');
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
         }
     }
 
+     //حذف مسؤول ونقله الى الارشيف
+
+     public function destroy(Admin $admin)
+     {
+         try {
+             $admin->delete();
+             return redirect()->back()->with('message_success', 'Admin Deleted Successfully');
+         } catch (\Exception $ex) {
+             return redirect()->route('notfound');
+         }
+     }
+
+       //عرض صفحة ارشيف المسؤولين
+
+    public function Archive()
+    {
+        try {
+            $admins = Admin::onlyTrashed()->get();
+            return view('Admin/Admin/Archive', compact('admins'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
+    }
+
+     //استعادة بيانات مسؤول بعد حذفه
+
+     public function restore($id)
+     {
+         try {
+             Admin::withTrashed()->where('id', $id)->restore();
+             return redirect()->back()->with('message_success_restore', 'Admin Restored Successfully!');
+         } catch (\Exception $ex) {
+             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
+         }
+     }
+
+       //حذف مسؤول نهائيا من الارشيف
+
+    public function force_delete($id)
+    {
+        try {
+            Admin::withTrashed()->where('id', $id)->forcedelete();
+            return redirect()->back()->with('message_success_forcedelete', 'Admin deleted Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
+        }
+    }
+ 
+    //عرض صفحة تعديل كلمة سر مسؤول
+
+    public function reset_password_show()
+    {
+        try {
+            $admins = Admin::all();
+            return view('Admin/Admin/reset_password', compact('admins'));
+        } catch (\Exception $ex) {
+
+            return redirect()->route('notfound');
+        }
+    }
+
+      //عرض صفحة تعديل كلمة سر مسؤول
+
+      public function reset_password_edit(Admin $admin)
+      {
+          try {
+              return view('Admin/Admin/reset_password_edit', compact('admin'));
+          } catch (\Exception $ex) {
+  
+              return redirect()->route('notfound');
+          }
+      }
+
+      //  تعديل كلمة سر مسؤول
+
+      public function reset_password_update(Request $request, Admin $admin)
+      {
+          try {
+            $new_password = $request->new_password;
+              $admin->update([
+                'password' => Hash::make($new_password),
+              ]);
+              return redirect()->route('admin.admin.index')->with('message_success_update', 'Admin Update Password Successfully!');
+          } catch (\Exception $ex) {
+              return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
+          }
+
+        }
+
+   
 
     //عرض صفحة الادوار والصلاحيات للمسؤول
 

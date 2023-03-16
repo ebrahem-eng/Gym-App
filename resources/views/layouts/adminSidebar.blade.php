@@ -56,8 +56,8 @@
                                     class="sidebar-link"><span class="hide-menu"> Add Employe
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Reset Password
+                            <li class="sidebar-item"><a href="{{route('admin.employe.reset.password.show')}}" class="sidebar-link"><span class="hide-menu">
+                                        Reset Password
                                     </span></a>
                             </li>
                             <li class="sidebar-item"><a href="{{ route('admin.employe.archive') }}"
@@ -82,7 +82,7 @@
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="{{ route('admin.trainer.create') }}"
+                            <li class="sidebar-item"><a href="{{route('admin.trainer.reset.password.show')}}"
                                     class="sidebar-link"><span class="hide-menu"> Reset Password
                                     </span></a>
                             </li>
@@ -148,18 +148,19 @@
                                         Admin List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}"
+                                    class="sidebar-link"><span class="hide-menu">
                                         Add Admin
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{route('admin.admin.reset.password.show')}}" class="sidebar-link"><span class="hide-menu">
                                         Reset Password
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span
-                                        class="hide-menu">Admin Archive
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.archive') }}"
+                                    class="sidebar-link"><span class="hide-menu">Admin Archive
 
                                     </span></a>
                             </li>

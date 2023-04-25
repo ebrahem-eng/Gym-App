@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Employe extends Model
+class Employe extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
     
-    
+    protected $guard = 'employe';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -24,6 +26,7 @@ class Employe extends Model
         'work_time_end',
         'email',
         'password',
+        'status',
     ];
 
    

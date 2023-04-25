@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Admin\AdminController as AdminAdminController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Class\ClassController;
+use App\Http\Controllers\Admin\Course\CourseController;
 use App\Http\Controllers\Admin\Employe\EmployeController;
 use App\Http\Controllers\Admin\Permission\PermissionController;
 use App\Http\Controllers\Admin\Report\ReportController;
@@ -70,6 +71,15 @@ Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function ()
     Route::get('/class/forcedelete/{id}', [ClassController::class, 'force_delete'])->name('class.forcedelete');
     Route::resource('/class', ClassController::class);
 
+
+
+
+
+
+    //================== Admin Courses =================
+
+    Route::resource('/course', CourseController::class);
+        
 
     //============= Admin Admin ===========
     Route::get('/admin/archive', [AdminAdminController::class, 'Archive'])->name('admin.archive');

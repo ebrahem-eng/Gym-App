@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->integer('class_id');
-            $table->integer('trainer_id');
-            
+            $table->foreignId('class_id')->references('id')->on('class_t_s');
+            $table->foreignId('trainer_id')->references('id')->on('trainers');
             $table->timestamps();
         });
     }

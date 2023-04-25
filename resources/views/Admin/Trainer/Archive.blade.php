@@ -94,8 +94,7 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Age</th>
-                                            <th>Phone</th>
-                                            <th>Class</th>
+                                            <th>Phone</th>                                
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
@@ -113,8 +112,7 @@
                                                 <td>{{ $trainer_delete->last_name }}</td>
                                                 <td>{{ $trainer_delete->email }}</td>
                                                 <td>{{ $trainer_delete->age }}</td>
-                                                <td>{{ $trainer_delete->phone }}</td>
-                                                <td>{{ $trainer_delete->class }}</td>
+                                                <td>{{ $trainer_delete->phone }}</td>                            
                                                 <td>{{ $trainer_delete->salary }}</td>
                                                 <td>{{ $trainer_delete->work_time_start }}</td>
                                                 <td>{{ $trainer_delete->work_time_end }}</td>

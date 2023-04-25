@@ -28,8 +28,8 @@ class ClassController extends Controller
     public function create()
     {
         try {
-            $days = Day::all();
-            return view('Admin/Class/create', compact('days'));
+           
+            return view('Admin/Class/create');
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -56,9 +56,7 @@ class ClassController extends Controller
        
             ClassT::create([
                 'name' => $request->Name,
-                'class_time_start' => $request->ClassTimeStart,
-                'class_time_end' => $request->ClassTimeEnd,
-                'day' => implode(',', $request->day),
+                
             ]);
             return redirect()->back()->with('message_success', 'Class added successfully!');
         
@@ -73,8 +71,8 @@ class ClassController extends Controller
     public function edit(ClassT $class)
     {
         try {
-            $days = Day::all();
-            return view('Admin/Class/edit', compact('class', 'days'));
+           
+            return view('Admin/Class/edit', compact('class'));
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -100,9 +98,7 @@ class ClassController extends Controller
     
             $class->update([
                 'name' => $request->input('Name'),
-                'class_time_start' => $request->ClassTimeStart,
-                'class_time_end' => $request->ClassTimeEnd,
-                'day' => implode(',', $request->day),
+                
             ]);
     
             return redirect()->back()->with('message_success_update', 'Class updated successfully!');

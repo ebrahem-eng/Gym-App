@@ -13,8 +13,12 @@ class ClassT extends Model
 
     protected $fillable = [
         'name',
-        'class_time_start',
-        'class_time_end',
-        'day',
     ];
+
+    //علاقة المدربين مع الصفوف
+    
+    public function trainers()
+    {
+        return $this->belongsToMany(Trainer::class , 'courses' , 'class_id' , 'trainer_id');
+    }
 }

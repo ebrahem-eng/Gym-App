@@ -126,7 +126,7 @@
                                         Course List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{route('admin.course.create')}}" class="sidebar-link"><span class="hide-menu">
                                         Add Course
                                     </span></a>
                             </li>

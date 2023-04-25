@@ -102,7 +102,7 @@
                                                     name="phone">
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        {{-- <div class="col-md-2">
                                             <div class="form-group mb-4">
                                                 <label class="form-label">Class:</label>
 
@@ -115,7 +115,7 @@
                                                 </select>
 
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="form-label">Age:</label>

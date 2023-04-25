@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 
-class Admin
+class Employe
 {
     /**
      * Handle an incoming request.
@@ -16,13 +15,12 @@ class Admin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    
     public function handle(Request $request, Closure $next)
     {
         try{
-            if(!Auth::guard('admin')->check() || Auth::guard('admin')->user()->status == 0)
+            if(!Auth::guard('employe')->check() || Auth::guard('employe')->user()->status == 0)
             {
-                return redirect()->route('admin.show.login');
+                return redirect()->route('employe.show.login');
             }
             return $next($request);
 
@@ -30,6 +28,5 @@ class Admin
         {
             return redirect()->route('notfound');
         }
-
     }
 }

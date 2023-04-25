@@ -16,11 +16,11 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Class</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Course</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Classes/Add
+                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Course/Add
                                         Class</a>
                                 </li>
                             </ol>
@@ -69,59 +69,38 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.class.store') }}" method="POST">
+                            <form action="{{ route('admin.course.store') }}" method="POST">
                                 @csrf
 
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Name:</label>
-                                                <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="Name" name="Name" required>
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Class</label>
+                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="class">
+                                                    @foreach ($classes as $class)
+                                                    <option value="{{$class->id}}">{{$class->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Trainer</label>
+                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="trainer">
+                                                    @foreach ($trainers as $trainer)
+                                                    <option value="{{$trainer->id}}">{{$trainer->first_name}}-{{$trainer->last_name}}</option>  
+                                                    @endforeach
+                                                
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                        {{-- <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Class Time Start:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Class Time Start" name="ClassTimeStart" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Class Time End:</label>
-                                                <input type="time" class="form-control" placeholder="Class Time End"
-                                                    name="ClassTimeEnd" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-                                    </div>
-                                    <label class="form-label">Day:</label>
-                                    <div class="row">
-
-                                        <div class="col-md-4">
-                                            @foreach ($days as $day)
-                                                <fieldset class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" value="{{ $day->name }}"
-                                                            name="day[{{ $day->name }}]"> {{ $day->name }}
-                                                    </label>
-                                                </fieldset>
-                                            @endforeach
-                                        </div>
-                                    </div> --}}
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Next</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>
@@ -132,4 +111,4 @@
             </div>
         </div>
     </div>
-    {{-- </div> --}}
+    

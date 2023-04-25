@@ -89,9 +89,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Day</th>
-                                            <th>Class Time Start</th>
-                                            <th>Class Time End </th>
                                             <th>Created</th>
                                             <th>Deleted</th>
                                             <th></th>
@@ -102,9 +99,6 @@
                                             <tr>
                                                 <td>{{ $class_delete->id }}</td>
                                                 <td>{{ $class_delete->name }}</td>
-                                                <td>{{ $class_delete->day }}</td>
-                                                <td>{{ $class_delete->class_time_start }}</td>
-                                                <td>{{ $class_delete->class_time_end }}</td>
                                                 <td>{{ $class_delete->created_at }}</td>
                                                 <td>{{ $class_delete->deleted_at }}</td>
 

@@ -28,8 +28,8 @@ class TrainerController extends Controller
     public function create()
     {
         try {
-            $classes = ClassT::all();
-            return view('Admin/Trainer/create', compact('classes'));
+            
+            return view('Admin/Trainer/create');
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -45,7 +45,6 @@ class TrainerController extends Controller
                 'last_name' => $request->lastName,
                 'email' => $request->email,
                 'password' => Hash::make('password'),
-                'class' => $request->class,
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,
@@ -64,8 +63,8 @@ class TrainerController extends Controller
     public function edit(Trainer $trainer)
     {
         try {
-            $classes = ClassT::all();
-            return view('Admin/Trainer/edit', compact('trainer', 'classes'));
+        
+            return view('Admin/Trainer/edit', compact('trainer'));
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -81,7 +80,6 @@ class TrainerController extends Controller
                 'first_name' => $request->firstName,
                 'last_name' => $request->lastName,
                 'email' => $request->email,
-                'class' => $request->class,
                 'phone' => $request->phone,
                 'age' => $request->age,
                 'salary' => $request->salary,

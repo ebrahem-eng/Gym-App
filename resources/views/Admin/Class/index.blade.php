@@ -72,9 +72,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Day</th>
-                                        <th>Class Time Start</th>
-                                        <th>Class Time End </th>
                                         <th>Created</th>
                                         <th>Updated</th>
                                         <th></th>
@@ -85,9 +82,6 @@
                                         <tr>
                                             <td>{{ $class->id }}</td>
                                             <td>{{ $class->name }}</td>
-                                            <td>{{ $class->day }}</td>
-                                            <td>{{ $class->class_time_start }}</td>
-                                            <td>{{ $class->class_time_end }}</td>
                                             <td>{{ $class->created_at }}</td>
                                             <td>{{ $class->updated_at }}</td>
                                             <td>

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('class_t_s', function (Blueprint $table) {
+        Schema::create('course__days', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->softDeletes();
+            $table->foreignId('course_id')->references('id')->on('courses');
+            $table->foreignId('day_id')->references('id')->on('days');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_t_s');
+        Schema::dropIfExists('course__days');
     }
 };

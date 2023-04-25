@@ -95,7 +95,6 @@
                                             <th>Email</th>
                                             <th>Age</th>
                                             <th>Phone</th>
-                                            <th>Class</th>
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
@@ -113,7 +112,6 @@
                                                 <td>{{ $trainer->email }}</td>
                                                 <td>{{ $trainer->age }}</td>
                                                 <td>{{ $trainer->phone }}</td>
-                                                <td>{{ $trainer->class }}</td>
                                                 <td>{{ $trainer->salary }}</td>
                                                 <td>{{ $trainer->work_time_start }}</td>
                                                 <td>{{ $trainer->work_time_end }}</td>

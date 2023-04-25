@@ -77,7 +77,7 @@
                                                         aria-describedby="name" placeholder="Name" name="Name" value="{{$class->name}}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            {{-- <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label class="form-label">Class Time Start:</label>
                                                     <input type="time" class="form-control"
@@ -111,7 +111,7 @@
                                             </fieldset>
                                             @endforeach
                                             
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="form-actions">

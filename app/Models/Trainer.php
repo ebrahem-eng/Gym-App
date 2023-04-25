@@ -17,7 +17,6 @@ class Trainer extends Model
         'first_name',
         'last_name',
         'phone',
-        'class',
         'age',
         'salary',
         'work_time_start',
@@ -36,4 +35,12 @@ class Trainer extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    //علاقة الصفوف مع المدربين 
+    
+    public function classes()
+    {
+        return $this->belongsToMany(ClassT::class , 'courses' , 'trainer_id' , 'class_id');
+    }
 }

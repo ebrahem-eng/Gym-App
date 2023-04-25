@@ -114,7 +114,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group mb-4">
+                                        {{-- <div class="form-group mb-4">
                                             <label class="form-label">Class:</label>
 
 
@@ -127,7 +127,7 @@
                                             </select>
 
 
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                     <div class="row">

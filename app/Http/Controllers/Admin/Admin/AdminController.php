@@ -41,9 +41,9 @@ class AdminController extends Controller
     {
 
         try {
-            
+
             $password = $request->password;
-            
+
             Admin::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -54,7 +54,7 @@ class AdminController extends Controller
                 'address' => $request->address,
                 'email_verified_at' => now(),
             ]);
-            
+
             return redirect()->back()->with('message_success', 'Admin Add Successfully');
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
@@ -92,19 +92,19 @@ class AdminController extends Controller
         }
     }
 
-     //حذف مسؤول ونقله الى الارشيف
+    //حذف مسؤول ونقله الى الارشيف
 
-     public function destroy(Admin $admin)
-     {
-         try {
-             $admin->delete();
-             return redirect()->back()->with('message_success', 'Admin Deleted Successfully');
-         } catch (\Exception $ex) {
-             return redirect()->route('notfound');
-         }
-     }
+    public function destroy(Admin $admin)
+    {
+        try {
+            $admin->delete();
+            return redirect()->back()->with('message_success', 'Admin Deleted Successfully');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
+    }
 
-       //عرض صفحة ارشيف المسؤولين
+    //عرض صفحة ارشيف المسؤولين
 
     public function Archive()
     {
@@ -116,19 +116,19 @@ class AdminController extends Controller
         }
     }
 
-     //استعادة بيانات مسؤول بعد حذفه
+    //استعادة بيانات مسؤول بعد حذفه
 
-     public function restore($id)
-     {
-         try {
-             Admin::withTrashed()->where('id', $id)->restore();
-             return redirect()->back()->with('message_success_restore', 'Admin Restored Successfully!');
-         } catch (\Exception $ex) {
-             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
-         }
-     }
+    public function restore($id)
+    {
+        try {
+            Admin::withTrashed()->where('id', $id)->restore();
+            return redirect()->back()->with('message_success_restore', 'Admin Restored Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
+        }
+    }
 
-       //حذف مسؤول نهائيا من الارشيف
+    //حذف مسؤول نهائيا من الارشيف
 
     public function force_delete($id)
     {
@@ -139,7 +139,7 @@ class AdminController extends Controller
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }
     }
- 
+
     //عرض صفحة تعديل كلمة سر مسؤول
 
     public function reset_password_show()
@@ -153,35 +153,34 @@ class AdminController extends Controller
         }
     }
 
-      //عرض صفحة تعديل كلمة سر مسؤول
+    //عرض صفحة تعديل كلمة سر مسؤول
 
-      public function reset_password_edit(Admin $admin)
-      {
-          try {
-              return view('Admin/Admin/reset_password_edit', compact('admin'));
-          } catch (\Exception $ex) {
-  
-              return redirect()->route('notfound');
-          }
-      }
+    public function reset_password_edit(Admin $admin)
+    {
+        try {
+            return view('Admin/Admin/reset_password_edit', compact('admin'));
+        } catch (\Exception $ex) {
 
-      //  تعديل كلمة سر مسؤول
-
-      public function reset_password_update(Request $request, Admin $admin)
-      {
-          try {
-            $new_password = $request->new_password;
-              $admin->update([
-                'password' => Hash::make($new_password),
-              ]);
-              return redirect()->route('admin.admin.index')->with('message_success_update', 'Admin Update Password Successfully!');
-          } catch (\Exception $ex) {
-              return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
-          }
-
+            return redirect()->route('notfound');
         }
+    }
 
-   
+    //  تعديل كلمة سر مسؤول
+
+    public function reset_password_update(Request $request, Admin $admin)
+    {
+        try {
+            $new_password = $request->new_password;
+            $admin->update([
+                'password' => Hash::make($new_password),
+            ]);
+            return redirect()->route('admin.admin.index')->with('message_success_update', 'Admin Update Password Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
+        }
+    }
+
+
 
     //عرض صفحة الادوار والصلاحيات للمسؤول
 
@@ -189,7 +188,7 @@ class AdminController extends Controller
     {
         try {
             $roles = Role::get();
-            $permissions = Permission::get();
+            $permissions = Permission::where('guard_name', 'admin')->get();
 
             return view('Admin/Admin/role', compact('admin', 'roles', 'permissions'));
         } catch (\Exception $ex) {
@@ -204,11 +203,18 @@ class AdminController extends Controller
     public function assignrole(Request $request, Admin $admin)
     {
         try {
-            if ($admin->hasRole($request->role)) {
-                return back()->with('message_err', 'Role Is Already Assign');
+
+            $roleId = Role::where('name', $request->role)->value('id');
+            $role_gaurd_name = Role::where('id', $roleId)->value('guard_name');
+
+            if ($role_gaurd_name == 'admin') {
+                if ($admin->hasRole($request->role)) {
+                    return back()->with('message_err', 'Role Is Already Assign');
+                }
+                $admin->assignRole($request->role);
+                return back()->with('message_success', 'Role Assign Successfully');
             }
-            $admin->assignRole($request->role);
-            return back()->with('message_success', 'Role Assign Successfully');
+            return back()->with('message_err', 'Role Is Not For This User Guard');
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -225,6 +231,46 @@ class AdminController extends Controller
             }
 
             return back()->with('message_err', 'Role Not Found');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
+    }
+
+    //اعطاء صلاحية لمسؤول 
+
+    public function givepermission(Request $request, Admin $admin)
+    {
+        try {
+
+            $permissionID = Permission::where('name', $request->permission)->value('id');
+            $permission_gaurd_name = Permission::where('id', $permissionID)->value('guard_name');
+
+            if ($permission_gaurd_name == 'admin') {
+                if ($admin->hasPermissionTo($request->permission)) {
+                    return back()->with('message_err', 'Permission is already assign');
+                }
+                $admin->givePermissionTo($request->permission);
+                return back()->with('message_success', 'Permission Assign Successfully');
+            }
+            return back()->with('message_err', 'Permission Is Not For This User Guard');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
+    }
+
+
+    //سحب صلاحية من مسؤول 
+
+    public function revokepermission(Admin $admin, Permission $permission)
+    {
+        try {
+
+            if ($admin->hasPermissionTo($permission)) {
+                $admin->revokePermissionTo($permission);
+                return back()->with('message_success', 'Permission Revok Successfully');
+            }
+
+            return back()->with('message_err', 'Permission Not Found');
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }

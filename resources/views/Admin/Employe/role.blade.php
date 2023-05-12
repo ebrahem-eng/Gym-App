@@ -49,6 +49,7 @@
                                 {{ session('message_success') }}
                             </div>
                         @endif
+
                         @if (session('message_err'))
                             <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                 role="alert">
@@ -58,6 +59,7 @@
                                 {{ session('message_err') }}
                             </div>
                         @endif
+
                         {{-- end message section  --}}
 
                         <div class="card-body">
@@ -70,7 +72,7 @@
                                             <label class="form-label">Employe Name:</label>
                                             <input type="text" class="form-control" id="nametext"
                                                 aria-describedby="name" name="Name"
-                                                value="{{ $employe->first_name }}" readonly>
+                                                value="{{ $employe->first_name }} - {{ $employe->last_name }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -102,31 +104,81 @@
                                         </div>
                                         <div class="form-actions">
                                             <div class="text-center">
-                                                <button type="submit"
-                                                    class="btn btn-rounded  btn-info ">Assign</button>
+                                                <button type="submit" class="btn btn-rounded  btn-info ">Assign Role
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="col-md-10">
-                                        <div class="col-md-4 col-sm-4 p-4">
-                                            <h4 class="card-title">Role:</h4>
-                                            <div class="list-group">
-                                                @if ($employe->roles)
-                                                    @foreach ($employe->roles as $employe_roles)
-                                                        <form method="post"
-                                                            action="{{ route('admin.employe.roles.remove', [$employe->id, $employe_roles->id]) }}">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button class="list-group-item list-group-item-action btn-danger ">
-                                                                {{ $employe_roles->name }}
-                                                            </button>
-                                                            
-                                                        </form>
+
+
+                                    <form action="{{ route('admin.employe.permissions', $employe->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        <div class="col-md-10">
+                                            <div class="form-group mb-5">
+                                                <label class="form-label">Permissions:</label>
+
+                                                <select class="custom-select mr-sm-3" id="inlineFormCustomSelect"
+                                                    name="permission">
+                                                    @foreach ($permissions as $permission)
+                                                        <option selected >{{ $permission->name }}</option>
+                                                        
                                                     @endforeach
-                                                @endif
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-rounded  btn-info ">Assign
+                                                    Permisiion </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+                                    <div class="col-md-11">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 p-4">
+                                                <h4 class="card-title">Role:</h4>
+                                                <div class="list-group">
+                                                    @if ($employe->roles)
+                                                        @foreach ($employe->roles as $employe_roles)
+                                                            <form method="post"
+                                                                action="{{ route('admin.employe.roles.remove', [$employe->id, $employe_roles->id]) }}">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button
+                                                                    class="list-group-item list-group-item-action btn-danger ">
+                                                                    {{ $employe_roles->name }}
+                                                                </button>
+                                                            </form>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-4 p-4">
+                                                <h4 class="card-title">Permissions:</h4>
+                                                <div class="list-group">
+                                                    @if ($employe->permissions)
+                                                        @foreach ($employe->permissions as $employe_permission)
+                                                            <form method="post"
+                                                                action="{{ route('admin.employe.permissions.revoke', [$employe->id, $employe_permission->id]) }}">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button
+                                                                    class="list-group-item list-group-item-action btn-danger ">
+                                                                    {{ $employe_permission->name }}
+                                                                </button>
+                                                            </form>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
 
                                 </div>
 

@@ -107,7 +107,36 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="col-md-10">
+
+                                    <form action="{{ route('admin.admin.permissions', $admin->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        <div class="col-md-10">
+                                            <div class="form-group mb-5">
+                                                <label class="form-label">Permissions:</label>
+
+                                                <select class="custom-select mr-sm-3" id="inlineFormCustomSelect"
+                                                    name="permission">
+                                                    @foreach ($permissions as $permission)
+                                                        <option selected >{{ $permission->name }}</option>
+                                                       
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-rounded  btn-info ">Assign
+                                                    Permisiion </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="col-md-11">
+                                        <div class="row">
+
+                                      
                                         <div class="col-md-4 col-sm-4 p-4">
                                             <h4 class="card-title">Role:</h4>
                                             <div class="list-group">
@@ -126,8 +155,27 @@
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
 
+                                        <div class="col-md-4 col-sm-4 p-4">
+                                            <h4 class="card-title">Permissions:</h4>
+                                            <div class="list-group">
+                                                @if ($admin->permissions)
+                                                    @foreach ($admin->permissions as $admin_permission)
+                                                        <form method="post"
+                                                            action="{{ route('admin.admin.permissions.revoke', [$admin->id, $admin_permission->id]) }}">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button
+                                                                class="list-group-item list-group-item-action btn-danger ">
+                                                                {{ $admin_permission->name }}
+                                                            </button>
+                                                        </form>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
 
                             </div>

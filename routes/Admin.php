@@ -89,12 +89,21 @@ Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function ()
     Route::get('/admin/archive', [AdminAdminController::class, 'Archive'])->name('admin.archive');
     Route::get('/admin/restore/{id}', [AdminAdminController::class, 'restore'])->name('admin.restore');
     Route::get('/admin/forcedelete/{id}', [AdminAdminController::class, 'force_delete'])->name('admin.forcedelete');
+
+
     Route::get('/admin/resetpassword/show', [AdminAdminController::class, 'reset_password_show'])->name('admin.reset.password.show');
     Route::get('admin/resetpassword/edit/{admin}', [AdminAdminController::class, 'reset_password_edit'])->name('admin.reset.password.edit');
     Route::put('admin/resetpassword/update/{admin}', [AdminAdminController::class, 'reset_password_update'])->name('admin.reset.password.update');
+
+
     Route::get('/admin/role/{admin}', [AdminAdminController::class, 'show'])->name('admin.show.roles');
     Route::post('/admin/{admin}/roles', [AdminAdminController::class, 'assignrole'])->name('admin.roles');
     Route::delete('/admin/{admin}/roles/{role}', [AdminAdminController::class, 'removerole'])->name('admin.roles.remove');
+
+    Route::post('/admin/{admin}/permissions', [AdminAdminController::class, 'givepermission'])->name('admin.permissions');
+    Route::delete('/admin/{admin}/permissions/{permission}', [AdminAdminController::class, 'revokepermission'])->name('admin.permissions.revoke');
+
+
     Route::resource('/admin', AdminAdminController::class);
 
     //============= Admin Role ============

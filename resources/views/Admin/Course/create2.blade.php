@@ -69,48 +69,31 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.course.create2') }}" method="get">
+                            <form action="{{ route('admin.course.store') }}" method="post">
                                 @csrf
 
                                 <div class="form-body">
                                     <div class="row">
+                                    
                                         <div class="col-md-6">
                                             <div class="form-group mb-4">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Class:</label>
-                                                <select class="form-control mr-sm-2" id="inlineFormCustomSelect" name="class">
-                                                    @foreach ($classes as $class)
-                                                    <option value="{{$class->id}}">{{$class->name}}</option>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Select Time From Days:</label>
+                                                <br>
+                                                @foreach ($day_details as $day_detail)
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">{{ $day_detail['name'] }}</label>
+                                                <select multiple class="form-control" id="exampleFormControlSelect2" name="day_time[{{ $day_detail['id'] }}][]">
+                                                    @foreach ($times as $time)    
+                                                        <option value="{{ $time->id }}">{{ $time->time_start }} TO {{ $time->time_end }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-4">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Trainer:</label>
-                                                <select class="form-control" id="inlineFormCustomSelect" name="trainer">
-                                                    @foreach ($trainers as $trainer)
-                                                    <option value="{{$trainer->id}}">{{$trainer->first_name}}-{{$trainer->last_name}}</option>  
-                                                    @endforeach
-                                                
-                                                </select>
-                                            </div>
-                                        </div> 
+                                            @endforeach
                                             
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-4">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Days:</label>
-                                            
-                                                <select multiple class="form-control" id="exampleFormControlSelect2" name="day[]">
-                                                    @foreach ($days as $day)
-                                                    <option value="{{$day->id}}" >{{$day->name}}</option>                       
-                                                    @endforeach
-                                                    
-                                                </select>
                                         
                                         </div>
                                     </div>       
                                     </div>
+                                    <input type="hidden" name="trainer_id" value="{{$trainer_id}}" />
+                                    <input type="hidden" name="class_id" value="{{$class_id}}" />
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-center">

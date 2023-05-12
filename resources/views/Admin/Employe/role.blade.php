@@ -101,26 +101,26 @@
 
                                         </div>
                                         <div class="form-actions">
-                                            <div class="text-left">
+                                            <div class="text-center">
                                                 <button type="submit"
                                                     class="btn btn-rounded  btn-info ">Assign</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div class="col-md-4 col-sm-4 p-4">
                                             <h4 class="card-title">Role:</h4>
                                             <div class="list-group">
                                                 @if ($employe->roles)
                                                     @foreach ($employe->roles as $employe_roles)
                                                         <form method="post"
-                                                            action="{{ route('admin.users.roles.remove', [$employe->id, $employe_roles->id]) }}">
+                                                            action="{{ route('admin.employe.roles.remove', [$employe->id, $employe_roles->id]) }}">
                                                             @csrf
                                                             @method('delete')
-                                                            <button
-                                                                class="list-group-item list-group-item-action btn-danger">
+                                                            <button class="list-group-item list-group-item-action btn-danger ">
                                                                 {{ $employe_roles->name }}
                                                             </button>
+                                                            
                                                         </form>
                                                     @endforeach
                                                 @endif

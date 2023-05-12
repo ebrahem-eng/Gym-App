@@ -202,10 +202,30 @@ class EmployeController extends Controller
 
     public function assignrole(Request $request, Employe $employe)
     {
-        if ($employe->hasRole($request->role)) {
-            return back()->with('message_err', 'Role Is Already Assign');
+        try {
+            if ($employe->hasRole($request->role)) {
+                return back()->with('message_err', 'Role Is Already Assign');
+            }
+            $employe->assignRole($request->role);
+            return back()->with('message_success', 'Role Assign Successfully');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
         }
-        $employe->assignRole($request->role);
-        return back()->with('message_success', 'Role Assign Successfully');
     }
+
+     //حذف الدور من المسؤول 
+
+     public function removerole(Employe $employe, Role $role)
+     {
+         try {
+             if ($employe->hasRole($role)) {
+                 $employe->removeRole($role);
+                 return back()->with('message_success', 'Role Removed Success');
+             }
+ 
+             return back()->with('message_err', 'Role Not Found');
+         } catch (\Exception $ex) {
+             return redirect()->route('notfound');
+         }
+     }
 }

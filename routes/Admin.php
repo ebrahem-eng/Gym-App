@@ -77,8 +77,12 @@ Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function ()
 
 
     //================== Admin Courses =================
-
+    Route::get('/course/Archive' , [CourseController::class , 'Archive'])->name('course.archive');
+    Route::get('/course/restore/{id}' , [CourseController::class , 'restore'])->name('course.restore');
+    Route::get('/course/forcedelete/{id}', [CourseController::class, 'force_delete'])->name('course.forcedelete');
     Route::resource('/course', CourseController::class);
+    Route::get('/course/2/create' , [CourseController::class , 'create_2'])->name('course.create2');
+
         
 
     //============= Admin Admin ===========

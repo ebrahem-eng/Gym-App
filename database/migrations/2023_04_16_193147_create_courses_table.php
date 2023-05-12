@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_id')->references('id')->on('class_t_s');
             $table->foreignId('trainer_id')->references('id')->on('trainers');
+            $table->tinyInteger('status')->default(0);
+            $table->json('day_times');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

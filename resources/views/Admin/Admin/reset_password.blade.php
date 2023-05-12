@@ -97,9 +97,9 @@
                                                 <td>{{ $admin->updated_at }}</td>
                                                 <td>
                                                     @if ($admin->status == 0)
-                                                        <span style="color: red;">Not Active</span>
+                                                        <span class="btn btn-danger rounded-pill me-1">Not Active</span>
                                                     @elseif ($admin->status == 1)
-                                                        <span style="color: green;">Active</span>
+                                                        <span class="btn btn-success rounded-pill me-1">Active</span>
                                                     @endif
                                                 </td>
                                                 <td>

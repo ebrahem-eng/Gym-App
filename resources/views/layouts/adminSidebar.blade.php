@@ -122,7 +122,7 @@
                                 class="hide-menu">Manage Course</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{route('admin.course.index')}}" class="sidebar-link"><span class="hide-menu">
                                         Course List
                                     </span></a>
                             </li>
@@ -130,7 +130,7 @@
                                         Add Course
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span
+                            <li class="sidebar-item"><a href="{{route('admin.course.archive')}}" class="sidebar-link"><span
                                         class="hide-menu">Course Archive
 
                                     </span></a>

@@ -16,12 +16,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Admin Archive</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Class Manage</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}">Dashboard/Admin/Admin Archive</a>
+                                        href="{{ route('admin.index') }}">Dashboard/Classes/Classess Archive</a>
                                 </li>
                             </ol>
                         </nav>
@@ -31,8 +31,6 @@
             </div>
         </div>
 
-        <!-- =======  message restore  -->
-
         <div class="container-fluid">
 
             <div class="row">
@@ -40,8 +38,7 @@
 
                     <div class="card-body">
 
-
-                        {{-- message section --}}
+                        {{-- message section  --}}
 
                         @if (session('message_success_restore'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
@@ -62,8 +59,6 @@
                             </div>
                         @endif
 
-
-
                         @if (session('message_success_forcedelete'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
@@ -83,56 +78,58 @@
                             </div>
                         @endif
 
-
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-                            @if (count($admins)>0)
+                            @if (count($deleted_courses) > 0)
+    
                                 <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                     style="width:100%">
                                     <thead class="bg-info text-white">
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Age</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                            <th>Salary</th>
-                                            <th>Created at</th>
-                                            <th>deleted at</th>
+                                            <th>Class Name</th>
+                                            <th>Trainer Name</th>
                                             <th>Status</th>
+                                            <th>Days And Times</th>
                                             <th></th>
+    
                                         </tr>
-
-
                                     </thead>
                                     <tbody>
-                                        @foreach ($admins as $admin)
+                                        @foreach ($deleted_courses as $deleteds)
                                             <tr>
-                                                <td>{{ $admin->id }}</td>
-                                                <td>{{ $admin->name }}</td>
-                                                <td>{{ $admin->email }}</td>
-                                                <td>{{ $admin->age }}</td>
-                                                <td>{{ $admin->phone }}</td>
-                                                <td>{{ $admin->address }}</td>
-                                                <td>{{ $admin->salary }}</td>
-                                                <td>{{ $admin->created_at }}</td>
-                                                <td>{{ $admin->deleted_at }}</td>
+                                                <td>{{ $deleteds['id']}}</td>
+                                                <td>{{ $deleteds['class_name']}}</td>
+                                                <td>{{ $deleteds['trainer_name']}}</td>
                                                 <td>
-                                                    @if ($admin->status == 0)
-                                                        <span class="btn btn-danger rounded-pill me-1">Not Active</span>
-                                                    @elseif ($admin->status == 1)
+                                                    <span>
+                                                        @if ($deleteds['status'] == 0)
+                                                        <span class="btn btn-danger rounded-pill  me-1">Not Active</span>
+    
+                                                        @elseif ($deleteds['status']  == 1)
                                                         <span class="btn btn-success rounded-pill me-1">Active</span>
-                                                    @endif
+    
+                                                        @endif
+                                                    </span>
                                                 </td>
+                                               <td>
+                                               @foreach ($deleteds['day_times'] as $dayName => $timeRange)
+                                               {{ $dayName }} : {{ $timeRange }}
+                                               <br><br>
+                                                @endforeach  </td> 
+    
                                                 <td>
-                                                    <a type="button" class="btn btn-circle btn-success mt-2 mr-2"
-                                                        href="{{ route('admin.admin.restore', $admin->id) }}"><i
+                                                
+                                                    <a type="button" class="btn btn-circle btn-primary "
+                                                        href="{{route('admin.course.restore' , $deleteds['id'])}}"><i
                                                             data-feather="refresh-ccw" class="feather-icon"></i></a>
-                                                    <a type="button" class="btn btn-circle btn-danger mt-2"
-                                                        href="{{ route('admin.admin.forcedelete', $admin->id) }}"><i
-                                                            data-feather="x" class="feather-icon"></i></a>
+                                                    <form action="{{route('admin.course.forcedelete' ,  $deleteds['id'])}}" method="GET">
+                                                        
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-circle btn-danger mt-2"><i
+                                                                data-feather="x" class="feather-icon"></i></button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -143,7 +140,6 @@
                                                 No Data</h2>
                                         </div>
                             @endif
-
                             </tbody>
                             </table>
                         </div>
@@ -151,5 +147,4 @@
                 </div>
             </div>
         </div>
-
     </div>

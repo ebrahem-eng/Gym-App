@@ -40,6 +40,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'admin', 'name' => 'Edit Trainer']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Trainer']);
         Permission::create(['guard_name' => 'admin', 'name' => 'restore Trainer']);
-        Permission::create(['guard_name' => 'admin', 'name' => 'Show_Archive Trainer']);
+        Permission::create(['guard_name' => 'employe', 'name' => 'Show_Archive Trainer']);
     }
 }

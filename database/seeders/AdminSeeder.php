@@ -25,7 +25,7 @@ class AdminSeeder extends Seeder
             'status'=>'1',
             'age'=>'23',
             'address'=>'Damascus',
-        ])->assignRole('Admin');
+        ])->assignRole('Super Admin');
 
         Admin::create([
             'name' => 'ebrahem',

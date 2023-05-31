@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasPermissions;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes; 
+    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes ; 
 
     /**
      * The attributes that are mass assignable.

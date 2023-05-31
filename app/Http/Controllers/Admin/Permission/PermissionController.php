@@ -27,8 +27,12 @@ class PermissionController extends Controller
     public function go_to_give_permissions(Permission $permission)
     {
         try {
-            $roles = Role::all();
+   
+            $permission_guard = $permission->guard_name;
+            $roles = Role::where('guard_name',$permission_guard)->get();
+           
             return view('Admin/permissions/GiveRole', compact('permission', 'roles'));
+      
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }

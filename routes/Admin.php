@@ -30,12 +30,14 @@ use Spatie\Permission\Models\Permission;
 //     return view('admin.index');
 // })->middleware(['auth', 'verified' , 'role:Admin'])->name('dashboard');
 
+
 Route::get('/admin', [AdminController::class, 'index'])->middleware(['admin'])->name('admin.index');
 
 Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function () {
     //============ Admin Employe ==========
 
     Route::get('/employe/archive', [EmployeController::class, 'Archive'])->name('employe.archive');
+
     Route::get('/employe/restore/{id}', [EmployeController::class, 'restore'])->name('employe.restore');
     Route::get('/employe/forcedelete/{id}', [EmployeController::class, 'force_delete'])->name('employe.forcedelete');
 
@@ -77,13 +79,13 @@ Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function ()
 
 
     //================== Admin Courses =================
-    Route::get('/course/Archive' , [CourseController::class , 'Archive'])->name('course.archive');
-    Route::get('/course/restore/{id}' , [CourseController::class , 'restore'])->name('course.restore');
+    Route::get('/course/Archive', [CourseController::class, 'Archive'])->name('course.archive');
+    Route::get('/course/restore/{id}', [CourseController::class, 'restore'])->name('course.restore');
     Route::get('/course/forcedelete/{id}', [CourseController::class, 'force_delete'])->name('course.forcedelete');
     Route::resource('/course', CourseController::class);
-    Route::get('/course/2/create' , [CourseController::class , 'create_2'])->name('course.create2');
+    Route::get('/course/2/create', [CourseController::class, 'create_2'])->name('course.create2');
 
-        
+
 
     //============= Admin Admin ===========
     Route::get('/admin/archive', [AdminAdminController::class, 'Archive'])->name('admin.archive');

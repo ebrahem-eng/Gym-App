@@ -24,16 +24,13 @@ class ClassController extends Controller
             $check = $user->can('Show Classes Table');
             if ($check) {
 
-            $classes = ClassT::all();
-            return view('Admin/Class/index', compact('classes'));
-
-        } else {
+                $classes = ClassT::all();
+                return view('Admin/Class/index', compact('classes'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Classes Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Classes Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Classes Table']);
-
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -49,15 +46,12 @@ class ClassController extends Controller
             $check = $user->can('Add Class');
             if ($check) {
 
-            return view('Admin/Class/create');
-
-        } else {
+                return view('Admin/Class/create');
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Class']);
-
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -67,15 +61,15 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
-       try{
+        try {
             // $validator = Validator::make($request->all(), [
             //     'name' => 'required',
             //     'class_time_start' => 'required',
             //     'class_time_end' => 'required',
             //     'day' => 'required',
-             
+
             // ]);
-            
+
             // if ($validator->fails()) {
             //     return redirect('admin/class/create')
             //         ->withErrors($validator)
@@ -87,25 +81,21 @@ class ClassController extends Controller
             if ($check) {
 
 
-            ClassT::create([
-                'name' => $request->Name,
-                
-            ]);
-            return redirect()->back()->with('message_success', 'Class added successfully!');
+                ClassT::create([
+                    'name' => $request->Name,
 
-        } else {
+                ]);
+                return redirect()->back()->with('message_success', 'Class added successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Class']);
-
-
-        
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err', 'Something went wrong. Please try again.');
         }
     }
-    
+
 
     //عرض صفحة تعديل الصف
 
@@ -118,16 +108,13 @@ class ClassController extends Controller
             if ($check) {
 
 
-           
-            return view('Admin/Class/edit', compact('class'));
 
-        } else {
+                return view('Admin/Class/edit', compact('class'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Class']);
-
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -144,38 +131,35 @@ class ClassController extends Controller
             //     'class_time_end' => 'required',
             //     'day' => 'required|array',
             // ]);
-            
+
             // if ($validator->fails()) {
             //     return redirect()->back()
             //         ->withErrors($validator)
             //         ->withInput();
             // }
-    
+
             $user = Auth::guard('admin')->user();
 
             $check = $user->can('Edit Class');
             if ($check) {
 
 
-            $class->update([
-                'name' => $request->input('Name'),
-                
-            ]);
-    
-            return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+                $class->update([
+                    'name' => $request->input('Name'),
 
-        } else {
+                ]);
+
+                return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Class']);
-
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Something went wrong. Please try again.');
         }
     }
-    
+
 
     //حذف صف ونقله الى الارشيف
 
@@ -183,21 +167,18 @@ class ClassController extends Controller
     {
         try {
 
-             $user = Auth::guard('admin')->user();
+            $user = Auth::guard('admin')->user();
 
             $check = $user->can('Move Class To Archive');
             if ($check) {
 
-            $class->delete();
-            return redirect()->back()->with('message_success_delete', 'Class Deleted Successfully!');
-
-        } else {
+                $class->delete();
+                return redirect()->back()->with('message_success_delete', 'Class Deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Move Class To Archive']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Move Class To Archive']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Move Class To Archive']);
-
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_delete', 'Deleting error please try agin!');
         }
@@ -215,16 +196,13 @@ class ClassController extends Controller
             if ($check) {
 
 
-            $class_deleted = ClassT::onlyTrashed()->get();
-            return view('Admin/Class/Archive', compact('class_deleted'));
-
-        } else {
+                $class_deleted = ClassT::onlyTrashed()->get();
+                return view('Admin/Class/Archive', compact('class_deleted'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Classes Arcvive Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Classes Arcvive Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Classes Arcvive Table']);
-
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -240,16 +218,13 @@ class ClassController extends Controller
             $check = $user->can('Restore Class');
             if ($check) {
 
-            ClassT::withTrashed()->where('id', $id)->restore();
-            return redirect()->back()->with('message_success_restore', 'Class Restored Successfully!');
-
-        } else {
+                ClassT::withTrashed()->where('id', $id)->restore();
+                return redirect()->back()->with('message_success_restore', 'Class Restored Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Restore Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Restore Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Restore Class']);
-
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
         }
@@ -257,7 +232,7 @@ class ClassController extends Controller
 
 
     //حذف الصفوف بشكل نهائي
-    
+
     public function force_delete($id)
     {
         try {
@@ -266,16 +241,13 @@ class ClassController extends Controller
             $check = $user->can('Delete Class');
             if ($check) {
 
-            ClassT::withTrashed()->where('id', $id)->forcedelete();
-            return redirect()->back()->with('message_success_forcedelete', 'Class deleted Successfully!');
-
-        } else {
+                ClassT::withTrashed()->where('id', $id)->forcedelete();
+                return redirect()->back()->with('message_success_forcedelete', 'Class deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Class']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Delete Class']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Delete Class']);
-
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }

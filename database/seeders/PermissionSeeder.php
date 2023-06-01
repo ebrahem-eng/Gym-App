@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Employe Table']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Edit Employe']);
-        Permission::create(['guard_name' => 'admin', 'name' => 'Show Role Permission Page']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Employe Role Permission Page']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Assign Role To Employe']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Delete Role From Employe']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Give Permission To Employe']);
@@ -81,6 +81,7 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Admin Table']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Edit Admin']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Admin Role Permission Page']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Assign Role To Admin']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Delete Role From Admin']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Give Permission To Admin']);
@@ -94,10 +95,12 @@ class PermissionSeeder extends Seeder
 
 
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Roles Table']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Page Give Permission For Role']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Give Permission To Role']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Revok Permission From Role']);
 
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Permissions Table']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Page Assign Role To Permission']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Assign Role To Permission']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Revok Role From Permisiion']);
 

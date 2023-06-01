@@ -9,7 +9,9 @@ use App\Models\Day;
 use App\Models\Time;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class CourseController extends Controller
 {
@@ -18,9 +20,14 @@ class CourseController extends Controller
 
     public function index()
     {
+        try {
+            $user = Auth::guard('admin')->user();
 
-        $results = [];
-        $courses = DB::select("
+            $check = $user->can('Show Courses Table');
+            if ($check) {
+
+                $results = [];
+                $courses = DB::select("
     SELECT courses.id AS course_id , courses.status AS status ,
     trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
     courses.day_times AS day_time
@@ -31,29 +38,35 @@ class CourseController extends Controller
 ");
 
 
-        foreach ($courses as $course) {
-            $day_time = json_decode($course->day_time, true);
-            $courseResult = [
-                'id' => $course->course_id,
-                'status' => $course->status,
-                'trainer_name' => $course->trainer_name,
-                'class_name' => $course->class_name,
-                'day_times' => [],
-            ];
+                foreach ($courses as $course) {
+                    $day_time = json_decode($course->day_time, true);
+                    $courseResult = [
+                        'id' => $course->course_id,
+                        'status' => $course->status,
+                        'trainer_name' => $course->trainer_name,
+                        'class_name' => $course->class_name,
+                        'day_times' => [],
+                    ];
 
-            foreach ($day_time as $dayId => $timeIds) {
-                $dayName = DB::table('days')->where('id', $dayId)->value('name');
-                $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
-                $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
-                $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
-                    return $times[0] . ' TO ' . $times[1];
-                });
-                $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                    foreach ($day_time as $dayId => $timeIds) {
+                        $dayName = DB::table('days')->where('id', $dayId)->value('name');
+                        $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
+                        $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
+                        $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
+                            return $times[0] . ' TO ' . $times[1];
+                        });
+                        $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                    }
+
+                    $results[] = $courseResult;
+                }
+                return view('Admin/Course/index', compact('results'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Courses Table']);
             }
-
-            $results[] = $courseResult;
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Show Courses Table']);
         }
-        return view('Admin/Course/index', compact('results'));
     }
 
 
@@ -61,40 +74,74 @@ class CourseController extends Controller
 
     public function create()
     {
-        $classes = ClassT::all();
-        $trainers = Trainer::all();
-        $days = Day::all();
-        return view('Admin/Course/create', compact('classes', 'trainers', 'days'));
-    }
+        try {
+            $user = Auth::guard('admin')->user();
 
+            $check = $user->can('Add Course');
+            if ($check) {
+
+                $classes = ClassT::all();
+                $trainers = Trainer::all();
+                $days = Day::all();
+                return view('Admin/Course/create', compact('classes', 'trainers', 'days'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Course']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Add Course']);
+        }
+    }
     //عرض الصفحة الثانية من اضافة كورس وهي اضافة الاوقات للايام
 
     public function create_2(Request $request)
 
     {
-        $class_id = $request->input('class');
-        $trainer_id = $request->input('trainer');
-        $day_ids = $request->input('day');
-        $day_details = Day::whereIn('id', $day_ids)->get(['id', 'name'])->toArray();
-        $times = Time::all();
-        return view('Admin/Course/create2', compact('day_details', 'times', 'trainer_id', 'class_id'));
+        try {
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Add Course');
+            if ($check) {
+                $class_id = $request->input('class');
+                $trainer_id = $request->input('trainer');
+                $day_ids = $request->input('day');
+                $day_details = Day::whereIn('id', $day_ids)->get(['id', 'name'])->toArray();
+                $times = Time::all();
+                return view('Admin/Course/create2', compact('day_details', 'times', 'trainer_id', 'class_id'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Course']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Add Course']);
+        }
     }
 
     //تخزين الكورس في قاعدة البيانات
 
     public function store(Request $request)
     {
-        $trainer = Trainer::find($request->input('trainer_id'));
-        $class_id = $request->input('class_id');
-        $day_time = $request->input('day_time');
+        try {
+            $user = Auth::guard('admin')->user();
 
-        $classData = [
-            'day_times' => json_encode($day_time)
-        ];
+            $check = $user->can('Add Course');
+            if ($check) {
 
-        $trainer->classes()->attach($class_id, $classData);
+                $trainer = Trainer::find($request->input('trainer_id'));
+                $class_id = $request->input('class_id');
+                $day_time = $request->input('day_time');
 
-        return redirect()->route('admin.course.index')->with('message_success_store', 'Course Added Successfully');
+                $classData = [
+                    'day_times' => json_encode($day_time)
+                ];
+
+                $trainer->classes()->attach($class_id, $classData);
+
+                return redirect()->route('admin.course.index')->with('message_success_store', 'Course Added Successfully');
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Course']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Add Course']);
+        }
     }
 
     //حذف الكورس ونقله الى الارشيف
@@ -102,8 +149,17 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         try {
-            $course->delete();
-            return redirect()->back()->with('message_success_delete', 'Course Deleted Successfully!');
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Move Course To Archive');
+            if ($check) {
+                $course->delete();
+                return redirect()->back()->with('message_success_delete', 'Course Deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Move Course To Archive']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Move Course To Archive']);
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_delete', 'Deleting error please try agin!');
         }
@@ -114,8 +170,14 @@ class CourseController extends Controller
     public function Archive()
     {
         try {
-            $deleted_courses = [];
-            $courses = DB::select("
+
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Show Courses Arcvive Table');
+            if ($check) {
+
+                $deleted_courses = [];
+                $courses = DB::select("
             SELECT courses.id AS course_id, courses.status AS status,
             trainers.first_name AS trainer_name, class_t_s.name AS class_name,
             courses.day_times AS day_time
@@ -126,30 +188,35 @@ class CourseController extends Controller
         ");
 
 
-            foreach ($courses as $course) {
-                $day_time = json_decode($course->day_time, true);
-                $courseResult = [
-                    'id' => $course->course_id,
-                    'status' => $course->status,
-                    'trainer_name' => $course->trainer_name,
-                    'class_name' => $course->class_name,
-                    'day_times' => [],
-                ];
+                foreach ($courses as $course) {
+                    $day_time = json_decode($course->day_time, true);
+                    $courseResult = [
+                        'id' => $course->course_id,
+                        'status' => $course->status,
+                        'trainer_name' => $course->trainer_name,
+                        'class_name' => $course->class_name,
+                        'day_times' => [],
+                    ];
 
-                foreach ($day_time as $dayId => $timeIds) {
-                    $dayName = DB::table('days')->where('id', $dayId)->value('name');
-                    $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
-                    $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
-                    $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
-                        return $times[0] . ' TO ' . $times[1];
-                    });
-                    $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                    foreach ($day_time as $dayId => $timeIds) {
+                        $dayName = DB::table('days')->where('id', $dayId)->value('name');
+                        $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
+                        $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
+                        $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
+                            return $times[0] . ' TO ' . $times[1];
+                        });
+                        $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                    }
+
+                    $deleted_courses[] = $courseResult;
                 }
 
-                $deleted_courses[] = $courseResult;
+                return view('Admin/Course/Archive', compact('deleted_courses'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Courses Arcvive Table']);
             }
-
-            return view('Admin/Course/Archive', compact('deleted_courses'));
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Show Courses Arcvive Table']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -160,8 +227,19 @@ class CourseController extends Controller
     public function restore($id)
     {
         try {
-            Course::withTrashed()->where('id', $id)->restore();
-            return redirect()->back()->with('message_success_restore', 'Course Restored Successfully!');
+
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Restore Course');
+            if ($check) {
+
+                Course::withTrashed()->where('id', $id)->restore();
+                return redirect()->back()->with('message_success_restore', 'Course Restored Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Restore Course']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Restore Course']);
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
         }
@@ -172,8 +250,19 @@ class CourseController extends Controller
     public function force_delete($id)
     {
         try {
-            Course::withTrashed()->where('id', $id)->forcedelete();
-            return redirect()->back()->with('message_success_forcedelete', 'Course deleted Successfully!');
+
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Delete Course');
+            if ($check) {
+
+                Course::withTrashed()->where('id', $id)->forcedelete();
+                return redirect()->back()->with('message_success_forcedelete', 'Course deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Course']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Delete Course']);
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }

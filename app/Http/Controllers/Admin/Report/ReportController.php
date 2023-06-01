@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Report;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class ReportController extends Controller
 {
@@ -14,8 +16,19 @@ class ReportController extends Controller
     public function index()
     {
         try {
-            $reports = Report::all();
-            return view('Admin/Report/index', compact('reports'));
+
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Show Reports Table');
+            if ($check) {
+
+                $reports = Report::all();
+                return view('Admin/Report/index', compact('reports'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Reports Table']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Show Reports Table']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -57,8 +70,19 @@ class ReportController extends Controller
     public function destroy(Report $report)
     {
         try {
-            $report->delete();
-            return redirect()->back()->with('message_success_delete_report', 'Report Deleting Successfully!');
+
+            $user = Auth::guard('admin')->user();
+
+            $check = $user->can('Delete Report');
+            if ($check) {
+
+                $report->delete();
+                return redirect()->back()->with('message_success_delete_report', 'Report Deleting Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Report']);
+            }
+        } catch (UnauthorizedException $ex) {
+            throw UnauthorizedException::forPermissions(['Delete Report']);
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_delete_report', 'Somthing Worning , Try Again !');
         }

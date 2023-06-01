@@ -309,17 +309,17 @@ class EmployeController extends Controller
 
             $user = Auth::guard('admin')->user();
 
-            $check = $user->can('Show Role Permission Page');
+            $check = $user->can('Show Employe Role Permission Page');
             if ($check) {
                 $roles = Role::get();
                 $permissions = Permission::where('guard_name', 'employe')->get();
 
                 return view('Admin/employe/role', compact('employe', 'roles', 'permissions'));
             } else {
-                throw UnauthorizedException::forPermissions(['Show Role Permission Page']);
+                throw UnauthorizedException::forPermissions(['Show Employe Role Permission Page']);
             }
         } catch (UnauthorizedException $ex) {
-            throw UnauthorizedException::forPermissions(['Show Role Permission Page']);
+            throw UnauthorizedException::forPermissions(['Show Employe Role Permission Page']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }

@@ -16,9 +16,13 @@
     <link href="{{ asset('assets2/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets2/libs/chartist/dist/chartist.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets2/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.min.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -37,89 +41,44 @@
         <div class="scroll-sidebar" data-sidebarbg="skin6">
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href=""
+                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('employe.index') }}"
                             aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                                 class="hide-menu">Dashboard</span></a></li>
                     <li class="list-divider"></li>
                     <li class="nav-small-cap"><span class="hide-menu"></span></li>
 
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
-                                class="hide-menu"> Employe</span></a>
-
-                        <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Employe Table
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Add Employe
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
-                                        Reset Password
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">Employe Archive
-
-                                    </span></a>
-                            </li>
-                        </ul>
+                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link"
+                            href="{{ route('employe.check.player.status') }}" aria-expanded="false"><i
+                                data-feather="user-check" class="feather-icon"></i><span class="hide-menu">Check Player
+                                Status
+                            </span></a>
                     </li>
 
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                            aria-expanded="false"><i data-feather="users" class="feather-icon"></i><span
-                                class="hide-menu"> Trainer</span></a>
+                            aria-expanded="false"><i data-feather="dollar-sign" class="feather-icon"></i><span
+                                class="hide-menu"> Manage Offers</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Trainer Table
+                            <li class="sidebar-item"><a href="{{route('employe.offer.index')}}" class="sidebar-link"><span class="hide-menu">
+                                        Show Offers
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Add Trainer
-                                    </span></a>
-                            </li>
-
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Reset Password
+                            <li class="sidebar-item"><a href="{{route('employe.offer.create')}}" class="sidebar-link"><span class="hide-menu"> 
+                                        Add Offer
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">Trainer Archive
-
+                            <li class="sidebar-item"><a href="{{route('employe.offer.archive')}}" class="sidebar-link"><span class="hide-menu">
+                                        Offers Archive
                                     </span></a>
                             </li>
-                        </ul>
-                    </li>
 
-
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                            aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i><span
-                                class="hide-menu">Manage Classes</span></a>
-
-                        <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Classes List
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu"> Add Class
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">Class Archive
-
-                                    </span></a>
-                            </li>
                         </ul>
                     </li>
 
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                             aria-expanded="false"><i data-feather="clock" class="feather-icon"></i><span
-                                class="hide-menu">Manage Course</span></a>
+                                class="hide-menu">Manage </span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
                             <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
@@ -138,54 +97,9 @@
                         </ul>
                     </li>
 
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                            aria-expanded="false"><i data-feather="user-plus" class="feather-icon"></i><span
-                                class="hide-menu">Manage Admin</span></a>
-
-                        <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">
-                                        Admin List
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">
-                                        Add Admin
-                                    </span></a>
-                            </li>
-
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
-                                        Reset Password
-                                    </span></a>
-                            </li>
-
-                            <li class="sidebar-item"><a href="#"
-                                    class="sidebar-link"><span class="hide-menu">Admin Archive
-
-                                    </span></a>
-                            </li>
-                        </ul>
-                    </li>
 
 
 
-                    <li class="list-divider"></li>
-                    <li class="nav-small-cap"><span class="hide-menu">Authorization</span></li>
-
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link"
-                            href="#" aria-expanded="false"><i data-feather="key"
-                                class="feather-icon"></i><span class="hide-menu">Roles
-                            </span></a>
-                    </li>
-
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link"
-                            href="#" aria-expanded="false"><i
-                                data-feather="lock" class="feather-icon"></i><span class="hide-menu">Permissions
-                            </span></a>
-                    </li>
-
-
-                    
 
                     <li class="list-divider"></li>
                     <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
@@ -223,7 +137,8 @@
     <script src="{{ asset('assets2/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
     <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
 
+    <script src="{{ asset('assets2/extra-libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('dist/js/pages/datatable/datatable-basic.init.js') }}"></script>
 </body>
 
 </html>
-

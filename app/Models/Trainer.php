@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-class Trainer extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class Trainer extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles;
-    use SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
+      
     
     protected $fillable = [
         'first_name',

@@ -41,63 +41,7 @@
             <!-- *************************************************************** -->
             <!-- Start First Cards -->
             <!-- *************************************************************** -->
-            <div class="card-group">
-                <div class="card border-right">
-                    <div class="card-body">
-                        <div class="d-flex d-lg-flex d-md-block align-items-center">
-                            <div>
-                                <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-dark mb-1 font-weight-medium"></h2>
-                                    <span
-                                        class="badge bg-primary font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none"></span>
-                                </div>
-                                <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">All Employe</h6>
-                            </div>
-                            <div class="ml-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="card border-right">
-                    <div class="card-body">
-                        <div class="d-flex d-lg-flex d-md-block align-items-center">
-                            <div>
-                                <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-dark mb-1 font-weight-medium"></h2>
-                                    <span
-                                        class="badge bg-primary font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none"></span>
-                                </div>
-                                <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">All Trainer</h6>
-                            </div>
-                            <div class="ml-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-right">
-                    <div class="card-body">
-                        <div class="d-flex d-lg-flex d-md-block align-items-center">
-                            <div>
-                                <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-dark mb-1 font-weight-medium">0</h2>
-                                    <span
-                                        class="badge bg-primary font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none">0%</span>
-                                </div>
-                                <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">All Player</h6>
-                            </div>
-                            <div class="ml-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+         
 
         </div>
 

@@ -48,6 +48,11 @@ return [
             'driver' => 'session',
             'provider' => 'employes',
         ],
+        'trainer' => [
+            'driver' => 'jwt',
+            'provider' => 'trainers',
+            'hash' => true,
+        ],
     ],
 
     /*
@@ -80,6 +85,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Employe::class,
         ],
+
+        'trainers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Trainer::class,
+        ],
+        
 
 
         // 'users' => [

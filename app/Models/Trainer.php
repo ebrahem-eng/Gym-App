@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Trainer extends Authenticatable
+
+class Trainer extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
       
@@ -38,6 +40,13 @@ class Trainer extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+   
+    public function getJWTCustomClaims() {
+        return [];
+    } 
 
     //علاقة الصفوف مع المدربين 
     

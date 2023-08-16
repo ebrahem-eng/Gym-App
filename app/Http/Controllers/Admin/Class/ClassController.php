@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin\Class;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Class\ClassRequest;
 use App\Models\ClassT;
 use App\Models\Day;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Support\Facades\Storage;
+
 
 class ClassController extends Controller
 {
@@ -59,39 +62,35 @@ class ClassController extends Controller
 
     //تخزين الصفوف في قاعدة البيانات
 
-    public function store(Request $request)
+    public function store(ClassRequest $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'name' => 'required',
-            //     'class_time_start' => 'required',
-            //     'class_time_end' => 'required',
-            //     'day' => 'required',
 
-            // ]);
+            $image_class = $request->file('class_image')->getClientOriginalName();
+            $path = $request->file('class_image')->storeAs('ClassImage', $image_class, 'classImage');
 
-            // if ($validator->fails()) {
-            //     return redirect('admin/class/create')
-            //         ->withErrors($validator)
-            //         ->withInput();
-            // }
             $user = Auth::guard('admin')->user();
 
             $check = $user->can('Add Class');
             if ($check) {
 
-
                 ClassT::create([
-                    'name' => $request->Name,
+                    'name' => $request->input('Name'),
+                    'image_path' => $path,
 
                 ]);
+
+
                 return redirect()->back()->with('message_success', 'Class added successfully!');
             } else {
+
                 throw UnauthorizedException::forPermissions(['Add Class']);
             }
         } catch (UnauthorizedException $ex) {
+
             throw UnauthorizedException::forPermissions(['Add Class']);
         } catch (\Exception $ex) {
+
             return redirect()->back()->with('message_err', 'Something went wrong. Please try again.');
         }
     }
@@ -106,8 +105,6 @@ class ClassController extends Controller
 
             $check = $user->can('Edit Class');
             if ($check) {
-
-
 
                 return view('Admin/Class/edit', compact('class'));
             } else {
@@ -125,28 +122,12 @@ class ClassController extends Controller
     public function update(Request $request, ClassT $class)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'name' => 'required',
-            //     'class_time_start' => 'required',
-            //     'class_time_end' => 'required',
-            //     'day' => 'required|array',
-            // ]);
-
-            // if ($validator->fails()) {
-            //     return redirect()->back()
-            //         ->withErrors($validator)
-            //         ->withInput();
-            // }
-
             $user = Auth::guard('admin')->user();
-
             $check = $user->can('Edit Class');
+
             if ($check) {
-
-
                 $class->update([
                     'name' => $request->input('Name'),
-
                 ]);
 
                 return redirect()->back()->with('message_success_update', 'Class updated successfully!');
@@ -159,6 +140,7 @@ class ClassController extends Controller
             return redirect()->back()->with('message_err_update', 'Something went wrong. Please try again.');
         }
     }
+
 
 
     //حذف صف ونقله الى الارشيف
@@ -240,16 +222,26 @@ class ClassController extends Controller
 
             $check = $user->can('Delete Class');
             if ($check) {
+                $class = ClassT::withTrashed()->where('id', $id)->first();
 
-                ClassT::withTrashed()->where('id', $id)->forcedelete();
-                return redirect()->back()->with('message_success_forcedelete', 'Class deleted Successfully!');
+                if ($class) {
+                    // Delete the associated image from public storage
+                    Storage::disk('classImage')->delete($class->image_path);
+
+                    // Force delete the class
+                    $class->forceDelete();
+
+                    return redirect()->back()->with('message_success_forcedelete', 'Class deleted Successfully!');
+                } else {
+                    return redirect()->back()->with('message_err_forcedelete', 'Class not found.');
+                }
             } else {
                 throw UnauthorizedException::forPermissions(['Delete Class']);
             }
         } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Delete Class']);
         } catch (\Exception $ex) {
-            return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
+            return redirect()->back()->with('message_err_forcedelete', 'Something went wrong, Try Again!');
         }
     }
 }

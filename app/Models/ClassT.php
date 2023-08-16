@@ -13,6 +13,7 @@ class ClassT extends Model
 
     protected $fillable = [
         'name',
+        'image_path',
     ];
 
     //علاقة المدربين مع الصفوف

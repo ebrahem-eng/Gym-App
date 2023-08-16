@@ -12,7 +12,13 @@ class PlayerController extends Controller
     //عرض صفحة التأكد من حالة اللاعب
     public function check_status_show()
     {
-        $players = Player::all();
+        try{
+            $players = Player::all();
         return view('Employe/Player/check_player_table' , compact('players'));
+        }catch(\Exception $ex)
+        {
+            return redirect()->route('notfound');
+        }
+        
     }
 }

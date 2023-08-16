@@ -51,7 +51,7 @@ return [
         'trainer' => [
             'driver' => 'jwt',
             'provider' => 'trainers',
-            'hash' => true,
+       
         ],
     ],
 
@@ -89,6 +89,7 @@ return [
         'trainers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Trainer::class,
+
         ],
         
 

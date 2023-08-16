@@ -89,6 +89,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            <th>Image</th>
                                             <th>Created</th>
                                             <th>Deleted</th>
                                             <th></th>
@@ -99,6 +100,8 @@
                                             <tr>
                                                 <td>{{ $class_delete->id }}</td>
                                                 <td>{{ $class_delete->name }}</td>
+                                                <td><img src="{{ asset('image/' . $class_delete->image_path) }}"
+                                                        style="width: 100px; height: 100px;"></td>
                                                 <td>{{ $class_delete->created_at }}</td>
                                                 <td>{{ $class_delete->deleted_at }}</td>
 
@@ -114,11 +117,11 @@
                                             </tr>
                                         @endforeach
                                     @else
-                                    <div style="text-align: center;" class="card">
-                                        <h2
-                                            style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
-                                            No Data</h2>
-                                    </div>
+                                        <div style="text-align: center;" class="card">
+                                            <h2
+                                                style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ; color:#5f76e8 ; margin-top:15px; margin-bottom:15px;">
+                                                No Data</h2>
+                                        </div>
                             @endif
                             </tbody>
                             </table>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Trainer\Auth\AuthController as AuthAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +20,19 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Route::group(['middleware' => 'jwt.trainer' ,  'prefix' => 'trainer'], function () {
+   
+//     Route::post('/login', [AuthAuthController::class, 'login']);
+// });
+
 // Route::group([
 //     'middleware' => 'api',
 //     'prefix' => 'auth'
 // ], function ($router) {
-//     Route::post('/login', [AuthController::class, 'login']);
-//     Route::post('/register', [AuthController::class, 'register']);
-//     Route::post('/logout', [AuthController::class, 'logout']);
-//     Route::post('/refresh', [AuthController::class, 'refresh']);
-//     Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+//     Route::post('/login', [AuthAuthController::class, 'login']);
+//     Route::post('/register', [AuthAuthController::class, 'register']);
+//     Route::post('/logout', [AuthAuthController::class, 'logout']);
+//     Route::post('/refresh', [AuthAuthController::class, 'refresh']);
+//     Route::get('/user-profile', [AuthAuthController::class, 'userProfile']);    
 // });
 

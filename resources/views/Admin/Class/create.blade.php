@@ -59,6 +59,9 @@
                         {{-- end message section --}}
 
                         <div class="card-body">
+
+                            {{-- validation error  --}}
+
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -69,56 +72,39 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.class.store') }}" method="POST">
+                            {{-- validation error --}}
+
+                            
+
+                            <form action="{{ route('admin.class.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-body">
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Name:</label>
                                                 <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="Name" name="Name" required>
+                                                    aria-describedby="name" placeholder="Name" name="Name" required >
                                             </div>
                                         </div>
-                                    </div>
-                                        {{-- <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Class Time Start:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Class Time Start" name="ClassTimeStart" required>
-                                            </div>
+
+                                        <div class="col-md-8">
+                                          
+                                                <div class="input-group-prepend">
+                                                    <label class="form-label">Image:</label>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="class_image"  required>
+                                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                </div>
+                                        
                                         </div>
                                     </div>
-                                    <div class="row">
-
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Class Time End:</label>
-                                                <input type="time" class="form-control" placeholder="Class Time End"
-                                                    name="ClassTimeEnd" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-                                    </div>
-                                    <label class="form-label">Day:</label>
-                                    <div class="row">
-
-                                        <div class="col-md-4">
-                                            @foreach ($days as $day)
-                                                <fieldset class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" value="{{ $day->name }}"
-                                                            name="day[{{ $day->name }}]"> {{ $day->name }}
-                                                    </label>
-                                                </fieldset>
-                                            @endforeach
-                                        </div>
-                                    </div> --}}
+                                       
                                 </div>
+                                <br>
                                 <div class="form-actions">
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-rounded  btn-info">Submit</button>

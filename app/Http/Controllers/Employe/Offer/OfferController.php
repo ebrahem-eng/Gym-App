@@ -15,96 +15,111 @@ class OfferController extends Controller
     public function index()
     {
 
-        $results = [];
-        $courses = DB::select("
-SELECT courses.id AS course_id , courses.status AS status ,
-trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
-courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount ,
-offers.discount_value AS discount_value , offers.price_after_discount AS price_after_discount
-FROM courses 
-INNER JOIN trainers ON courses.trainer_id = trainers.id 
-INNER JOIN class_t_s ON courses.class_id = class_t_s.id
-INNER JOIN offers ON courses.id = offers.course_id
-WHERE offers.deleted_at IS NULL
-");
+        try {
+
+            $results = [];
+            $courses = DB::select("
+    SELECT courses.id AS course_id , courses.status AS status ,
+    trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
+    courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount ,
+    offers.discount_value AS discount_value , offers.price_after_discount AS price_after_discount
+    FROM courses 
+    INNER JOIN trainers ON courses.trainer_id = trainers.id 
+    INNER JOIN class_t_s ON courses.class_id = class_t_s.id
+    INNER JOIN offers ON courses.id = offers.course_id
+    WHERE offers.deleted_at IS NULL
+    ");
 
 
-        foreach ($courses as $course) {
-            $day_time = json_decode($course->day_time, true);
-            $courseResult = [
-                'id' => $course->course_id,
-                'status' => $course->status,
-                'trainer_name' => $course->trainer_name,
-                'class_name' => $course->class_name,
-                'price_befor_discount' => $course->price_befor_discount,
-                'price_after_discount' => $course->price_after_discount,
-                'discount_value' => $course->discount_value,
-                'day_times' => [],
-            ];
+            foreach ($courses as $course) {
+                $day_time = json_decode($course->day_time, true);
+                $courseResult = [
+                    'id' => $course->course_id,
+                    'status' => $course->status,
+                    'trainer_name' => $course->trainer_name,
+                    'class_name' => $course->class_name,
+                    'price_befor_discount' => $course->price_befor_discount,
+                    'price_after_discount' => $course->price_after_discount,
+                    'discount_value' => $course->discount_value,
+                    'day_times' => [],
+                ];
 
-            foreach ($day_time as $dayId => $timeIds) {
-                $dayName = DB::table('days')->where('id', $dayId)->value('name');
-                $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
-                $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
-                $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
-                    return $times[0] . ' TO ' . $times[1];
-                });
-                $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                foreach ($day_time as $dayId => $timeIds) {
+                    $dayName = DB::table('days')->where('id', $dayId)->value('name');
+                    $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
+                    $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
+                    $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
+                        return $times[0] . ' TO ' . $times[1];
+                    });
+                    $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                }
+
+                $results[] = $courseResult;
             }
+            return view('Employe/Offer/index', compact('results'));
+        } catch (\Exception $ex) {
 
-            $results[] = $courseResult;
+            return redirect()->route('notfound');
         }
-        return view('Employe/Offer/index', compact('results'));
     }
 
 
+    //عرض الصفحة الاولى من اضافة العروض
 
     public function create()
     {
 
-        $results = [];
-        $courses = DB::select("
-SELECT courses.id AS course_id , courses.status AS status ,
-trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
-courses.day_times AS day_time
-FROM courses 
-INNER JOIN trainers ON courses.trainer_id = trainers.id 
-INNER JOIN class_t_s ON courses.class_id = class_t_s.id
-WHERE courses.deleted_at IS NULL
-");
+        try {
+
+            $results = [];
+            $courses = DB::select("
+    SELECT courses.id AS course_id , courses.status AS status ,
+    trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
+    courses.day_times AS day_time
+    FROM courses 
+    INNER JOIN trainers ON courses.trainer_id = trainers.id 
+    INNER JOIN class_t_s ON courses.class_id = class_t_s.id
+    WHERE courses.deleted_at IS NULL
+    ");
 
 
-        foreach ($courses as $course) {
-            $day_time = json_decode($course->day_time, true);
-            $courseResult = [
-                'id' => $course->course_id,
-                'status' => $course->status,
-                'trainer_name' => $course->trainer_name,
-                'class_name' => $course->class_name,
-                'day_times' => [],
-            ];
+            foreach ($courses as $course) {
+                $day_time = json_decode($course->day_time, true);
+                $courseResult = [
+                    'id' => $course->course_id,
+                    'status' => $course->status,
+                    'trainer_name' => $course->trainer_name,
+                    'class_name' => $course->class_name,
+                    'day_times' => [],
+                ];
 
-            foreach ($day_time as $dayId => $timeIds) {
-                $dayName = DB::table('days')->where('id', $dayId)->value('name');
-                $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
-                $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
-                $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
-                    return $times[0] . ' TO ' . $times[1];
-                });
-                $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                foreach ($day_time as $dayId => $timeIds) {
+                    $dayName = DB::table('days')->where('id', $dayId)->value('name');
+                    $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
+                    $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
+                    $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
+                        return $times[0] . ' TO ' . $times[1];
+                    });
+                    $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                }
+
+                $results[] = $courseResult;
             }
-
-            $results[] = $courseResult;
+            return view('Employe/Offer/create', compact('results'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
         }
-        return view('Employe/Offer/create', compact('results'));
     }
 
     //عرض الصفحة الثانية من اضافة عرض وهي اضافة السعر ونسبة الخصم
 
     public function create2($course_id)
     {
-
-        return view('Employe/Offer/create2', compact('course_id'));
+        try {
+            return view('Employe/Offer/create2', compact('course_id'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
 
     //تخزين العرض في قاعدة البيانات 
@@ -137,18 +152,22 @@ WHERE courses.deleted_at IS NULL
 
     public function destroye(Offer $offer)
     {
-        $offer->delete();
-        return redirect()->back()->with('message_success', 'Offer Deleted Successfully');
+        try {
+            $offer->delete();
+            return redirect()->back()->with('message_success', 'Offer Deleted Successfully');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
 
     //عرض ارشيف العروض
 
     public function archive()
     {
+        try {
 
-
-        $results = [];
-        $courses = DB::select("
+            $results = [];
+            $courses = DB::select("
 SELECT courses.id AS course_id , courses.status AS status ,
 trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
 courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount ,
@@ -161,32 +180,35 @@ WHERE offers.deleted_at IS NOT NULL
 ");
 
 
-        foreach ($courses as $course) {
-            $day_time = json_decode($course->day_time, true);
-            $courseResult = [
-                'id' => $course->course_id,
-                'status' => $course->status,
-                'trainer_name' => $course->trainer_name,
-                'class_name' => $course->class_name,
-                'price_befor_discount' => $course->price_befor_discount,
-                'price_after_discount' => $course->price_after_discount,
-                'discount_value' => $course->discount_value,
-                'day_times' => [],
-            ];
+            foreach ($courses as $course) {
+                $day_time = json_decode($course->day_time, true);
+                $courseResult = [
+                    'id' => $course->course_id,
+                    'status' => $course->status,
+                    'trainer_name' => $course->trainer_name,
+                    'class_name' => $course->class_name,
+                    'price_befor_discount' => $course->price_befor_discount,
+                    'price_after_discount' => $course->price_after_discount,
+                    'discount_value' => $course->discount_value,
+                    'day_times' => [],
+                ];
 
-            foreach ($day_time as $dayId => $timeIds) {
-                $dayName = DB::table('days')->where('id', $dayId)->value('name');
-                $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
-                $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
-                $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
-                    return $times[0] . ' TO ' . $times[1];
-                });
-                $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                foreach ($day_time as $dayId => $timeIds) {
+                    $dayName = DB::table('days')->where('id', $dayId)->value('name');
+                    $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
+                    $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
+                    $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
+                        return $times[0] . ' TO ' . $times[1];
+                    });
+                    $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
+                }
+
+                $results[] = $courseResult;
             }
-
-            $results[] = $courseResult;
+            return view('Employe/Offer/archive', compact('results'));
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
         }
-        return view('Employe/Offer/archive', compact('results'));
     }
 
 
@@ -194,8 +216,13 @@ WHERE offers.deleted_at IS NOT NULL
 
     public function restore($id)
     {
-        Offer::withTrashed()->where('id', $id)->restore();
-        return redirect()->back()->with('message_success', 'Offer Restored Successfully!');
+        try {
+
+            Offer::withTrashed()->where('id', $id)->restore();
+            return redirect()->back()->with('message_success', 'Offer Restored Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
 
     //حذف عرض بشكل نهائي
@@ -203,7 +230,12 @@ WHERE offers.deleted_at IS NOT NULL
     public function force_delete($id)
     {
 
-        Offer::withTrashed()->where('id', $id)->forcedelete();
-        return redirect()->back()->with('message_success', 'Offer deleted Successfully!');
+        try {
+
+            Offer::withTrashed()->where('id', $id)->forcedelete();
+            return redirect()->back()->with('message_success', 'Offer deleted Successfully!');
+        } catch (\Exception $ex) {
+            return redirect()->route('notfound');
+        }
     }
 }

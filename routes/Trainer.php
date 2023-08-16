@@ -16,13 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+//تسجيل الدخول والبروفايل والتسجيل 
 
 Route::group([
     'middleware' => 'trainer',
-    'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
@@ -31,6 +28,11 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);    
 });
 
-Route::get('/course/show' , [CourseController::class , 'index']);
+
+Route::middleware(['trainer','auth:trainer'])->group(function () {
+
+    //عرض الكورسات الخاصة بالمدرب 
+    Route::get('/courses' , [CourseController::class , 'index']);
+});
 
 

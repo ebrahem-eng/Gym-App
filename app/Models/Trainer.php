@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
+
 class Trainer extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;

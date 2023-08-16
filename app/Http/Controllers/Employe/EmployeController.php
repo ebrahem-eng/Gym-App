@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class EmployeController extends Controller
 {
-    //
+    
        //عرض الصفحة الرئيسية للموظف
     
        public function index()

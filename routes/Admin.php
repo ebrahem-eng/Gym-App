@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\Employe\EmployeController;
 use App\Http\Controllers\Admin\Permission\PermissionController;
 use App\Http\Controllers\Admin\Report\ReportController;
 use App\Http\Controllers\Admin\Role\RoleController;
+use App\Http\Controllers\Admin\Salary\SalaryController;
+use App\Http\Controllers\Admin\Time\TimeController;
 use App\Http\Controllers\Admin\Trainer\TrainerController;
 use App\Models\Employe;
+use App\Models\Time;
 use App\Models\Trainer;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
@@ -107,6 +110,15 @@ Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function ()
 
 
     Route::resource('/admin', AdminAdminController::class);
+
+    //============= Admin Salary ===========
+
+    Route::resource('/salary', SalaryController::class);
+
+    //============= Admin Salary ===========
+
+    Route::resource('/time', TimeController::class);
+
 
     //============= Admin Role ============
 

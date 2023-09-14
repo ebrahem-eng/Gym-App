@@ -177,16 +177,17 @@
                                 class="hide-menu">Manage Salary</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="{{ route('admin.admin.index') }}"
+                            <li class="sidebar-item"><a href="{{ route('admin.salary.index') }}"
                                     class="sidebar-link"><span class="hide-menu">
                                         Salary List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}"
+                            <li class="sidebar-item"><a href="{{ route('admin.salary.create') }}"
                                     class="sidebar-link"><span class="hide-menu">
                                         Add Salary
                                     </span></a>
                             </li>
+                        </li>
 
                         </ul>
                     </li>
@@ -196,12 +197,12 @@
                                 class="hide-menu">Manage Time</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="{{ route('admin.admin.index') }}"
+                            <li class="sidebar-item"><a href="{{ route('admin.time.index') }}"
                                     class="sidebar-link"><span class="hide-menu">
                                         Time List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}"
+                            <li class="sidebar-item"><a href="{{ route('admin.time.create') }}"
                                     class="sidebar-link"><span class="hide-menu">
                                         Add Time
                                     </span></a>

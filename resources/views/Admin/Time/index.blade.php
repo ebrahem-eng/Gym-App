@@ -16,12 +16,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Salary Manage</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Time Manage</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}">Dashboard/Salary/Salary Table</a>
+                                        href="{{ route('admin.index') }}">Dashboard/Time/Time Table</a>
                                 </li>
                             </ol>
                         </nav>
@@ -64,31 +64,33 @@
                     {{-- end message section --}}
 
                     <div class="table-responsive">
-                        @if (count($salries) > 0)
+                        @if (count($times) > 0)
 
                             <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                 style="width:100%">
                                 <thead class="bg-info text-white">
                                     <tr>
                                         <th>#</th>
-                                        <th>Value</th>
+                                        <th>Time Start</th>
+                                        <th>Time End</th>
                                         <th>Created Date</th>
                                         <th>Last Updated Date</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($salries as $salary)
+                                    @foreach ($times as $time)
                                         <tr>
-                                            <td>{{ $salary->id }}</td>
-                                            <td>{{ $salary->value }}</td>
-                                            <td>{{ $salary->created_at }}</td>
-                                            <td>{{ $salary->updated_at }}</td>
+                                            <td>{{ $time->id }}</td>
+                                            <td>{{ $time->time_start }}</td>
+                                            <td>{{ $time->time_end }}</td>
+                                            <td>{{ $time->created_at }}</td>
+                                            <td>{{ $time->updated_at }}</td>
                                             <td>
                                                 <a type="button" class="btn btn-circle btn-primary "
-                                                    href="{{ route('admin.salary.edit', $salary->id) }}"><i
+                                                    href="{{ route('admin.time.edit', $time->id) }}"><i
                                                         data-feather="edit-2" class="feather-icon"></i></a>
-                                                <form action="{{ route('admin.salary.destroy', $salary->id) }}" ,
+                                                <form action="{{ route('admin.time.destroy', $time->id) }}" ,
                                                     method="POST">
                                                     @method('delete')
                                                     @csrf

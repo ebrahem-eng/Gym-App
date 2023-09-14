@@ -16,12 +16,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Salary</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Time</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Salary/Add
-                                        Salary</a>
+                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Time/Add
+                                        Time</a>
                                 </li>
                             </ol>
                         </nav>
@@ -76,17 +76,27 @@
 
                             
 
-                            <form action="{{ route('admin.salary.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.time.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-body">
 
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Value:</label>
-                                                <input type="number" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="200000 SYP" name="value" required >
+                                                <label class="form-label">Time Start:</label>
+                                                <input type="time" class="form-control" id="nametext"
+                                                    aria-describedby="name" name="time_start"
+                                                   required >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Time End:</label>
+                                                <input type="time" class="form-control" id="nametext"
+                                                    aria-describedby="name" name="time_end"
+                                                    required>
                                             </div>
                                         </div>
                                     </div>

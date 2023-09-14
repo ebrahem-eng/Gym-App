@@ -26,4 +26,11 @@ class Salary extends Model
      {
          return $this->hasMany(Employe::class,'salary_id');
      }
+
+        //علاقة الرواتب مع المدربين
+    
+        public function trainers()
+        {
+            return $this->hasMany(Trainer::class,'salary_id');
+        }
 }

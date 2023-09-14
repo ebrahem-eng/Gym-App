@@ -93,6 +93,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'admin', 'name' => 'Restore Admin']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Delete Admin']);
 
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Salary Table']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Edit Salary']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Add Salary']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Delete Salary']);
+
+        Permission::create(['guard_name' => 'admin', 'name' => 'Show Time Table']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Edit Time']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Add Time']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Delete Time']);
+
 
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Roles Table']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Show Page Give Permission For Role']);

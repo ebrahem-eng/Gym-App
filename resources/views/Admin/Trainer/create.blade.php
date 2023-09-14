@@ -58,7 +58,7 @@
                         @endif
                         <div class="card-body">
 
-                            <form action="{{ route('admin.trainer.store') }}" method="POST">
+                            <form action="{{ route('admin.trainer.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
@@ -66,14 +66,15 @@
                                             <div class="form-group">
                                                 <label class="form-label">First Name:</label>
                                                 <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="First Name" name="firstName">
+                                                    aria-describedby="name" placeholder="First Name" name="firstName"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Last Name:</label>
                                                 <input type="text" class="form-control" placeholder="Last Name"
-                                                    name="lastName">
+                                                    name="lastName" required>
                                             </div>
                                         </div>
                                     </div>
@@ -82,14 +83,14 @@
                                             <div class="form-group">
                                                 <label class="form-label">Email:</label>
                                                 <input type="email" class="form-control" placeholder="Email"
-                                                    name="email">
+                                                    name="email" required>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">Password:</label>
                                                 <input type="password" class="form-control" placeholder="Password"
-                                                    name="password">
+                                                    name="password" required>
                                             </div>
                                         </div>
 
@@ -99,52 +100,99 @@
                                             <div class="form-group">
                                                 <label class="form-label">Phone:</label>
                                                 <input type="tel" class="form-control" placeholder="Phone"
-                                                    name="phone">
+                                                    name="phone" required>
                                             </div>
                                         </div>
-                                        {{-- <div class="col-md-2">
-                                            <div class="form-group mb-4">
-                                                <label class="form-label">Class:</label>
 
-
-                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
-                                                    name="class">
-                                                    @foreach ($classes as $class)
-                                                        <option selected>{{ $class->name }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </div>
-                                        </div> --}}
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="form-label">Age:</label>
                                                 <input type="number" class="form-control" placeholder="Age"
-                                                    name="age">
+                                                    name="age" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Gender:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="gender">
+
+                                                    <option value="1">Male</option>
+                                                    <option value="0">Female</option>
+
+
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Salary:</label>
-                                                <input type="text" class="form-control" placeholder="Salary"
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2"
+                                                    for="inlineFormCustomSelect">Salary(SYP):</label>
+                                                <select class="form-control" id="inlineFormCustomSelect"
                                                     name="salary">
+                                                    @foreach ($salaries as $salary)
+                                                        <option value="{{ $salary->id }}">{{ $salary->value }}
+                                                        </option>
+                                                    @endforeach
+
+                                                </select>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Work Time Start:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Work Time Start" name="WorkTimeStart">
+                                                <label class="form-label">Address:</label>
+                                                <input type="text" class="form-control" placeholder="Address"
+                                                    name="address" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Work Time End:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Work Time End" name="WorkTimeEnd">
+
+                                        <div class="col-md-5">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Work Time</label>
+                                                <select class="form-control" id="inlineFormCustomSelect"
+                                                    name="worke_time_id">
+                                                    @foreach ($work_times as $work_time)
+                                                        <option value="{{ $work_time->id }}">Time Start :
+                                                            {{ $work_time->time_start }} - Time End :
+                                                            {{ $work_time->time_end }}</option>
+                                                    @endforeach
+
+                                                </select>
                                             </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Status:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect"
+                                                    name="status">
+
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Not Active</option>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+
+                                            <div class="input-group-prepend">
+                                                <label class="form-label">Image:</label>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                    name="img" required>
+                                                <label class="custom-file-label" for="inputGroupFile01">Choose
+                                                    file</label>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

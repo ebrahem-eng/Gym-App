@@ -15,9 +15,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Trainer extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
-      
-    
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -33,32 +33,52 @@ class Trainer extends Authenticatable implements JWTSubject
         'created_by',
         'salary_id',
     ];
-    
-        //علاقة الصفوف مع المدربين 
-    
-        public function classes()
-        {
-            return $this->belongsToMany(ClassT::class , 'courses' , 'trainer_id' , 'class_id');
-        }
 
-   
+    //علاقة الصفوف مع المدربين 
+
+    public function classes()
+    {
+        return $this->belongsToMany(ClassT::class, 'courses', 'trainer_id', 'class_id');
+    }
+
+    // علاقة المدرب مع المدير
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'created_by');
+    }
+
+    //علاقة المدرب مع الرواتب
+
+    public function salary()
+    {
+        return $this->belongsTo(Salary::class, 'salary_id');
+    }
+
+    //علاقة المدرب مع وقت العمل
+
+    public function time()
+    {
+        return $this->belongsTo(Time::class, 'work_time_id');
+    }
+
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-  
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
-   
-    public function getJWTCustomClaims() {
+
+    public function getJWTCustomClaims()
+    {
         return [];
-    } 
-
-
+    }
 }

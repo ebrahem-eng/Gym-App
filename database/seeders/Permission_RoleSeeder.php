@@ -141,6 +141,24 @@ class Permission_RoleSeeder extends Seeder
 
         DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (62, 1);");
 
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (63, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (64, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (65, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (66, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (67, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (68, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (69, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (70, 1);");
+
+        DB::insert("INSERT INTO role_has_permissions (permission_id, role_id) VALUES (71, 1);");
+
       
     }
 }

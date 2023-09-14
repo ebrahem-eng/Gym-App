@@ -63,6 +63,13 @@ class Admin extends Authenticatable
           return $this->hasMany(Course::class,'created_by');
       }
 
+         //علاقة المدير مع المدربين 
+
+    public function trainers()
+    {
+        return $this->hasMany(Trainer::class,'created_by');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

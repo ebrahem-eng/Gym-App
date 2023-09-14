@@ -57,9 +57,9 @@
                                     {{ session('message_err_update') }}
                                 </div>
                             @endif
-                            <form action="{{ route('admin.trainer.update', $trainer->id) }}" method="POST">
+                            <form action="{{ route('admin.trainer.update', $trainer->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
+                                @method('put')
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -67,14 +67,14 @@
                                                 <label class="form-label">First Name:</label>
                                                 <input type="text" class="form-control" id="nametext"
                                                     aria-describedby="name" placeholder="First Name" name="firstName"
-                                                    value="{{ $trainer->first_name }}" required>
+                                                  value="{{$trainer->first_name}}"  required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Last Name:</label>
                                                 <input type="text" class="form-control" placeholder="Last Name"
-                                                    name="lastName" value="{{ $trainer->last_name }}" required>
+                                                    name="lastName" value="{{$trainer->last_name}}"  required>
                                             </div>
                                         </div>
                                     </div>
@@ -83,26 +83,17 @@
                                             <div class="form-group">
                                                 <label class="form-label">Email:</label>
                                                 <input type="email" class="form-control" placeholder="Email"
-                                                    name="email" value="{{ $trainer->email }}" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label class="form-label">Phone:</label>
-                                                <input type="tel" class="form-control" placeholder="Phone"
-                                                    name="phone" value="{{ $trainer->phone }}" required>
+                                                    name="email" value="{{$trainer->email}}"  required>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row">
-
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="form-group">
-                                                <label class="form-label">Salary:</label>
-                                                <input type="text" class="form-control" placeholder="Salary"
-                                                    name="salary" value="{{ $trainer->salary }}" required>
+                                                <label class="form-label">Phone:</label>
+                                                <input type="tel" class="form-control" placeholder="Phone"
+                                                    name="phone" value="{{$trainer->phone}}"  required>
                                             </div>
                                         </div>
 
@@ -110,49 +101,94 @@
                                             <div class="form-group">
                                                 <label class="form-label">Age:</label>
                                                 <input type="number" class="form-control" placeholder="Age"
-                                                    name="age" value="{{ $trainer->age }}" required>
+                                                    name="age" value="{{$trainer->age}}"  required>
                                             </div>
                                         </div>
 
-                                        {{-- <div class="form-group mb-4">
-                                            <label class="form-label">Class:</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Gender:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="gender">
+
+                                                    <option value="1" {{ $trainer->gender === 1 ? 'selected' : '' }}>Male</option>
+                                                    <option value="0" {{ $trainer->gender === 0 ? 'selected' : '' }}>Female</option>
 
 
-                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
-                                                name="class">
-                                                @foreach ($classes as $class)
-                                                    <option selected value="{{ $trainer->class }}">
-                                                        {{ $class->name }}</option>
-                                                @endforeach
-                                            </select>
-
-
-                                        </div> --}}
-
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Salary(SYP):</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="salary">
+                                                    @foreach ($salaries as $salary)
+                                                    <option value="{{$salary->id}}" {{ $trainer->salary_id === $salary->id ? 'selected' : '' }}>{{$salary->value}}</option>  
+                                                    @endforeach
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
 
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Work Time Start:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Work Time Start" name="WorkTimeStart"
-                                                    value="{{ $trainer->work_time_start }}" required>
+                                                <label class="form-label">Address:</label>
+                                                <input type="text" class="form-control" placeholder="Address"
+                                                    name="address" value="{{$trainer->address}}" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Work Time End:</label>
-                                                <input type="time" class="form-control"
-                                                    placeholder="Work Time End" name="WorkTimeEnd"
-                                                    value="{{ $trainer->work_time_end }}" required>
+
+                                        <div class="col-md-5">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Work Time</label>
+                                                <select class="form-control" id="inlineFormCustomSelect"
+                                                    name="worke_time_id">
+                                                    @foreach ($work_times as $work_time)
+                                                        <option value="{{ $work_time->id }}" {{ $trainer->work_time_id === $work_time->id ? 'selected' : '' }}>Time Start :
+                                                            {{ $work_time->time_start }} - Time End :
+                                                            {{ $work_time->time_end }}</option>
+                                                    @endforeach
+
+                                                </select>
                                             </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Status:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect"
+                                                    name="status">
+
+                                                    <option value="1" {{ $trainer->status === 1 ? 'selected' : '' }}>Active</option>
+                                                    <option value="0" {{ $trainer->status === 0 ? 'selected' : '' }}>Not Active</option>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+
+                                            <div class="input-group-prepend">
+                                                <label class="form-label">Image:</label>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                    name="img">
+                                                <label class="custom-file-label" for="inputGroupFile01">Choose
+                                                    file</label>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Update</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>

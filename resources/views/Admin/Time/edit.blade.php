@@ -16,12 +16,13 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Salary</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Update Time</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Salary/Add
-                                        Salary</a>
+                                <li class="breadcrumb-item"><a
+                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Time/Update
+                                        Time</a>
                                 </li>
                             </ol>
                         </nav>
@@ -34,34 +35,28 @@
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-md-8 col-lg-6 mx-auto">
+                <div class="col-10">
                     <div class="card">
-
-                        {{-- message section --}}
-                        @if (session('message_success'))
+                        @if (session('message_success_update'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_success') }}
+                                {{ session('message_success_update') }}
                             </div>
                         @endif
-                        @if (session('message_err'))
+                        @if (session('message_err_update'))
                             <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_err') }}
+                                {{ session('message_err_update') }}
                             </div>
                         @endif
-                        {{-- end message section --}}
-
                         <div class="card-body">
-
-                            {{-- validation error  --}}
-
+                            {{-- Validation error  --}}
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -72,30 +67,35 @@
                                 </div>
                             @endif
 
-                            {{-- validation error --}}
+                            {{-- end Validation error  --}}
 
-                            
-
-                            <form action="{{ route('admin.salary.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.time.update', $time->id) }}" method="POST">
+                                @method('PUT')
                                 @csrf
-
                                 <div class="form-body">
-
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Value:</label>
-                                                <input type="number" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="200000 SYP" name="value" required >
+                                                <label class="form-label">Time Start:</label>
+                                                <input type="time" class="form-control" id="nametext"
+                                                    aria-describedby="name" name="time_start"
+                                                    value="{{ $time->time_start }}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Time End:</label>
+                                                <input type="time" class="form-control" id="nametext"
+                                                    aria-describedby="name" name="time_end"
+                                                    value="{{ $time->time_end }}" required>
                                             </div>
                                         </div>
                                     </div>
-                                       
                                 </div>
-                                <br>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Update</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>

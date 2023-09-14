@@ -94,12 +94,18 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Age</th>
-                                            <th>Phone</th>                                
+                                            <th>Phone</th>
+                                            <th>Gender</th>
+                                            <th>Address</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
-                                            <th>Created at</th>
-                                            <th>Deleted at</th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>
+                                            <th>Deleted Date</th>
                                             <th></th>
 
                                         </tr>
@@ -112,11 +118,36 @@
                                                 <td>{{ $trainer_delete->last_name }}</td>
                                                 <td>{{ $trainer_delete->email }}</td>
                                                 <td>{{ $trainer_delete->age }}</td>
-                                                <td>{{ $trainer_delete->phone }}</td>                            
-                                                <td>{{ $trainer_delete->salary }}</td>
-                                                <td>{{ $trainer_delete->work_time_start }}</td>
-                                                <td>{{ $trainer_delete->work_time_end }}</td>
+                                                <td>{{ $trainer_delete->phone }}</td>
+                                                <td>
+                                                    @if ($trainer_delete->gender == 0)
+                                                        <div>
+                                                            Female
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            Male
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $trainer_delete->address }}</td>
+                                                <td><img src="{{ asset('image/' . $trainer_delete->img) }}"
+                                                        style="width: 100px; height: 100px;"></td>
+
+                                                <td>
+                                                    @if ($trainer_delete->status == 0)
+                                                        <span class="btn btn-danger rounded-pill me-1">Not Active</span>
+                                                    @elseif ($trainer_delete->status == 1)
+                                                        <span class="btn btn-success rounded-pill me-1">Active</span>
+                                                    @endif
+                                                </td>
+
+                                                <td>{{ $trainer_delete->salary->value }} SYP</td>
+                                                <td>{{ $trainer_delete->time->time_start }}</td>
+                                                <td>{{ $trainer_delete->time->time_end }}</td>
+                                                <td>{{ $trainer_delete->admin->name }}</td>
                                                 <td>{{ $trainer_delete->created_at }}</td>
+                                                <td>{{ $trainer_delete->updated_at }}</td>
                                                 <td>{{ $trainer_delete->deleted_at }}</td>
                                                 <td><a type="button" class="btn btn-circle btn-success mt-2 mr-2"
                                                         href="{{ route('admin.trainer.restore', $trainer_delete->id) }}"><i

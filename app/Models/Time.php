@@ -20,4 +20,11 @@ class Time extends Model
     {
         return $this->hasMany(Employe::class,'work_time_id');
     }
+
+      //علاقة وقت العمل مع المدربين
+    
+      public function trainers()
+      {
+          return $this->hasMany(Trainer::class,'work_time_id');
+      }
 }

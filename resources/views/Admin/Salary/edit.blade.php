@@ -16,13 +16,13 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Update Class</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Update Salary</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Classes/Update
-                                        Class</a>
+                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Salary/Update
+                                        Salary</a>
                                 </li>
                             </ol>
                         </nav>
@@ -69,26 +69,24 @@
 
                             {{-- end Validation error  --}}
 
-                            <form action="{{ route('admin.class.update', $class->id) }}" method="POST">
+                            <form action="{{ route('admin.salary.update', $salary->id) }}" method="POST">
                                 @method('PUT')
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="form-label">Name:</label>
+                                                <label class="form-label">Value:</label>
                                                 <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="Name" name="Name"
-                                                    value="{{ $class->name }}">
+                                                    aria-describedby="name" placeholder="200000 SYP" name="value"
+                                                    value="{{ $salary->value }}">
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Update</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>

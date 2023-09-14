@@ -94,12 +94,17 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Age</th>
-                                            <th>Phone</th>         
+                                            <th>Phone</th>
+                                            <th>Gender</th>
+                                            <th>Address</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
-                                            <th>Created </th>
-                                            <th>Updated </th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -111,10 +116,34 @@
                                                 <td>{{ $trainer->last_name }}</td>
                                                 <td>{{ $trainer->email }}</td>
                                                 <td>{{ $trainer->age }}</td>
-                                                <td>{{ $trainer->phone }}</td>                           
-                                                <td>{{ $trainer->salary }}</td>
-                                                <td>{{ $trainer->work_time_start }}</td>
-                                                <td>{{ $trainer->work_time_end }}</td>
+                                                <td>{{ $trainer->phone }}</td>
+                                                <td>
+                                                    @if ($trainer->gender == 0)
+                                                        <div>
+                                                            Female
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            Male
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $trainer->address }}</td>
+                                                <td><img src="{{ asset('image/' . $trainer->img) }}"
+                                                        style="width: 100px; height: 100px;"></td>
+
+                                                        <td>
+                                                            @if ($trainer->status == 0)
+                                                                <span class="btn btn-danger rounded-pill me-1">Not Active</span>
+                                                            @elseif ($trainer->status == 1)
+                                                                <span class="btn btn-success rounded-pill me-1">Active</span>
+                                                            @endif
+                                                        </td>
+
+                                                <td>{{ $trainer->salary->value }} SYP</td>
+                                                <td>{{ $trainer->time->time_start }}</td>
+                                                <td>{{ $trainer->time->time_end }}</td>
+                                                <td>{{ $trainer->admin->name }}</td>
                                                 <td>{{ $trainer->created_at }}</td>
                                                 <td>{{ $trainer->updated_at }}</td>
                                                 <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2"

@@ -157,17 +157,8 @@
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
                         <a class="dropdown-item" href="{{ route('profile.edit') }}"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
-                            My Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
-                                class="svg-icon mr-2 ml-1"></i>
-                            My Balance</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
-                                class="svg-icon mr-2 ml-1"></i>
-                            Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
-                                class="svg-icon mr-2 ml-1"></i>
-                            Account Setting</a>
+                            My Profile</a>                     
+                        
                         <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin\Trainer;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassT;
+use App\Models\Salary;
+use App\Models\Time;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class TrainerController extends Controller
@@ -23,14 +26,13 @@ class TrainerController extends Controller
             $check = $user->can('Show Trainer Table');
             if ($check) {
 
-            $trainers = Trainer::all();
-            return view('Admin/Trainer/index', compact('trainers'));
-
-        } else {
+                $trainers = Trainer::all();
+                return view('Admin/Trainer/index', compact('trainers'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Trainer Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Trainer Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Trainer Table']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -41,20 +43,20 @@ class TrainerController extends Controller
     public function create()
     {
         try {
-            
+
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
+            $work_times = Time::all();
 
             $check = $user->can('Add Trainer');
             if ($check) {
 
-            return view('Admin/Trainer/create');
-
-        } else {
+                return view('Admin/Trainer/create', compact('salaries', 'work_times'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Trainer']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -66,29 +68,35 @@ class TrainerController extends Controller
     {
         try {
 
+            $image = $request->file('img')->getClientOriginalName();
+            $path = $request->file('img')->storeAs('TrainerImage', $image, 'userImage');
             $user = Auth::guard('admin')->user();
+            $password = $request->password;
 
             $check = $user->can('Add Trainer');
             if ($check) {
 
-            Trainer::create([
-                'first_name' => $request->firstName,
-                'last_name' => $request->lastName,
-                'email' => $request->email,
-                'password' => Hash::make('password'),
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'salary' => $request->salary,
-                'work_time_start' => $request->WorkTimeStart,
-                'work_time_end' => $request->WorkTimeEnd,
-            ]);
-            return redirect()->back()->with('message_success', ' Trainer Add Successfully!');
-
-        } else {
+                Trainer::create([
+                    'first_name' => $request->firstName,
+                    'last_name' => $request->lastName,
+                    'email' => $request->email,
+                    'password' => Hash::make($password),
+                    'phone' => $request->phone,
+                    'age' => $request->age,
+                    'gender' => $request->gender,
+                    'address' => $request->address,
+                    'img' => $path,
+                    'status' => $request->status,
+                    'salary_id' => $request->salary,
+                    'created_by' => $user->id,
+                    'work_time_id' => $request->worke_time_id,
+                ]);
+                return redirect()->back()->with('message_success', ' Trainer Add Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Trainer']);
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
         }
@@ -100,19 +108,20 @@ class TrainerController extends Controller
     public function edit(Trainer $trainer)
     {
         try {
-        
+
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
+            $work_times = Time::all();
 
             $check = $user->can('Edit Trainer');
             if ($check) {
 
-            return view('Admin/Trainer/edit', compact('trainer'));
-
-        } else {
+                return view('Admin/Trainer/edit', compact('trainer', 'salaries', 'work_times'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Trainer']);
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -130,24 +139,68 @@ class TrainerController extends Controller
             $check = $user->can('Edit Trainer');
             if ($check) {
 
-            $trainer->update([
-                'first_name' => $request->firstName,
-                'last_name' => $request->lastName,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'salary' => $request->salary,
-                'work_time_start' => $request->WorkTimeStart,
-                'work_time_end' => $request->WorkTimeEnd,
-            ]);
-            return redirect()->back()->with('message_success_update', 'Trainer Updated Successfully!');
+                if ($request->file('img') == null) {
 
-        } else {
+                    $trainer->update([
+                        'first_name' => $request->firstName,
+                        'last_name' => $request->lastName,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'age' => $request->age,
+                        'gender' => $request->gender,
+                        'address' => $request->address,
+                        'status' => $request->status,
+                        'salary_id' => $request->salary,
+                        'work_time_id' => $request->worke_time_id,
+                    ]);
+                    return redirect()->back()->with('message_success_update', 'Trainer Updated Successfully!');
+                } else {
+                    if ($trainer->img != null) {
+
+                        Storage::disk('userImage')->delete($trainer->img);
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('TrainerImage', $image, 'userImage');
+
+                        $trainer->update([
+                            'first_name' => $request->firstName,
+                            'last_name' => $request->lastName,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'address' => $request->address,
+                            'status' => $request->status,
+                            'salary_id' => $request->salary,
+                            'img' => $path,
+                            'work_time_id' => $request->worke_time_id,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Trainer Updated Successfully!');
+                    } else {
+
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('TrainerImage', $image, 'userImage');
+
+                        $trainer->update([
+                            'first_name' => $request->firstName,
+                            'last_name' => $request->lastName,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'address' => $request->address,
+                            'status' => $request->status,
+                            'salary_id' => $request->salary,
+                            'img' => $path,
+                            'work_time_id' => $request->worke_time_id,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Trainer Updated Successfully!');
+                    }
+                }
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Trainer']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
         }
@@ -164,14 +217,13 @@ class TrainerController extends Controller
             $check = $user->can('Move Trainer To Archive');
             if ($check) {
 
-            $trainer->delete();
-            return redirect()->back()->with('message_success', 'Trainer Deleted Successfully');
-
-        } else {
+                $trainer->delete();
+                return redirect()->back()->with('message_success', 'Trainer Deleted Successfully');
+            } else {
+                throw UnauthorizedException::forPermissions(['Move Trainer To Archive']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Move Trainer To Archive']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Move Trainer To Archive']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -188,15 +240,13 @@ class TrainerController extends Controller
             $check = $user->can('Show Trainer Arcvive Table');
             if ($check) {
 
-            $trainer_deleted = Trainer::onlyTrashed()->get();
-            return view('Admin/Trainer/Archive', compact('trainer_deleted'));
-
-        } else {
+                $trainer_deleted = Trainer::onlyTrashed()->get();
+                return view('Admin/Trainer/Archive', compact('trainer_deleted'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Trainer Arcvive Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Trainer Arcvive Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Trainer Arcvive Table']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -213,15 +263,13 @@ class TrainerController extends Controller
             $check = $user->can('Restore Trainer');
             if ($check) {
 
-            Trainer::withTrashed()->where('id', $id)->restore();
-            return redirect()->back()->with('message_success_restore', 'Trainer Restored Successfully!');
-
-        } else {
+                Trainer::withTrashed()->where('id', $id)->restore();
+                return redirect()->back()->with('message_success_restore', 'Trainer Restored Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Restore Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Restore Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Restore Trainer']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
         }
@@ -239,15 +287,16 @@ class TrainerController extends Controller
             $check = $user->can('Delete Trainer');
             if ($check) {
 
-            Trainer::withTrashed()->where('id', $id)->forcedelete();
-            return redirect()->back()->with('message_success_forcedelete', 'Trainer deleted Successfully!');
-
-        } else {
+                $trainer = Trainer::withTrashed()->where('id', $id)->first();
+                Storage::disk('userImage')->delete($trainer->img);
+                $trainer->forceDelete();
+                
+                return redirect()->back()->with('message_success_forcedelete', 'Trainer deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Delete Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Delete Trainer']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }
@@ -264,15 +313,13 @@ class TrainerController extends Controller
             $check = $user->can('Reset Password Trainer');
             if ($check) {
 
-            $trainers = Trainer::all();
-            return view('Admin/Trainer/reset_password', compact('trainers'));
-
-        } else {
+                $trainers = Trainer::all();
+                return view('Admin/Trainer/reset_password', compact('trainers'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -290,14 +337,12 @@ class TrainerController extends Controller
             $check = $user->can('Reset Password Trainer');
             if ($check) {
 
-            return view('Admin/Trainer/reset_password_edit', compact('trainer'));
-
-        } else {
+                return view('Admin/Trainer/reset_password_edit', compact('trainer'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -315,18 +360,16 @@ class TrainerController extends Controller
             $check = $user->can('Reset Password Trainer');
             if ($check) {
 
-            $new_password = $request->new_password;
-            $trainer->update([
-                'password' => Hash::make($new_password),
-            ]);
-            return redirect()->route('admin.trainer.index')->with('message_success_update', 'Trainer Update Password Successfully!');
-
-        } else {
+                $new_password = $request->new_password;
+                $trainer->update([
+                    'password' => Hash::make($new_password),
+                ]);
+                return redirect()->route('admin.trainer.index')->with('message_success_update', 'Trainer Update Password Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Trainer']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
         }

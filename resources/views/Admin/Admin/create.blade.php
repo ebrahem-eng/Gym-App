@@ -59,7 +59,7 @@
 
                             {{--  end message section  --}}
 
-                            <form action="{{ route('admin.admin.store') }}" method="post">
+                            <form action="{{ route('admin.admin.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
@@ -99,13 +99,28 @@
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="form-label">Age:</label>
                                                 <input type="number" class="form-control" placeholder="Age"
                                                     name="age" required>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Gender:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="gender">
+                                                   
+                                                    <option value="1">Male</option>  
+                                                    <option value="0">Female</option>
+                                                    
+                                                
+                                                </select>
+                                            </div>
+                                        </div> 
+
+                                    
 
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -114,13 +129,49 @@
                                                     name="address" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Salary:</label>
-                                                <input type="text" class="form-control" placeholder="Salary"
-                                                    name="salary">
+                                    </div>
+
+                                    <div class="row">
+
+
+                                  
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Salary(SYP):</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="salary">
+                                                    @foreach ($salaries as $salary)
+                                                    <option value="{{$salary->id}}">{{$salary->value}}</option>  
+                                                    @endforeach
+                                                
+                                                </select>
                                             </div>
-                                        </div>
+                                        </div> 
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Status:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="status">
+                                                   
+                                                    <option value="1">Active</option>  
+                                                    <option value="0">Not Active</option>
+                                                    
+                                                
+                                                </select>
+                                            </div>
+                                        </div> 
+
+                                        <div class="col-md-5">
+                                          
+                                            <div class="input-group-prepend">
+                                                <label class="form-label">Image:</label>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="inputGroupFile01" name="img"  required>
+                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                            </div>
+                                    
+                                    </div>
 
                                     </div>
 

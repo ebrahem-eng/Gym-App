@@ -69,7 +69,7 @@
 
                             {{-- end Validation error  --}}
 
-                            <form action="{{ route('admin.class.update', $class->id) }}" method="POST">
+                            <form action="{{ route('admin.class.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="form-body">
@@ -82,6 +82,18 @@
                                                     value="{{ $class->name }}">
                                             </div>
                                         </div>
+
+                                        <div class="col-md-8">
+                                          
+                                            <div class="input-group-prepend">
+                                                <label class="form-label">Image:</label>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="inputGroupFile01" name="class_image" >
+                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                            </div>
+                                    
+                                    </div>
 
 
                                     </div>

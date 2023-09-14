@@ -21,13 +21,36 @@ class Employe extends Authenticatable
         'last_name',
         'phone',
         'age',
-        'salary',
-        'work_time_start',
-        'work_time_end',
         'email',
         'password',
         'status',
+        'address',
+        'img',
+        'gender',
+        'work_time_id',
+        'created_by',
+        'salary_id',
     ];
+
+    // علاقة الموظف مع المدير
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class , 'created_by');
+    }
+
+     //علاقة الموظف مع الرواتب
+    
+     public function salary()
+     {
+         return $this->belongsTo(Salary::class , 'salary_id');
+     }
+
+      //علاقة الموظف مع وقت العمل
+    
+      public function time()
+      {
+          return $this->belongsTo(Time::class , 'work_time_id');
+      }
 
    
     protected $hidden = [

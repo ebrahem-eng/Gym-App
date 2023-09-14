@@ -85,8 +85,11 @@
                                         <th>#</th>
                                         <th>Class Name</th>
                                         <th>Trainer Name</th>
+                                        <th>Capacity</th>
                                         <th>Status</th>
+                                        <th>Created By</th>
                                         <th>Days And Times</th>
+                                        <th>Created Date</th>
                                         <th></th>
 
                                     </tr>
@@ -97,6 +100,7 @@
                                             <td>{{ $result['id']}}</td>
                                             <td>{{ $result['class_name']}}</td>
                                             <td>{{ $result['trainer_name']}}</td>
+                                            <td>{{ $result['capacity']}}</td>
                                             <td>
                                                 <span>
                                                     @if ($result['status'] == 0)
@@ -108,13 +112,16 @@
                                                     @endif
                                                 </span>
                                             </td>
+                                            <td>{{ $result['admin_name']}}</td>
                                            <td>
                                            @foreach ($result['day_times'] as $dayName => $timeRange)
                                            {{ $dayName }} : {{ $timeRange }}
                                            <br><br>
                                             @endforeach  </td> 
 
-                                            <td>
+                                            
+                                                <td>{{ $result['created_at']}}</td>
+                                                <td>
                                                 <a type="button" class="btn btn-circle btn-primary "
                                                     href="}"><i
                                                         data-feather="edit-2" class="feather-icon"></i></a>

@@ -21,11 +21,14 @@ class TrainerSeeder extends Seeder
             'email' => 'trainer@gmail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'phone'=>'0987654321',
+            'phone'=>'0987654324',
+            'status'=>'1',
             'age'=>'23',
-            'salary'=>'23',
-            'work_time_start' =>'01:01:00',
-            'work_time_end' =>'14:01:00',
+            'address'=>'damas',
+            'gender'=>'1',
+            'salary_id' => '1',
+            'work_time_id'=>'1',
+            'created_by' => '1',
         ]);
     }
 }

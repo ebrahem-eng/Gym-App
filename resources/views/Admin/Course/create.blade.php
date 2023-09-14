@@ -109,7 +109,15 @@
                                                 </select>
                                         
                                         </div>
-                                    </div>       
+                                    </div> 
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Capacity:</label>
+                                            <input type="number" class="form-control" id="nametext"
+                                                aria-describedby="name" placeholder="40" name="capacity" required >
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="form-actions">

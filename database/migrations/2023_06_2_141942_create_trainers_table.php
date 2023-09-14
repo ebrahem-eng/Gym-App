@@ -22,9 +22,13 @@ return new class extends Migration
             $table->string('password');
             $table->integer('phone');
             $table->integer('age');
-            $table->string('salary');
-            $table->time('work_time_start');
-            $table->time('work_time_end');
+            $table->string('address');
+            $table->string('img')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('gender')->default(1);
+            $table->foreignId('salary_id')->references('id')->on('salaries');
+            $table->foreignId('created_by')->references('id')->on('admins');
+            $table->foreignId('work_time_id')->references('id')->on('times');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

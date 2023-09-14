@@ -46,7 +46,15 @@ return [
 
         'classImage' => [
             'driver' => 'local',
-            'root' => public_path('image'),
+            'root' => public_path('image/'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'userImage' => [
+            'driver' => 'local',
+            'root' => public_path('image/'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

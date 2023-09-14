@@ -148,8 +148,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('assets2/images/users/profile-pic.jpg') }}" alt="user"
-                            class="rounded-circle" width="40">
+                        <img src="{{ asset('image/'. Auth::guard('admin')->user()->img)}}" class="img-radius"
+                        alt="User-Profile-Image" style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover; clip-path: circle(35%);">    
                         <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                 class="text-dark">{{ Auth::guard('admin')->user()->name }}</span> <i
                                 data-feather="chevron-down" class="svg-icon"></i></span>

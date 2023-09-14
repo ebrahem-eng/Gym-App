@@ -61,30 +61,29 @@
                         @endif
 
                         @if (session('message_success_update'))
-                        <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
-                            role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            {{ session('message_success_update') }}
-                        </div>
-                    @endif
-                    @if (session('message_err_update'))
-                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
-                            role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            {{ session('message_err_update') }}
-                        </div>
-                    @endif
+                            <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
+                                role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{ session('message_success_update') }}
+                            </div>
+                        @endif
+                        @if (session('message_err_update'))
+                            <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                                role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{ session('message_err_update') }}
+                            </div>
+                        @endif
 
 
                         {{-- end message section --}}
 
                         <div class="table-responsive">
                             @if (count($employes) > 0)
-
 
                                 <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                     style="width:100%">
@@ -96,13 +95,17 @@
                                             <th>Email</th>
                                             <th>Age</th>
                                             <th>Phone</th>
+                                            <th>Gender</th>
+                                            <th>Address</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
-                                            <th>Created at</th>
-                                            <th>Updated at</th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>
                                             <th></th>
-
 
                                         </tr>
 
@@ -116,9 +119,33 @@
                                                 <td>{{ $employe->email }}</td>
                                                 <td>{{ $employe->age }}</td>
                                                 <td>{{ $employe->phone }}</td>
-                                                <td>{{ $employe->salary }}</td>
-                                                <td>{{ $employe->work_time_start }}</td>
-                                                <td>{{ $employe->work_time_end }}</td>
+                                                <td>
+                                                    @if ($employe->gender == 0)
+                                                        <div>
+                                                            Female
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            Male
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $employe->address }}</td>
+                                                <td><img src="{{ asset('image/' . $employe->img) }}"
+                                                        style="width: 100px; height: 100px;"></td>
+
+                                                        <td>
+                                                            @if ($employe->status == 0)
+                                                                <span class="btn btn-danger rounded-pill me-1">Not Active</span>
+                                                            @elseif ($employe->status == 1)
+                                                                <span class="btn btn-success rounded-pill me-1">Active</span>
+                                                            @endif
+                                                        </td>
+
+                                                <td>{{ $employe->salary->value }} SYP</td>
+                                                <td>{{ $employe->time->time_start }}</td>
+                                                <td>{{ $employe->time->time_end }}</td>
+                                                <td>{{ $employe->admin->name }}</td>
                                                 <td>{{ $employe->created_at }}</td>
                                                 <td>{{ $employe->updated_at }}</td>
                                                 <td><a type="button" class="btn btn-circle btn-primary mt-2 mr-2 "
@@ -126,7 +153,8 @@
                                                             data-feather="edit-2" class="feather-icon"></i></a>
 
                                                     <a type="button" class="btn btn-circle btn-dark mt-2 mr-2 "
-                                                        href="{{route('admin.employe.show.roles' , $employe->id)}}"><i data-feather="key" class="feather-icon"></i>
+                                                        href="{{ route('admin.employe.show.roles', $employe->id) }}"><i
+                                                            data-feather="key" class="feather-icon"></i>
                                                     </a>
                                                     <form method="post"
                                                         action="{{ route('admin.employe.destroy', $employe->id) }}">

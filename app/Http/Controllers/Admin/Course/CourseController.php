@@ -29,11 +29,14 @@ class CourseController extends Controller
                 $results = [];
                 $courses = DB::select("
     SELECT courses.id AS course_id , courses.status AS status ,
+    courses.capacity AS capacity , courses.created_by AS created_by,
+    courses.created_at AS created_at,
     trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
-    courses.day_times AS day_time
+    courses.day_times AS day_time, admins.name AS admin_name
     FROM courses 
     INNER JOIN trainers ON courses.trainer_id = trainers.id 
     INNER JOIN class_t_s ON courses.class_id = class_t_s.id
+    INNER JOIN admins ON courses.created_by = admins.id
     WHERE courses.deleted_at IS NULL
 ");
 
@@ -45,6 +48,9 @@ class CourseController extends Controller
                         'status' => $course->status,
                         'trainer_name' => $course->trainer_name,
                         'class_name' => $course->class_name,
+                        'capacity' => $course->capacity,
+                        'admin_name' => $course->admin_name,
+                        'created_at' => $course->created_at,
                         'day_times' => [],
                     ];
 
@@ -104,9 +110,10 @@ class CourseController extends Controller
                 $class_id = $request->input('class');
                 $trainer_id = $request->input('trainer');
                 $day_ids = $request->input('day');
+                $capacity = $request->input('capacity');
                 $day_details = Day::whereIn('id', $day_ids)->get(['id', 'name'])->toArray();
                 $times = Time::all();
-                return view('Admin/Course/create2', compact('day_details', 'times', 'trainer_id', 'class_id'));
+                return view('Admin/Course/create2', compact('day_details', 'times', 'trainer_id', 'class_id','capacity'));
             } else {
                 throw UnauthorizedException::forPermissions(['Add Course']);
             }
@@ -128,9 +135,14 @@ class CourseController extends Controller
                 $trainer = Trainer::find($request->input('trainer_id'));
                 $class_id = $request->input('class_id');
                 $day_time = $request->input('day_time');
+                $capacity = $request->input('capacity');
+                $adminID = Auth::guard('admin')->user()->id;
 
                 $classData = [
-                    'day_times' => json_encode($day_time)
+                    'day_times' => json_encode($day_time),
+                    'capacity' => $capacity,
+                    'created_by' => $adminID,
+                    'created_at' => now(),
                 ];
 
                 $trainer->classes()->attach($class_id, $classData);
@@ -178,12 +190,15 @@ class CourseController extends Controller
 
                 $deleted_courses = [];
                 $courses = DB::select("
-            SELECT courses.id AS course_id, courses.status AS status,
-            trainers.first_name AS trainer_name, class_t_s.name AS class_name,
-            courses.day_times AS day_time
-            FROM courses 
-            INNER JOIN trainers ON courses.trainer_id = trainers.id 
-            INNER JOIN class_t_s ON courses.class_id = class_t_s.id
+                SELECT courses.id AS course_id , courses.status AS status ,
+                courses.capacity AS capacity , courses.created_by AS created_by,
+                courses.created_at AS created_at,courses.deleted_at AS deleted_at,
+                trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
+                courses.day_times AS day_time, admins.name AS admin_name
+                FROM courses 
+                INNER JOIN trainers ON courses.trainer_id = trainers.id 
+                INNER JOIN class_t_s ON courses.class_id = class_t_s.id
+                INNER JOIN admins ON courses.created_by = admins.id
             WHERE courses.deleted_at IS NOT NULL
         ");
 
@@ -195,6 +210,10 @@ class CourseController extends Controller
                         'status' => $course->status,
                         'trainer_name' => $course->trainer_name,
                         'class_name' => $course->class_name,
+                         'capacity' => $course->capacity,
+                        'admin_name' => $course->admin_name,
+                        'created_at' => $course->created_at,
+                        'deleted_at' => $course->deleted_at,
                         'day_times' => [],
                     ];
 

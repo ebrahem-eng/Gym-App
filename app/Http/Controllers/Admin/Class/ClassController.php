@@ -77,6 +77,7 @@ class ClassController extends Controller
                 ClassT::create([
                     'name' => $request->input('Name'),
                     'image_path' => $path,
+                    'created_by' => $user->id,
 
                 ]);
 
@@ -126,11 +127,37 @@ class ClassController extends Controller
             $check = $user->can('Edit Class');
 
             if ($check) {
-                $class->update([
-                    'name' => $request->input('Name'),
-                ]);
+                if ($request->file('class_image') == null) {
+                    $class->update([
+                        'name' => $request->input('Name'),
+                    ]);
 
-                return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+                    return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+                } else {
+                    if ($class->image_path != null) {
+                        Storage::disk('classImage')->delete($class->image_path);
+                        $image_class = $request->file('class_image')->getClientOriginalName();
+                        $path = $request->file('class_image')->storeAs('ClassImage', $image_class, 'classImage');
+
+                        $class->update([
+                            'name' => $request->input('Name'),
+                            'image_path' => $path,
+                        ]);
+
+                        return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+                    } else {
+
+                        $image_class = $request->file('class_image')->getClientOriginalName();
+                        $path = $request->file('class_image')->storeAs('ClassImage', $image_class, 'classImage');
+
+                        $class->update([
+                            'name' => $request->input('Name'),
+                            'image_path' => $path,
+                        ]);
+
+                        return redirect()->back()->with('message_success_update', 'Class updated successfully!');
+                    }
+                }
             } else {
                 throw UnauthorizedException::forPermissions(['Edit Class']);
             }

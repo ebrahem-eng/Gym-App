@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin\Employe;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employe;
+use App\Models\Salary;
+use App\Models\Time;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -46,16 +49,21 @@ class EmployeController extends Controller
 
         try {
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
+            $work_times = Time::all();
 
             $check = $user->can('Add Employe');
             if ($check) {
-                return view('Admin/Employe/create');
+                return view('Admin/Employe/create', compact('salaries', 'work_times'));
             } else {
+
                 throw UnauthorizedException::forPermissions(['Add Employe']);
             }
         } catch (UnauthorizedException $ex) {
+
             throw UnauthorizedException::forPermissions(['Add Employe']);
         } catch (\Exception $ex) {
+
             return redirect()->route('notfound');
         }
     }
@@ -69,8 +77,8 @@ class EmployeController extends Controller
 
             $check = $user->can('Show Employe Arcvive Table');
             if ($check) {
-                $trashed_employes = Employe::onlyTrashed()->get();
-                return view('Admin/Employe/Archive', compact('trashed_employes'));
+                $employes = Employe::onlyTrashed()->get();
+                return view('Admin/Employe/Archive', compact('employes'));
             } else {
                 throw UnauthorizedException::forPermissions(['Show Employe Arcvive Table']);
             }
@@ -91,7 +99,12 @@ class EmployeController extends Controller
 
             $check = $user->can('Add Employe');
             if ($check) {
+
+                $image = $request->file('img')->getClientOriginalName();
+                $path = $request->file('img')->storeAs('EmployeImage', $image, 'userImage');
+                $adminID = Auth::guard('admin')->user()->id;
                 $password = $request->password;
+
                 Employe::create([
                     'first_name' => $request->firstName,
                     'last_name' => $request->lastName,
@@ -99,9 +112,13 @@ class EmployeController extends Controller
                     'password' => Hash::make($password),
                     'phone' => $request->phone,
                     'age' => $request->age,
-                    'salary' => $request->salary,
-                    'work_time_start' => $request->WorkTimeStart,
-                    'work_time_end' => $request->WorkTimeEnd,
+                    'gender' => $request->gender,
+                    'address' => $request->address,
+                    'img' => $path,
+                    'status' => $request->status,
+                    'salary_id' => $request->salary,
+                    'created_by' => $adminID,
+                    'work_time_id' => $request->worke_time_id,
                 ]);
                 return redirect()->back()->with('message_success', 'Employe Add Successfully');
             } else {
@@ -168,7 +185,9 @@ class EmployeController extends Controller
             $check = $user->can('Delete Employe');
             if ($check) {
 
-                Employe::withTrashed()->where('id', $id)->forcedelete();
+                $employe = Employe::withTrashed()->where('id', $id)->first();
+                Storage::disk('userImage')->delete($employe->img);
+                $employe->forceDelete();
                 return redirect()->back()->with('message_success_forcedelete', 'Employe deleted Successfully!');
             } else {
                 throw UnauthorizedException::forPermissions(['Delete Employe']);
@@ -187,10 +206,12 @@ class EmployeController extends Controller
         try {
 
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
+            $work_times = Time::all();
 
             $check = $user->can('Edit Employe');
             if ($check) {
-                return view('Admin/Employe/edit', compact('employe'));
+                return view('Admin/Employe/edit', compact('employe', 'salaries', 'work_times'));
             } else {
                 throw UnauthorizedException::forPermissions(['Edit Employe']);
             }
@@ -211,17 +232,65 @@ class EmployeController extends Controller
 
             $check = $user->can('Edit Employe');
             if ($check) {
-                $employe->update([
-                    'first_name' => $request->firstName,
-                    'last_name' => $request->lastName,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'age' => $request->age,
-                    'salary' => $request->salary,
-                    'work_time_start' => $request->WorkTimeStart,
-                    'work_time_end' => $request->WorkTimeEnd,
-                ]);
-                return redirect()->back()->with('message_success_update', 'Employe Updated Successfully!');
+
+                if ($request->file('img') == null) {
+
+                    $employe->update([
+                        'first_name' => $request->firstName,
+                        'last_name' => $request->lastName,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'age' => $request->age,
+                        'gender' => $request->gender,
+                        'address' => $request->address,
+                        'status' => $request->status,
+                        'salary_id' => $request->salary,
+                        'work_time_id' => $request->worke_time_id,
+                    ]);
+                    return redirect()->back()->with('message_success_update', 'Employe Updated Successfully!');
+                } else {
+
+                    if ($employe->img != null) {
+
+                        Storage::disk('userImage')->delete($employe->img);
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('EmployeImage', $image, 'userImage');
+
+                        $employe->update([
+                            'first_name' => $request->firstName,
+                            'last_name' => $request->lastName,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'address' => $request->address,
+                            'status' => $request->status,
+                            'img' => $path,
+                            'salary_id' => $request->salary,
+                            'work_time_id' => $request->worke_time_id,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Employe Updated Successfully!');
+                    } else {
+
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('EmployeImage', $image, 'userImage');
+
+                        $employe->update([
+                            'first_name' => $request->firstName,
+                            'last_name' => $request->lastName,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'address' => $request->address,
+                            'status' => $request->status,
+                            'img' => $path,
+                            'salary_id' => $request->salary,
+                            'work_time_id' => $request->worke_time_id,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Employe Updated Successfully!');
+                    }
+                }
             } else {
                 throw UnauthorizedException::forPermissions(['Edit Employe']);
             }

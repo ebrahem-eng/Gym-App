@@ -27,10 +27,41 @@ class Admin extends Authenticatable
         'password',
         'status',
         'age',
+        'gender',
+        'img',
         'phone',
-        'salary',
-        'address'
+        'salary_id',
+        'address',
     ];
+
+    //علاقة المدير مع الرواتب
+    
+    public function salary()
+    {
+        return $this->belongsTo(Salary::class , 'salary_id');
+    }
+    
+
+    //علاقة المدير مع الموظفين
+
+    public function employes()
+    {
+        return $this->hasMany(Employe::class,'created_by');
+    }
+
+     //علاقة المدير مع الصفوف
+    
+     public function classes()
+     {
+         return $this->hasMany(ClassT::class,'created_by');
+     }
+
+      //علاقة المدير مع الكورسات
+    
+      public function courses()
+      {
+          return $this->hasMany(Course::class,'created_by');
+      }
 
     /**
      * The attributes that should be hidden for serialization.

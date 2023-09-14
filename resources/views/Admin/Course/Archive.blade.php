@@ -90,8 +90,12 @@
                                             <th>#</th>
                                             <th>Class Name</th>
                                             <th>Trainer Name</th>
+                                            <th>Capacity</th>
                                             <th>Status</th>
+                                            <th>Created By</th>
                                             <th>Days And Times</th>
+                                            <th>Created Date</th>
+                                            <th>Deleted Date</th>
                                             <th></th>
     
                                         </tr>
@@ -102,6 +106,7 @@
                                                 <td>{{ $deleteds['id']}}</td>
                                                 <td>{{ $deleteds['class_name']}}</td>
                                                 <td>{{ $deleteds['trainer_name']}}</td>
+                                                <td>{{ $deleteds['capacity']}}</td>
                                                 <td>
                                                     <span>
                                                         @if ($deleteds['status'] == 0)
@@ -113,11 +118,14 @@
                                                         @endif
                                                     </span>
                                                 </td>
+                                                <td>{{ $deleteds['admin_name']}}</td>
                                                <td>
                                                @foreach ($deleteds['day_times'] as $dayName => $timeRange)
                                                {{ $dayName }} : {{ $timeRange }}
                                                <br><br>
                                                 @endforeach  </td> 
+                                                <td>{{ $deleteds['created_at']}}</td>
+                                                <td>{{ $deleteds['deleted_at']}}</td>
     
                                                 <td>
                                                 

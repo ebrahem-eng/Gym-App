@@ -23,12 +23,23 @@ class Trainer extends Authenticatable implements JWTSubject
         'last_name',
         'phone',
         'age',
-        'salary',
-        'work_time_start',
-        'work_time_end',
         'email',
         'password',
+        'status',
+        'address',
+        'img',
+        'gender',
+        'work_time_id',
+        'created_by',
+        'salary_id',
     ];
+    
+        //علاقة الصفوف مع المدربين 
+    
+        public function classes()
+        {
+            return $this->belongsToMany(ClassT::class , 'courses' , 'trainer_id' , 'class_id');
+        }
 
    
     protected $hidden = [
@@ -49,10 +60,5 @@ class Trainer extends Authenticatable implements JWTSubject
         return [];
     } 
 
-    //علاقة الصفوف مع المدربين 
-    
-    public function classes()
-    {
-        return $this->belongsToMany(ClassT::class , 'courses' , 'trainer_id' , 'class_id');
-    }
+
 }

@@ -24,6 +24,7 @@ class CourseController extends Controller
                 'courses.status AS status',
                 'trainers.first_name AS trainer_name',
                 'class_t_s.name AS class_name',
+                'class_t_s.image_path AS class_image_path',
                 'courses.day_times AS day_time'
             )
             ->join('trainers', 'courses.trainer_id', '=', 'trainers.id')
@@ -39,6 +40,7 @@ class CourseController extends Controller
                 'status' => $course->status,
                 'trainer_name' => $course->trainer_name,
                 'class_name' => $course->class_name,
+                'image_path' => $course->class_image_path,
                 'day_times' => [],
             ];
     

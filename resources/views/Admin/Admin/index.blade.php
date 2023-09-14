@@ -96,12 +96,14 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Age</th>
+                                            <th>Gender</th>
                                             <th>Phone</th>
                                             <th>Address</th>
                                             <th>Salary</th>
-                                            <th>Created at</th>
-                                            <th>Updated at</th>
+                                            <th>Image</th>
                                             <th>Status</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>                                        
                                             <th></th>
                                         </tr>
 
@@ -113,11 +115,22 @@
                                                 <td>{{ $admin->name }}</td>
                                                 <td>{{ $admin->email }}</td>
                                                 <td>{{ $admin->age }}</td>
+                                                <td>
+                                                 @if($admin->gender == 0)
+                                                 <div>
+                                                    Female
+                                                 </div>
+                                                 @else
+                                                 <div>
+                                                    Male
+                                                 </div>  
+                                                 @endif
+                                                </td>
                                                 <td>{{ $admin->phone }}</td>
                                                 <td>{{ $admin->address }}</td>
-                                                <td>{{ $admin->salary }}</td>
-                                                <td>{{ $admin->created_at }}</td>
-                                                <td>{{ $admin->updated_at }}</td>
+                                                <td>{{$admin->salary->value}}SYP</td>
+                                                <td><img src="{{ asset('image/' . $admin->img) }}"
+                                                    style="width: 100px; height: 100px;"></td>
                                                 <td>
                                                     @if ($admin->status == 0)
                                                         <span class="btn btn-danger rounded-pill me-1">Not Active</span>
@@ -125,6 +138,9 @@
                                                         <span class="btn btn-success rounded-pill me-1">Active</span>
                                                     @endif
                                                 </td>
+                                                <td>{{ $admin->created_at }}</td>
+                                                <td>{{ $admin->updated_at }}</td>
+                                               
                                                 <td>
                                                     <a type="button" class="btn btn-circle btn-primary mt-2 mr-2"
                                                         href="{{ route('admin.admin.edit', $admin->id) }}"><i

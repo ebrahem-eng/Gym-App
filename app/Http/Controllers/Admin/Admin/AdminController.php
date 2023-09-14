@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Salary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Exceptions\UnauthorizedException;
+
 
 class AdminController extends Controller
 {
@@ -24,15 +27,13 @@ class AdminController extends Controller
             $check = $user->can('Show Admin Table');
             if ($check) {
 
-            $admins = Admin::all();
-            return view('Admin/Admin/index', compact('admins'));
-
-        } else {
+                $admins = Admin::with('salary')->get();
+                return view('Admin/Admin/index', compact('admins'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Admin Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Admin Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Admin Table']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -46,18 +47,17 @@ class AdminController extends Controller
         try {
 
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
 
             $check = $user->can('Add Admin');
             if ($check) {
 
-            return view('Admin/Admin/create');
-
-        } else {
+                return view('Admin/Admin/create', compact('salaries'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -74,28 +74,31 @@ class AdminController extends Controller
             $check = $user->can('Add Admin');
             if ($check) {
 
+                $image = $request->file('img')->getClientOriginalName();
+                $path = $request->file('img')->storeAs('AdminImage', $image, 'userImage');
 
-            $password = $request->password;
+                $password = $request->password;
 
-            Admin::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($password),
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'salary' => $request->salary,
-                'address' => $request->address,
-                'email_verified_at' => now(),
-            ]);
+                Admin::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($password),
+                    'phone' => $request->phone,
+                    'age' => $request->age,
+                    'gender' => $request->gender,
+                    'salary_id' => $request->salary,
+                    'address' => $request->address,
+                    'status'=>$request->status,
+                    'email_verified_at' => now(),
+                    'img' => $path,
+                ]);
 
-            return redirect()->back()->with('message_success', 'Admin Add Successfully');
-
-        } else {
+                return redirect()->back()->with('message_success', 'Admin Add Successfully');
+            } else {
+                throw UnauthorizedException::forPermissions(['Add Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Add Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Add Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err', 'Somthing Error , Try Again ');
         }
@@ -108,19 +111,17 @@ class AdminController extends Controller
         try {
 
             $user = Auth::guard('admin')->user();
+            $salaries = Salary::all();
 
             $check = $user->can('Edit Admin');
             if ($check) {
 
-
-            return view('Admin/Admin/edit', compact('admin'));
-
-        } else {
+                return view('Admin/Admin/edit', compact('admin', 'salaries'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Admin']);
-
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -132,28 +133,69 @@ class AdminController extends Controller
     {
         try {
 
+
             $user = Auth::guard('admin')->user();
 
             $check = $user->can('Edit Admin');
             if ($check) {
 
-            $admin->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'status' => $request->status,
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'salary' => $request->salary,
-                'address' => $request->address,
-            ]);
-            return redirect()->back()->with('message_success_update', 'Admin Updated Successfully!');
 
-        } else {
+                if ($request->file('img') == null) {
+
+                    $admin->update([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'age' => $request->age,
+                        'gender' => $request->gender,
+                        'salary_id' => $request->salary,
+                        'address' => $request->address,
+                        'status'=>$request->status,
+                    ]);
+                    return redirect()->back()->with('message_success_update', 'Admin Updated Successfully!');
+                } else {
+
+                    if ($admin->img != null) {
+                        Storage::disk('userImage')->delete($admin->img);
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('AdminImage', $image, 'userImage');
+
+                        $admin->update([
+                            'name' => $request->name,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'salary_id' => $request->salary,
+                            'address' => $request->address,
+                            'status'=>$request->status,
+                            'img' => $path,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Admin Updated Successfully!');
+                    } else {
+
+                        $image = $request->file('img')->getClientOriginalName();
+                        $path = $request->file('img')->storeAs('AdminImage', $image, 'userImage');
+
+                        $admin->update([
+                            'name' => $request->name,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'age' => $request->age,
+                            'gender' => $request->gender,
+                            'salary_id' => $request->salary,
+                            'address' => $request->address,
+                            'status'=>$request->status,
+                            'img' => $path,
+                        ]);
+                        return redirect()->back()->with('message_success_update', 'Admin Updated Successfully!');
+                    }
+                }
+            } else {
+                throw UnauthorizedException::forPermissions(['Edit Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Edit Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Edit Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
         }
@@ -171,15 +213,13 @@ class AdminController extends Controller
             if ($check) {
 
 
-            $admin->delete();
-            return redirect()->back()->with('message_success', 'Admin Deleted Successfully');
-
-        } else {
+                $admin->delete();
+                return redirect()->back()->with('message_success', 'Admin Deleted Successfully');
+            } else {
+                throw UnauthorizedException::forPermissions(['Move Admin To Archive']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Move Admin To Archive']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Move Admin To Archive']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -197,15 +237,13 @@ class AdminController extends Controller
             if ($check) {
 
 
-            $admins = Admin::onlyTrashed()->get();
-            return view('Admin/Admin/Archive', compact('admins'));
-
-        } else {
+                $admins = Admin::onlyTrashed()->get();
+                return view('Admin/Admin/Archive', compact('admins'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Admin Arcvive Table']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Admin Arcvive Table']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Admin Arcvive Table']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -223,15 +261,13 @@ class AdminController extends Controller
             if ($check) {
 
 
-            Admin::withTrashed()->where('id', $id)->restore();
-            return redirect()->back()->with('message_success_restore', 'Admin Restored Successfully!');
-
-        } else {
+                Admin::withTrashed()->where('id', $id)->restore();
+                return redirect()->back()->with('message_success_restore', 'Admin Restored Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Restore Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Restore Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Restore Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_restore', 'Somthing Worning , Try Again !');
         }
@@ -248,14 +284,15 @@ class AdminController extends Controller
             if ($check) {
 
 
-            Admin::withTrashed()->where('id', $id)->forcedelete();
-            return redirect()->back()->with('message_success_forcedelete', 'Admin deleted Successfully!');
-        } else {
+                $admin = Admin::withTrashed()->where('id', $id)->first();
+                Storage::disk('userImage')->delete($admin->img);
+                $admin->forceDelete();
+                return redirect()->back()->with('message_success_forcedelete', 'Admin deleted Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Delete Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Delete Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_forcedelete', 'Somthing Worning , Try Again !');
         }
@@ -271,15 +308,13 @@ class AdminController extends Controller
             $check = $user->can('Reset Password Admin');
             if ($check) {
 
-            $admins = Admin::all();
-            return view('Admin/Admin/reset_password', compact('admins'));
-
-        } else {
+                $admins = Admin::all();
+                return view('Admin/Admin/reset_password', compact('admins'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -297,14 +332,12 @@ class AdminController extends Controller
             $check = $user->can('Reset Password Admin');
             if ($check) {
 
-            return view('Admin/Admin/reset_password_edit', compact('admin'));
-
-        } else {
+                return view('Admin/Admin/reset_password_edit', compact('admin'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-
         } catch (\Exception $ex) {
 
             return redirect()->route('notfound');
@@ -323,18 +356,16 @@ class AdminController extends Controller
             if ($check) {
 
 
-            $new_password = $request->new_password;
-            $admin->update([
-                'password' => Hash::make($new_password),
-            ]);
-            return redirect()->route('admin.admin.index')->with('message_success_update', 'Admin Update Password Successfully!');
-
-        } else {
+                $new_password = $request->new_password;
+                $admin->update([
+                    'password' => Hash::make($new_password),
+                ]);
+                return redirect()->route('admin.admin.index')->with('message_success_update', 'Admin Update Password Successfully!');
+            } else {
+                throw UnauthorizedException::forPermissions(['Reset Password Admin']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Reset Password Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->back()->with('message_err_update', 'Somthing Worning , Try Again !');
         }
@@ -352,17 +383,15 @@ class AdminController extends Controller
             $check = $user->can('Show Admin Role Permission Page');
             if ($check) {
 
-            $roles = Role::get();
-            $permissions = Permission::where('guard_name', 'admin')->get();
+                $roles = Role::get();
+                $permissions = Permission::where('guard_name', 'admin')->get();
 
-            return view('Admin/Admin/role', compact('admin', 'roles', 'permissions'));
-
-        } else {
+                return view('Admin/Admin/role', compact('admin', 'roles', 'permissions'));
+            } else {
+                throw UnauthorizedException::forPermissions(['Show Admin Role Permission Page']);
+            }
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Show Admin Role Permission Page']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Show Admin Role Permission Page']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -382,23 +411,22 @@ class AdminController extends Controller
             if ($check) {
 
 
-            $roleId = Role::where('name', $request->role)->value('id');
-            $role_gaurd_name = Role::where('id', $roleId)->value('guard_name');
+                $roleId = Role::where('name', $request->role)->value('id');
+                $role_gaurd_name = Role::where('id', $roleId)->value('guard_name');
 
-            if ($role_gaurd_name == 'admin') {
-                if ($admin->hasRole($request->role)) {
-                    return back()->with('message_err', 'Role Is Already Assign');
+                if ($role_gaurd_name == 'admin') {
+                    if ($admin->hasRole($request->role)) {
+                        return back()->with('message_err', 'Role Is Already Assign');
+                    }
+                    $admin->assignRole($request->role);
+                    return back()->with('message_success', 'Role Assign Successfully');
                 }
-                $admin->assignRole($request->role);
-                return back()->with('message_success', 'Role Assign Successfully');
+                return back()->with('message_err', 'Role Is Not For This User Guard');
+            } else {
+                throw UnauthorizedException::forPermissions(['Assign Role To Admin']);
             }
-            return back()->with('message_err', 'Role Is Not For This User Guard');
-
-        } else {
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Assign Role To Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Assign Role To Admin']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -414,18 +442,17 @@ class AdminController extends Controller
             $check = $user->can('Delete Role From Admin');
             if ($check) {
 
-            if ($admin->hasRole($role)) {
-                $admin->removeRole($role);
-                return back()->with('message_success', 'Role Removed Success');
+                if ($admin->hasRole($role)) {
+                    $admin->removeRole($role);
+                    return back()->with('message_success', 'Role Removed Success');
+                }
+
+                return back()->with('message_err', 'Role Not Found');
+            } else {
+                throw UnauthorizedException::forPermissions(['Delete Role From Admin']);
             }
-
-            return back()->with('message_err', 'Role Not Found');
-
-        } else {
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Delete Role From Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Delete Role From Admin']);
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -442,24 +469,22 @@ class AdminController extends Controller
             if ($check) {
 
 
-            $permissionID = Permission::where('name', $request->permission)->value('id');
-            $permission_gaurd_name = Permission::where('id', $permissionID)->value('guard_name');
+                $permissionID = Permission::where('name', $request->permission)->value('id');
+                $permission_gaurd_name = Permission::where('id', $permissionID)->value('guard_name');
 
-            if ($permission_gaurd_name == 'admin') {
-                if ($admin->hasPermissionTo($request->permission)) {
-                    return back()->with('message_err', 'Permission is already assign');
+                if ($permission_gaurd_name == 'admin') {
+                    if ($admin->hasPermissionTo($request->permission)) {
+                        return back()->with('message_err', 'Permission is already assign');
+                    }
+                    $admin->givePermissionTo($request->permission);
+                    return back()->with('message_success', 'Permission Assign Successfully');
                 }
-                $admin->givePermissionTo($request->permission);
-                return back()->with('message_success', 'Permission Assign Successfully');
+                return back()->with('message_err', 'Permission Is Not For This User Guard');
+            } else {
+                throw UnauthorizedException::forPermissions(['Give Permission To Admin']);
             }
-            return back()->with('message_err', 'Permission Is Not For This User Guard');
-
-        } else {
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Give Permission To Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Give Permission To Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }
@@ -477,19 +502,17 @@ class AdminController extends Controller
             if ($check) {
 
 
-            if ($admin->hasPermissionTo($permission)) {
-                $admin->revokePermissionTo($permission);
-                return back()->with('message_success', 'Permission Revok Successfully');
+                if ($admin->hasPermissionTo($permission)) {
+                    $admin->revokePermissionTo($permission);
+                    return back()->with('message_success', 'Permission Revok Successfully');
+                }
+
+                return back()->with('message_err', 'Permission Not Found');
+            } else {
+                throw UnauthorizedException::forPermissions(['Revoke Permission From Admin']);
             }
-
-            return back()->with('message_err', 'Permission Not Found');
-
-        } else {
+        } catch (UnauthorizedException $ex) {
             throw UnauthorizedException::forPermissions(['Revoke Permission From Admin']);
-        }
-    } catch (UnauthorizedException $ex) {
-        throw UnauthorizedException::forPermissions(['Revoke Permission From Admin']);
-
         } catch (\Exception $ex) {
             return redirect()->route('notfound');
         }

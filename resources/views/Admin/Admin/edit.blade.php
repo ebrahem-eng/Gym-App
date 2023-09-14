@@ -60,7 +60,7 @@
 
                             {{-- end message section --}}
 
-                            <form action="{{ route('admin.admin.update', $admin->id) }}" method="post">
+                            <form action="{{ route('admin.admin.update', $admin->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-body">
@@ -69,64 +69,104 @@
                                             <div class="form-group">
                                                 <label class="form-label">Name:</label>
                                                 <input type="text" class="form-control" id="nametext"
-                                                    aria-describedby="name" placeholder="Name" name="name"
-                                                    value="{{ $admin->name }}" required>
+                                                    aria-describedby="name" placeholder="Name" value="{{$admin->name}}" name="name" required>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">Email:</label>
                                                 <input type="email" class="form-control" placeholder="Email"
-                                                    name="email" value="{{ $admin->email }}" required>
+                                                    name="email" value="{{$admin->email}}" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label class="form-label">Status:</label>
-                                                <select class="custom-select" name="status" required>
-                                                    <option value="1" {{ $admin->status == 1 ? 'selected' : '' }}>
-                                                        Active</option>
-                                                    <option value="0" {{ $admin->status == 0 ? 'selected' : '' }}>
-                                                        Not Active</option>
-                                                </select>
-                                            </div>
-                                        </div>
 
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label class="form-label">Phone:</label>
                                                 <input type="tel" class="form-control" placeholder="Phone"
-                                                    name="phone" value="{{ $admin->phone }}" required>
+                                                    name="phone" value="{{$admin->phone}}" required>
                                             </div>
                                         </div>
+
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Status:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="status">
+                                                   
+                                                    <option value="1" {{ $admin->status === 1 ? 'selected' : '' }}>Active</option>  
+                                                    <option value="0" {{ $admin->status === 0 ? 'selected' : '' }}>Not Active</option>
+                                                    
+                                                
+                                                </select>
+                                            </div>
+                                        </div> 
 
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="form-label">Age:</label>
                                                 <input type="number" class="form-control" placeholder="Age"
-                                                    name="age" value="{{ $admin->age }}" required>
+                                                    name="age" value="{{$admin->age}}" required>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Gender:</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="gender">
+                                                   
+                                                    <option value="1"  {{ $admin->gender === 1 ? 'selected' : '' }}>Male</option>  
+                                                    <option value="0"  {{ $admin->gender === 0 ? 'selected' : '' }}>Female</option>
+                                                    
+                                                
+                                                </select>
+                                            </div>
+                                        </div> 
+
+                                    
 
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="form-label">Address:</label>
                                                 <input type="text" class="form-control" placeholder="Address"
-                                                    name="address" value="{{ $admin->address }}" required>
+                                                    name="address" value="{{$admin->address}}" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">Salary:</label>
-                                                <input type="text" class="form-control" placeholder="Salary"
-                                                    name="salary" value="{{ $admin->salary }}">
+                                    </div>
+
+                                    <div class="row">
+
+
+                                  
+
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Salary(SYP):</label>
+                                                <select class="form-control" id="inlineFormCustomSelect" name="salary">
+                                                    @foreach ($salaries as $salary)
+                                                    <option value="{{$salary->id}}" {{ $admin->salary_id === $salary->id ? 'selected' : '' }}>{{$salary->value}}</option>  
+                                                    @endforeach
+                                                
+                                                </select>
                                             </div>
-                                        </div>
+                                        </div> 
+
+                                        <div class="col-md-5">
+                                          
+                                            <div class="input-group-prepend">
+                                                <label class="form-label">Image:</label>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="inputGroupFile01" name="img" >
+                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                            </div>
+                                    
+                                    </div>
 
                                     </div>
 

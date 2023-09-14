@@ -56,7 +56,8 @@
                                     class="sidebar-link"><span class="hide-menu"> Add Employe
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{route('admin.employe.reset.password.show')}}" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.employe.reset.password.show') }}"
+                                    class="sidebar-link"><span class="hide-menu">
                                         Reset Password
                                     </span></a>
                             </li>
@@ -82,7 +83,7 @@
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="{{route('admin.trainer.reset.password.show')}}"
+                            <li class="sidebar-item"><a href="{{ route('admin.trainer.reset.password.show') }}"
                                     class="sidebar-link"><span class="hide-menu"> Reset Password
                                     </span></a>
                             </li>
@@ -122,16 +123,18 @@
                                 class="hide-menu">Manage Course</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="{{route('admin.course.index')}}" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.course.index') }}"
+                                    class="sidebar-link"><span class="hide-menu">
                                         Course List
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{route('admin.course.create')}}" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.course.create') }}"
+                                    class="sidebar-link"><span class="hide-menu">
                                         Add Course
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="{{route('admin.course.archive')}}" class="sidebar-link"><span
-                                        class="hide-menu">Course Archive
+                            <li class="sidebar-item"><a href="{{ route('admin.course.archive') }}"
+                                    class="sidebar-link"><span class="hide-menu">Course Archive
 
                                     </span></a>
                             </li>
@@ -154,7 +157,8 @@
                                     </span></a>
                             </li>
 
-                            <li class="sidebar-item"><a href="{{route('admin.admin.reset.password.show')}}" class="sidebar-link"><span class="hide-menu">
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.reset.password.show') }}"
+                                    class="sidebar-link"><span class="hide-menu">
                                         Reset Password
                                     </span></a>
                             </li>
@@ -167,6 +171,44 @@
                         </ul>
                     </li>
 
+
+                    <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                            aria-expanded="false"><i data-feather="dollar-sign" class="feather-icon"></i><span
+                                class="hide-menu">Manage Salary</span></a>
+
+                        <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.index') }}"
+                                    class="sidebar-link"><span class="hide-menu">
+                                        Salary List
+                                    </span></a>
+                            </li>
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}"
+                                    class="sidebar-link"><span class="hide-menu">
+                                        Add Salary
+                                    </span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                            aria-expanded="false"><i data-feather="watch" class="feather-icon"></i><span
+                                class="hide-menu">Manage Time</span></a>
+
+                        <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.index') }}"
+                                    class="sidebar-link"><span class="hide-menu">
+                                        Time List
+                                    </span></a>
+                            </li>
+                            <li class="sidebar-item"><a href="{{ route('admin.admin.create') }}"
+                                    class="sidebar-link"><span class="hide-menu">
+                                        Add Time
+                                    </span></a>
+                            </li>
+
+                        </ul>
+                    </li>
 
 
                     <li class="list-divider"></li>

@@ -73,9 +73,8 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Image</th>
-                                        <th>Created By</th>
-                                        <th>Created Date</th>
-                                        <th>Last Updated Date</th>
+                                        <th>Created</th>
+                                        <th>Updated</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -84,9 +83,8 @@
                                         <tr>
                                             <td>{{ $class->id }}</td>
                                             <td>{{ $class->name }}</td>
-                                            <td><img src="{{ asset('image/'. $class->image_path) }}"
+                                            <td><img src="{{ asset('image/ClassImage/' . $class->image_path) }}"
                                                     style="width: 100px; height: 100px;"></td>
-                                            <td>{{ $class->admin->name }}</td>
                                             <td>{{ $class->created_at }}</td>
                                             <td>{{ $class->updated_at }}</td>
                                             <td>

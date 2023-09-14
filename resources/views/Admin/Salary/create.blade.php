@@ -16,12 +16,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Course</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Class</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Course/Add
-                                        Course</a>
+                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Classes/Add
+                                        Class</a>
                                 </li>
                             </ol>
                         </nav>
@@ -59,6 +59,9 @@
                         {{-- end message section --}}
 
                         <div class="card-body">
+
+                            {{-- validation error  --}}
+
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -69,36 +72,42 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.course.store') }}" method="post">
+                            {{-- validation error --}}
+
+                            
+
+                            <form action="{{ route('admin.class.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-body">
+
                                     <div class="row">
-                                    
                                         <div class="col-md-6">
-                                            <div class="form-group mb-4">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Select Time From Days:</label>
-                                                <br>
-                                                @foreach ($day_details as $day_detail)
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">{{ $day_detail['name'] }}</label>
-                                                <select multiple class="form-control" id="exampleFormControlSelect2" name="day_time[{{ $day_detail['id'] }}][]">
-                                                    @foreach ($times as $time)    
-                                                        <option value="{{ $time->id }}">{{ $time->time_start }} TO {{ $time->time_end }}</option>
-                                                    @endforeach
-                                                </select>
-                                            @endforeach
-                                            
+                                            <div class="form-group">
+                                                <label class="form-label">Name:</label>
+                                                <input type="text" class="form-control" id="nametext"
+                                                    aria-describedby="name" placeholder="Name" name="Name" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                          
+                                                <div class="input-group-prepend">
+                                                    <label class="form-label">Image:</label>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="class_image"  required>
+                                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                </div>
                                         
                                         </div>
-                                    </div>       
                                     </div>
-                                    <input type="hidden" name="trainer_id" value="{{$trainer_id}}" />
-                                    <input type="hidden" name="class_id" value="{{$class_id}}" />
-                                    <input type="hidden" name="capacity" value="{{$capacity}}" />
+                                       
                                 </div>
+                                <br>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Next</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>
@@ -109,4 +118,4 @@
             </div>
         </div>
     </div>
-    
+    {{-- </div> --}}

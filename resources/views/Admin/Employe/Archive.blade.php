@@ -87,7 +87,7 @@
                         {{-- end message section --}}
 
                         <div class="table-responsive">
-                            @if (count($trashed_employes)>0)
+                            @if (count($employes) > 0)
                                 <table id="multi_col_order" class="table table-striped table-bordered display no-wrap"
                                     style="width:100%">
                                     <thead class="bg-info text-white">
@@ -98,36 +98,67 @@
                                             <th>Email</th>
                                             <th>Age</th>
                                             <th>Phone</th>
+                                            <th>Gender</th>
+                                            <th>Address</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
                                             <th>Salary</th>
                                             <th>Work Time Start</th>
                                             <th>Work Time End </th>
-                                            <th>Created at</th>
-                                            <th>Deleted at</th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>
+                                            <th>Deleted Date</th>
                                             <th></th>
-                                        </tr>
 
+                                        </tr>
 
                                     </thead>
                                     <tbody>
-                                        @foreach ($trashed_employes as $trashed_employe)
+                                        @foreach ($employes as $employe)
                                             <tr>
-                                                <td>{{ $trashed_employe->id }}</td>
-                                                <td>{{ $trashed_employe->first_name }}</td>
-                                                <td>{{ $trashed_employe->last_name }}</td>
-                                                <td>{{ $trashed_employe->email }}</td>
-                                                <td>{{ $trashed_employe->age }}</td>
-                                                <td>{{ $trashed_employe->phone }}</td>
-                                                <td>{{ $trashed_employe->salary }}</td>
-                                                <td>{{ $trashed_employe->work_time_start }}</td>
-                                                <td>{{ $trashed_employe->work_time_end }}</td>
-                                                <td>{{ $trashed_employe->created_at }}</td>
-                                                <td>{{ $trashed_employe->deleted_at }}</td>
+                                                <td>{{ $employe->id }}</td>
+                                                <td>{{ $employe->first_name }}</td>
+                                                <td>{{ $employe->last_name }}</td>
+                                                <td>{{ $employe->email }}</td>
+                                                <td>{{ $employe->age }}</td>
+                                                <td>{{ $employe->phone }}</td>
+                                                <td>
+                                                    @if ($employe->gender == 0)
+                                                        <div>
+                                                            Female
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            Male
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $employe->address }}</td>
+                                                <td><img src="{{ asset('image/' . $employe->img) }}"
+                                                        style="width: 100px; height: 100px;"></td>
+
+                                                <td>
+                                                    @if ($employe->status == 0)
+                                                        <span class="btn btn-danger rounded-pill me-1">Not Active</span>
+                                                    @elseif ($employe->status == 1)
+                                                        <span class="btn btn-success rounded-pill me-1">Active</span>
+                                                    @endif
+                                                </td>
+
+                                                <td>{{ $employe->salary->value }} SYP</td>
+                                                <td>{{ $employe->time->time_start }}</td>
+                                                <td>{{ $employe->time->time_end }}</td>
+                                                <td>{{ $employe->admin->name }}</td>
+                                                <td>{{ $employe->created_at }}</td>
+                                                <td>{{ $employe->updated_at }}</td>
+                                                <td>{{ $employe->deleted_at }}</td>
                                                 <td>
                                                     <a type="button" class="btn btn-circle btn-success mt-2 mr-2"
-                                                        href="{{ route('admin.employe.restore', $trashed_employe->id) }}"><i
+                                                        href="{{ route('admin.employe.restore', $employe->id) }}"><i
                                                             data-feather="refresh-ccw" class="feather-icon"></i></a>
                                                     <a type="button" class="btn btn-circle btn-danger mt-2"
-                                                        href="{{ route('admin.employe.forcedelete', $trashed_employe->id) }}"><i
+                                                        href="{{ route('admin.employe.forcedelete', $employe->id) }}"><i
                                                             data-feather="x" class="feather-icon"></i></a>
                                                 </td>
                                             </tr>

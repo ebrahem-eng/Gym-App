@@ -14,6 +14,7 @@ class ClassT extends Model
     protected $fillable = [
         'name',
         'image_path',
+        'created_by',
     ];
 
     //علاقة المدربين مع الصفوف
@@ -22,4 +23,10 @@ class ClassT extends Model
     {
         return $this->belongsToMany(Trainer::class , 'courses' , 'class_id' , 'trainer_id');
     }
+
+       // علاقة الصف مع المدير
+       public function admin()
+       {
+           return $this->belongsTo(Admin::class , 'created_by');
+       }
 }

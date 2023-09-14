@@ -24,9 +24,11 @@ class EmployeSeeder extends Seeder
             'phone'=>'0987654321',
             'status'=>'1',
             'age'=>'23',
-            'salary' => '5000',
-            'work_time_start'=>'14:02:00',
-            'work_time_end' => '15:02:00',
+            'address'=>'damas',
+            'gender'=>'1',
+            'salary_id' => '1',
+            'work_time_id'=>'1',
+            'created_by' => '1',
         ]);
     }
 }

@@ -90,8 +90,10 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Image</th>
-                                            <th>Created</th>
-                                            <th>Deleted</th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Last Updated Date</th>
+                                            <th>Deleted Date</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -100,9 +102,12 @@
                                             <tr>
                                                 <td>{{ $class_delete->id }}</td>
                                                 <td>{{ $class_delete->name }}</td>
-                                                <td><img src="{{ asset('image/' . $class_delete->image_path) }}"
+                                                <td><img src="{{ asset('image/'. $class_delete->image_path) }}"
                                                         style="width: 100px; height: 100px;"></td>
+                                                        
+                                                <td>{{ $class_delete->admin->name }}</td>
                                                 <td>{{ $class_delete->created_at }}</td>
+                                                <td>{{ $class_delete->updated_at }}</td>
                                                 <td>{{ $class_delete->deleted_at }}</td>
 
                                                 <td>

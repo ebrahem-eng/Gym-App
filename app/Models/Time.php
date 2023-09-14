@@ -13,4 +13,11 @@ class Time extends Model
         'time_start',
         'time_end',
     ];
+
+    //علاقة وقت العمل مع الموظفين
+    
+    public function employes()
+    {
+        return $this->hasMany(Employe::class,'work_time_id');
+    }
 }

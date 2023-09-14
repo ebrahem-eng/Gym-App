@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('class_t_s', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->references('id')->on('class_t_s');
-            $table->foreignId('trainer_id')->references('id')->on('trainers');
-            $table->tinyInteger('status')->default(0);
-            $table->json('day_times');
+            $table->string('name');
+            $table->string('image_path');
+            $table->foreignId('created_by')->references('id')->on('admins');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('class_t_s');
     }
 };

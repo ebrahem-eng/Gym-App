@@ -20,10 +20,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('gender')->default(1);
             $table->tinyInteger('age');
             $table->string('phone');
-            $table->string('salary')->default('-');
+            $table->foreignId('salary_id')->references('id')->on('salaries');
             $table->string('address');
+            $table->string('img')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

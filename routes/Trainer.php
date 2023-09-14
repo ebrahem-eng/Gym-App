@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Trainer\Auth\AuthController;
 use App\Http\Controllers\Trainer\Course\CourseController;
+use App\Http\Controllers\Trainer\PersonalInfo\PersonalInfoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,10 @@ Route::group([
 
 Route::middleware(['trainer','auth:trainer'])->group(function () {
 
+    //عرض بيانات المدرب
+
+    Route::get('/personal/info' , [PersonalInfoController::class , 'index']);
+    
     //عرض الكورسات الخاصة بالمدرب 
     Route::get('/courses' , [CourseController::class , 'index']);
 });

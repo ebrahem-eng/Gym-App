@@ -16,12 +16,13 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Course</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Update Class</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard/Course/Add
-                                        Course</a>
+                                <li class="breadcrumb-item"><a
+                                        href="{{ route('admin.index') }}"><strong>Dashboard</strong>/Classes/Update
+                                        Class</a>
                                 </li>
                             </ol>
                         </nav>
@@ -34,31 +35,28 @@
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-md-8 col-lg-6 mx-auto">
+                <div class="col-10">
                     <div class="card">
-
-                        {{-- message section --}}
-                        @if (session('message_success'))
+                        @if (session('message_success_update'))
                             <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_success') }}
+                                {{ session('message_success_update') }}
                             </div>
                         @endif
-                        @if (session('message_err'))
+                        @if (session('message_err_update'))
                             <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                 role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                {{ session('message_err') }}
+                                {{ session('message_err_update') }}
                             </div>
                         @endif
-                        {{-- end message section --}}
-
                         <div class="card-body">
+                            {{-- Validation error  --}}
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -69,36 +67,28 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.course.store') }}" method="post">
-                                @csrf
+                            {{-- end Validation error  --}}
 
+                            <form action="{{ route('admin.class.update', $class->id) }}" method="POST">
+                                @method('PUT')
+                                @csrf
                                 <div class="form-body">
                                     <div class="row">
-                                    
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-4">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Select Time From Days:</label>
-                                                <br>
-                                                @foreach ($day_details as $day_detail)
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">{{ $day_detail['name'] }}</label>
-                                                <select multiple class="form-control" id="exampleFormControlSelect2" name="day_time[{{ $day_detail['id'] }}][]">
-                                                    @foreach ($times as $time)    
-                                                        <option value="{{ $time->id }}">{{ $time->time_start }} TO {{ $time->time_end }}</option>
-                                                    @endforeach
-                                                </select>
-                                            @endforeach
-                                            
-                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Name:</label>
+                                                <input type="text" class="form-control" id="nametext"
+                                                    aria-describedby="name" placeholder="Name" name="Name"
+                                                    value="{{ $class->name }}">
+                                            </div>
                                         </div>
-                                    </div>       
+
+
                                     </div>
-                                    <input type="hidden" name="trainer_id" value="{{$trainer_id}}" />
-                                    <input type="hidden" name="class_id" value="{{$class_id}}" />
-                                    <input type="hidden" name="capacity" value="{{$capacity}}" />
                                 </div>
                                 <div class="form-actions">
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-rounded  btn-info">Next</button>
+                                        <button type="submit" class="btn btn-rounded  btn-info">Submit</button>
                                         <button type="reset" class="btn btn-rounded  btn-dark">Reset</button>
                                     </div>
                                 </div>
@@ -109,4 +99,4 @@
             </div>
         </div>
     </div>
-    
+    {{-- </div> --}}

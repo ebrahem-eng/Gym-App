@@ -12,12 +12,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Offers</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Offer Archive</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{{ route('employe.index') }}">Dashboard/Course/Add
-                                        Offers</a>
+                                <li class="breadcrumb-item"><a href="{{ route('employe.index') }}">Dashboard/Offers/
+                                        Offer Archive</a>
                                 </li>
                             </ol>
                         </nav>
@@ -62,7 +62,9 @@
                                             <th>Price Befor</th>
                                             <th>Discount</th>
                                             <th>Price After</th>
+                                            <th>Create_By</th>
                                             <th>Status</th>
+                                            <th>Deleted Date</th>
                                             <th>Days And Time</th>
                                             <th></th>
                                         </tr>
@@ -76,6 +78,7 @@
                                                 <td>{{ $result['price_befor_discount'] }}</td>
                                                 <td>{{ $result['discount_value'] }}%</td>
                                                 <td>{{ $result['price_after_discount'] }}</td>
+                                                <td>{{ $result['employe_name'] }}</td>
 
 
                                                 <td>
@@ -89,12 +92,16 @@
                                                         @endif
                                                     </span>
                                                 </td>
+
+                                                <td>{{ $result['deleted_at'] }}</td>
+
                                                 <td>
                                                     @foreach ($result['day_times'] as $dayName => $timeRange)
                                                         {{ $dayName }} : {{ $timeRange }}
                                                         <br><br>
                                                     @endforeach
                                                 </td>
+
 
                                                 <td>
 

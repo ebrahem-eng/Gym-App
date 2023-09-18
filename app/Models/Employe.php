@@ -12,8 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Employe extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles , SoftDeletes;
-    
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+
     protected $guard = 'employe';
 
     protected $fillable = [
@@ -35,30 +35,38 @@ class Employe extends Authenticatable
     // علاقة الموظف مع المدير
     public function admin()
     {
-        return $this->belongsTo(Admin::class , 'created_by');
+        return $this->belongsTo(Admin::class, 'created_by');
     }
 
-     //علاقة الموظف مع الرواتب
-    
-     public function salary()
-     {
-         return $this->belongsTo(Salary::class , 'salary_id');
-     }
+    //علاقة الموظف مع الرواتب
 
-      //علاقة الموظف مع وقت العمل
-    
-      public function time()
-      {
-          return $this->belongsTo(Time::class , 'work_time_id');
-      }
+    public function salary()
+    {
+        return $this->belongsTo(Salary::class, 'salary_id');
+    }
 
-   
+    //علاقة الموظف مع وقت العمل
+
+    public function time()
+    {
+        return $this->belongsTo(Time::class, 'work_time_id');
+    }
+
+
+    //علاقة الموظف مع الحسومات
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class, 'created_by');
+    }
+
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-  
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

@@ -15,5 +15,20 @@ class Offer extends Model
         'discount_value',
         'price_after_discount',
         'course_id',
+        'created_by',
     ];
+
+    //علاقة الحسومات مع الموظفين
+
+    public function employe()
+    {
+        return $this->belongsTo(Employe::class, 'created_by');
+    }
+
+     //علاقة الحسومات مع الموظفين
+    
+     public function course()
+     {
+         return $this->belongsTo(Course::class, 'course_id');
+     }
 }

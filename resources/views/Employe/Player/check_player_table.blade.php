@@ -85,9 +85,8 @@
 
                                                 <td>
 
-                                                    <form method="get" action="#">
-
-                                                        @csrf
+                                                    <form method="get" action="{{route('employe.player.course.details' , $player->id)}}">
+                                                       @csrf
                                                         <button type="submit" class="btn btn-dark rounded-lg">Show
                                                             Details</button>
                                                     </form>

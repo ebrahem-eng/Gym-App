@@ -135,16 +135,8 @@
                         <a class="dropdown-item" href=""><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
                             My Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
-                                class="svg-icon mr-2 ml-1"></i>
-                            My Balance</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
-                                class="svg-icon mr-2 ml-1"></i>
-                            Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
-                                class="svg-icon mr-2 ml-1"></i>
-                            Account Setting</a>
+                     
+                     
                         <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('employe.logout') }}">
                             @csrf
@@ -154,9 +146,7 @@
 
                         </form>
 
-                        <div class="dropdown-divider"></div>
-                        <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
-                                Profile</a></div>
+                 
                     </div>
                 </li>
                 <!-- ============================================================== -->

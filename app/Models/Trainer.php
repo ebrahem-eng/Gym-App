@@ -34,11 +34,11 @@ class Trainer extends Authenticatable implements JWTSubject
         'salary_id',
     ];
 
-    //علاقة الصفوف مع المدربين 
+    //علاقة المدرب مع الكورسات
 
-    public function classes()
+    public function courses()
     {
-        return $this->belongsToMany(ClassT::class, 'courses', 'trainer_id', 'class_id');
+        return $this->hasMany(Course::class, 'trainer_id');
     }
 
     // علاقة المدرب مع المدير

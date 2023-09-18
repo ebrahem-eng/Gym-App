@@ -12,12 +12,12 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-7 align-self-center">
-                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Offers</h3>
+                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Player Courses</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb m-0 p-0">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('employe.index') }}">Dashboard/Course/Add Offers</a>
+                                        href="{{ route('employe.index') }}">Dashboard/Player/Courses Table</a>
                                 </li>
                             </ol>
                         </nav>
@@ -39,7 +39,6 @@
                                 {{ session('message_success') }}
                             </div>
                         @endif
-
                         @if (session('message_err'))
                             <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
                                 role="alert">
@@ -49,71 +48,70 @@
                                 {{ session('message_err') }}
                             </div>
                         @endif
-
                         {{-- end message section --}}
                         <div class="table-responsive">
-                            @if (count($results) > 0)
+                            @if (count($playerCourses) > 0)
                                 <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Class Name</th>
                                             <th>Trainer Name</th>
-                                            <th>Price Befor</th>
-                                            <th>Discount</th>
-                                            <th>Price After</th>
-                                            <th>Created By</th>
+                                            <th>Day And Times</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Duration</th>
                                             <th>Status</th>
-                                            <th>Days And Time</th>
+                                            <th>Course Price</th>
+                                            <th>Total Amount</th>
+
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($results as $result)
-                                        <tr>
-                                            <td>{{ $result['id']}}</td>
-                                            <td>{{ $result['class_name']}}</td>
-                                            <td>{{ $result['trainer_name']}}</td>
-                                            <td>{{ $result['price_befor_discount']}}</td>
-                                            <td>{{ $result['discount_value']}}%</td>
-                                            <td>{{ $result['price_after_discount']}}</td>
-                                            <td>{{ $result['employe_name']}}</td>
-                                            
-                                                     
-                                            <td>
-                                                <span>
-                                                    @if ($result['status'] == 0)
-                                                    <span class="btn btn-danger rounded-pill  me-1">Not Active</span>
+                                        @foreach ($playerCourses as $playerCourse)
+                                            <tr>
+                                                <td>{{ $playerCourse->course->id }}</td>
+                                                <td>{{ $playerCourse->course->class->name }}</td>
+                                                <td>{{ $playerCourse->course->trainer->first_name }}</td>
+                                                <td>
+                                                    @foreach ($courseResults[$playerCourse->course->id]['day_times'] as $dayName => $timeRange)
+                                                        <p>{{ $dayName }}: {{ $timeRange }}</p>
+                                                    @endforeach
+                                                </td>
 
-                                                    @elseif ($result['status']  == 1)
-                                                    <span class="btn btn-success rounded-pill me-1">Active</span>
-
+                                                <td>{{ $playerCourse->start_date }}</td>
+                                                <td>{{ $playerCourse->end_date }}</td>
+                                                <td>{{ $playerCourse->duration }} Months</td>
+                                                <td>
+                                                    @if ($playerCourse->status == 0)
+                                                        <span class="btn btn-danger rounded-pill me-1">Not Active</span>
+                                                    @elseif ($playerCourse->status == 1)
+                                                        <span class="btn btn-success rounded-pill me-1">Active</span>
                                                     @endif
-                                                </span>
-                                            </td>
-                                           <td>
-                                           @foreach ($result['day_times'] as $dayName => $timeRange)
-                                           {{ $dayName }} : {{ $timeRange }}
-                                           <br><br>
-                                            @endforeach  </td> 
+                                                </td>
+                                                <td>{{ $playerCourse->course_price }} SYP</td>
+                                                <td>{{ $playerCourse->total_amount }} SYP</td>
 
-                                            <td>
-                                         
-                                                <form action="{{route('employe.offer.edit' , $result['id'] )}}" method="GET">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-circle btn-primary "
-                                                    ><i
-                                                        data-feather="edit-2" class="feather-icon"></i></button>
-                                                </form>
-                                             
-                                            <form action="{{route('employe.offer.destroy' , $result['id'])}}" method="POST">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-circle btn-danger mt-2"><i
-                                                        data-feather="x" class="feather-icon"></i></button>
-                                            </form>
-                                            </td>
-                                        </tr>
+                                                <td>
+
+                                                    <form method="get" action="{{route('employe.player.course.renewal.edit' , $playerCourse->id)}}">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-primary">Renewal
+                                                        </button>
+                                                    </form>
+
+                                                    <form
+                                                        action="{{ route('employe.player.course.unregister', $playerCourse->id) }}"
+                                                        method="POST">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">Unregister
+                                                        </button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
 

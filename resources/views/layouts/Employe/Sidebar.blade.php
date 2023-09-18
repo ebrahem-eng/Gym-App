@@ -78,22 +78,15 @@
 
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                             aria-expanded="false"><i data-feather="clock" class="feather-icon"></i><span
-                                class="hide-menu">Manage </span></a>
+                                class="hide-menu">Player Registration Manage</span></a>
 
                         <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
-                                        Course List
+                            <li class="sidebar-item"><a href="{{route('employe.register.new.player.create')}}" class="sidebar-link"><span class="hide-menu">
+                                        Register New Player
                                     </span></a>
                             </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span class="hide-menu">
-                                        Add Course
-                                    </span></a>
-                            </li>
-                            <li class="sidebar-item"><a href="#" class="sidebar-link"><span
-                                        class="hide-menu">Course Archive
+                         
 
-                                    </span></a>
-                            </li>
                         </ul>
                     </li>
 

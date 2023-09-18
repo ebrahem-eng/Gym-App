@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('offers', function (Blueprint $table) {
+        Schema::create('player__courses', function (Blueprint $table) {
             $table->id();
-            $table->double('price_befor_discount');
-            $table->integer('discount_value');
-            $table->double('price_after_discount');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('duration');
+            $table->tinyInteger('status');
+            $table->double('course_price');
+            $table->double('total_amount');
             $table->foreignId('course_id')->references('id')->on('courses');
-            $table->foreignId('created_by')->references('id')->on('employes');
+            $table->foreignId('player_id')->references('id')->on('players');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offers');
+        Schema::dropIfExists('player__courses');
     }
 };

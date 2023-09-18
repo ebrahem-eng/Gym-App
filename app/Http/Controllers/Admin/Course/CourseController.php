@@ -137,15 +137,18 @@ class CourseController extends Controller
                 $day_time = $request->input('day_time');
                 $capacity = $request->input('capacity');
                 $adminID = Auth::guard('admin')->user()->id;
+                $day_times = json_encode($day_time);
 
-                $classData = [
-                    'day_times' => json_encode($day_time),
-                    'capacity' => $capacity,
-                    'created_by' => $adminID,
-                    'created_at' => now(),
-                ];
-
-                $trainer->classes()->attach($class_id, $classData);
+            
+               Course::create([
+                'day_times' => $day_times,
+                'capacity' => $capacity,
+                'class_id' => $class_id,
+                'trainer_id' => $trainer->id,
+                'created_by'=> $adminID,
+                'created_at' => now(),
+               ]);
+        
 
                 return redirect()->route('admin.course.index')->with('message_success_store', 'Course Added Successfully');
             } else {

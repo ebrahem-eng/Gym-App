@@ -17,16 +17,19 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('qr_code')->nullable();
-            $table->integer('age');
-            $table->string('phone');
-            $table->string('level')->nullable();
-            $table->rememberToken();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('qr_code')->nullable();
+            $table->string('img')->nullable();
+            $table->string('address')->nullable();
+            $table->integer('age');
+            $table->string('phone');
+            $table->string('level')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('gender')->default(1);
+            $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

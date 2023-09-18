@@ -17,11 +17,11 @@ class ClassT extends Model
         'created_by',
     ];
 
-    //علاقة المدربين مع الصفوف
+    //علاقة الصفوف مع الكورسات 
     
-    public function trainers()
+    public function courses()
     {
-        return $this->belongsToMany(Trainer::class , 'courses' , 'class_id' , 'trainer_id');
+        return $this->hasMany(Course::class, 'class_id');
     }
 
        // علاقة الصف مع المدير

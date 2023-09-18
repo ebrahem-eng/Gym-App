@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Offer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
@@ -21,12 +22,14 @@ class OfferController extends Controller
             $courses = DB::select("
     SELECT courses.id AS course_id , courses.status AS status ,
     trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
-    courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount ,
-    offers.discount_value AS discount_value , offers.price_after_discount AS price_after_discount
+    courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount , 
+    offers.discount_value AS discount_value ,
+    offers.price_after_discount AS price_after_discount , employes.first_name AS employe_name
     FROM courses 
     INNER JOIN trainers ON courses.trainer_id = trainers.id 
     INNER JOIN class_t_s ON courses.class_id = class_t_s.id
     INNER JOIN offers ON courses.id = offers.course_id
+    INNER JOIN employes ON offers.created_by = employes.id
     WHERE offers.deleted_at IS NULL
     ");
 
@@ -41,6 +44,7 @@ class OfferController extends Controller
                     'price_befor_discount' => $course->price_befor_discount,
                     'price_after_discount' => $course->price_after_discount,
                     'discount_value' => $course->discount_value,
+                    'employe_name' => $course->employe_name,
                     'day_times' => [],
                 ];
 
@@ -127,6 +131,7 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         $course_id = $request->input('course_id');
+        $employeID = Auth::guard('employe')->user()->id;
 
         // Check if the course already has an offer
         $existingOffer = Offer::where('course_id', $course_id)->first();
@@ -143,9 +148,36 @@ class OfferController extends Controller
             'price_befor_discount' => $price_before_discount,
             'discount_value' => $value_discount,
             'price_after_discount' => $price_after_discount,
+            'created_by' => $employeID,
         ]);
 
         return redirect()->route('employe.offer.create')->with('message_success', 'Offer Added Successfully');
+    }
+
+    //عرض صفحة تعديل عرض
+
+    public function edit($id)
+    {
+        $offer = Offer::findOrfail($id);
+        return view('Employe.Offer.edit', compact('offer'));
+    }
+
+    //تخزين التحديثات في قاعدة البيانات 
+
+    public function update(Request $request, $id)
+    {
+        $offer = Offer::findOrfail($id);
+        $price_before_discount = $request->input('price_befor_discount');
+        $value_discount = $request->input('discount_value');
+        $price_after_discount = $price_before_discount - ($value_discount / 100 * $price_before_discount);
+
+        $offer->update([
+            'price_befor_discount' => $price_before_discount,
+            'discount_value' => $value_discount,
+            'price_after_discount' => $price_after_discount,
+        ]);
+
+        return redirect()->back()->with('message_success', 'Offer Updated Successfully');
     }
 
     //حذف العرض ونقله الى الارشيف
@@ -171,11 +203,14 @@ class OfferController extends Controller
 SELECT courses.id AS course_id , courses.status AS status ,
 trainers.first_name AS trainer_name, class_t_s.name AS class_name ,
 courses.day_times AS day_time , offers.price_befor_discount AS price_befor_discount ,
-offers.discount_value AS discount_value , offers.price_after_discount AS price_after_discount
+offers.deleted_at AS deleted_at,
+offers.discount_value AS discount_value , offers.price_after_discount AS price_after_discount,
+employes.first_name AS employe_name
 FROM courses 
 INNER JOIN trainers ON courses.trainer_id = trainers.id 
 INNER JOIN class_t_s ON courses.class_id = class_t_s.id
 INNER JOIN offers ON courses.id = offers.course_id
+INNER JOIN employes ON offers.created_by = employes.id
 WHERE offers.deleted_at IS NOT NULL
 ");
 
@@ -190,6 +225,8 @@ WHERE offers.deleted_at IS NOT NULL
                     'price_befor_discount' => $course->price_befor_discount,
                     'price_after_discount' => $course->price_after_discount,
                     'discount_value' => $course->discount_value,
+                    'employe_name' => $course->employe_name,
+                    'deleted_at' => $course->deleted_at,
                     'day_times' => [],
                 ];
 

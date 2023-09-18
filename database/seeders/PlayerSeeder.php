@@ -25,6 +25,8 @@ class PlayerSeeder extends Seeder
             'status'=>'1',
             'age'=>'23',
             'gender' =>'1',
+            'address' =>'Damas',
+            'level' =>'beginner',
         ]);
     }
 }

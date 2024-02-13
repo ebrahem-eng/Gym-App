@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Trainer\Course;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Trainer\Trait\TrainerTrait;
 use App\Models\Course;
+use App\Models\Player_Course;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,50 +15,51 @@ class CourseController extends Controller
 {
     use TrainerTrait;
 
-    public function index()
+    public function index(Request $request)
     {
 
+        $trainerID = Auth::guard('trainer')->user()->id;
+        $status = $request->input('status');
+
+
+        if ($status == 0) {
+            $trainerCourses = Course::with('class', 'trainer')->where('trainer_id', $trainerID)->where('status', '0')->get();
+        } elseif ($status == 1) {
+            $trainerCourses = Course::with('class', 'trainer')->where('trainer_id', $trainerID)->where('status', '1')->get();
+        } else {
+            $trainerCourses = Course::with('class', 'trainer')->where('trainer_id', $trainerID)->get();
+        }
         $results = [];
-        $courses = DB::table('courses')
-            ->select(
-                'courses.id AS course_id',
-                'courses.status AS status',
-                'trainers.first_name AS trainer_name',
-                'class_t_s.name AS class_name',
-                'class_t_s.image_path AS class_image_path',
-                'courses.day_times AS day_time'
-            )
-            ->join('trainers', 'courses.trainer_id', '=', 'trainers.id')
-            ->join('class_t_s', 'courses.class_id', '=', 'class_t_s.id')
-            ->whereNull('courses.deleted_at')
-            ->where('courses.trainer_id', Auth::guard('trainer')->user()->id)
-            ->get();
-    
-        foreach ($courses as $course) {
-            $day_time = json_decode($course->day_time, true);
+
+        foreach ($trainerCourses as $trainerCourse) {
+            $countPlayerCourse = Player_Course::where('course_id', $trainerCourse->id)->count();
             $courseResult = [
-                'id' => $course->course_id,
-                'status' => $course->status,
-                'trainer_name' => $course->trainer_name,
-                'class_name' => $course->class_name,
-                'image_path' => $course->class_image_path,
+                'id' => $trainerCourse->id,
+                'class_name' => $trainerCourse->class->name,
+                'capacity' => $trainerCourse->capacity,
+                'trainer_name' => $trainerCourse->trainer->first_name,
+                'image_path' => $trainerCourse->class->image_path,
+                'status' => $trainerCourse->status,
+                'countPlayerCourse' => $countPlayerCourse,
                 'day_times' => [],
             ];
-    
-            foreach ($day_time as $dayId => $timeIds) {
+
+            $dayTimeData = json_decode($trainerCourse->day_times, true);
+
+            foreach ($dayTimeData as $dayId => $timeIds) {
                 $dayName = DB::table('days')->where('id', $dayId)->value('name');
                 $timeStarts = DB::table('times')->whereIn('id', $timeIds)->pluck('time_start');
                 $timeEnds = DB::table('times')->whereIn('id', $timeIds)->pluck('time_end');
                 $timeRanges = $timeStarts->zip($timeEnds)->map(function ($times) {
                     return $times[0] . ' TO ' . $times[1];
                 });
+
                 $courseResult['day_times'][$dayName] = $timeRanges->implode(', ');
             }
-    
+
             $results[] = $courseResult;
         }
-    
+
         return $this->Data_Trainer($results, 'Courses retrieved successfully', 200);
     }
-    
 }

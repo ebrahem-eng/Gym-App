@@ -25,6 +25,7 @@ class TrainerSeeder extends Seeder
             'status'=>'1',
             'age'=>'23',
             'address'=>'damas',
+            'img' => 'trainerprofile',
             'gender'=>'1',
             'salary_id' => '1',
             'work_time_id'=>'1',

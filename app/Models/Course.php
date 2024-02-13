@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
 {
-    use HasFactory , SoftDeletes;
-    
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'day_times',
         'class_id',
@@ -19,32 +19,44 @@ class Course extends Model
         'status',
     ];
 
-      //علاقة الكورس مع الحسومات
+    //علاقة الكورس مع الحسومات
 
-      public function offers()
-      {
-          return $this->hasMany(Offer::class, 'course_id');
-      }
+    public function offers()
+    {
+        return $this->hasMany(Offer::class, 'course_id');
+    }
 
-      //علاقة الكورس مع اللاعبين
-      
-      public function players()
-      {
-          return $this->hasMany(Player_Course::class, 'course_id');
-      }
-     
+    //علاقة الكورس مع اللاعبين
 
-      //علاقة الكورس مع الصفوف
-      public function class()
-      {
-          return $this->belongsTo(ClassT::class, 'class_id');
-      }
-  
-      //علاقة الكورس مع المدربين
-      public function trainer()
-      {
-          return $this->belongsTo(Trainer::class, 'trainer_id');
-      }
+    public function players()
+    {
+        return $this->hasMany(Player_Course::class, 'course_id');
+    }
 
 
+    //علاقة الكورس مع الصفوف
+    public function class()
+    {
+        return $this->belongsTo(ClassT::class, 'class_id');
+    }
+
+    //علاقة الكورس مع المدربين
+    public function trainer()
+    {
+        return $this->belongsTo(Trainer::class, 'trainer_id');
+    }
+
+    //علاقة الكورس مع البرامج
+
+    public function programs()
+    {
+        return $this->hasMany(Program::class, 'course_id');
+    }
+
+    //علاقة الكورس مع التمارين 
+
+    public function exercises()
+    {
+        return $this->hasMany(Exercise::class, 'course_id');
+    }
 }

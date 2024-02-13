@@ -22,5 +22,13 @@ class OfferSeeder extends Seeder
             'course_id' => '1',
             'created_by' => '1',
         ]);
+
+        Offer::create([
+            'price_befor_discount' => '10000',
+            'discount_value' => '10',
+            'price_after_discount' => '9000',
+            'course_id' => '2',
+            'created_by' => '1',
+        ]);
     }
 }

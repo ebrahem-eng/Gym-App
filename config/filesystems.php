@@ -52,6 +52,14 @@ return [
             'throw' => false,
         ],
 
+        'exerciseVideo' => [
+            'driver' => 'local',
+            'root' => public_path('Video/'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'userImage' => [
             'driver' => 'local',
             'root' => public_path('image/'),

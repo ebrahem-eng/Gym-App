@@ -61,6 +61,20 @@ class Trainer extends Authenticatable implements JWTSubject
         return $this->belongsTo(Time::class, 'work_time_id');
     }
 
+      //علاقة المدرب مع البرامج
+
+      public function programs()
+      {
+          return $this->hasMany(Program::class, 'created_by');
+      }
+
+    //علاقة المدرب مع التمارين 
+
+      public function exercises()
+      {
+          return $this->hasMany(Exercise::class, 'created_by');
+      }
+
 
     protected $hidden = [
         'password',

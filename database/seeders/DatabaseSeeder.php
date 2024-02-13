@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Exercise;
+use App\Models\ExerciseProgram;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -35,6 +38,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ClassSeeder::class);
         $this->call(CourseSeeder::class);
         $this->call(OfferSeeder::class);
-        
+        $this->call(ProgramSeeder::class);
+        $this->call(ProgramPlayerSeeder::class);
+        $this->call(ExerciseSeeder::class);
+        $this->call(ExerciseProgramSeeder::class);   
     }
 }

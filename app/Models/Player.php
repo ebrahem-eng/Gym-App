@@ -40,6 +40,12 @@ class Player extends Authenticatable
         return $this->hasMany(Player_Course::class, 'player_id');
     }
 
+    public function player_programs()
+    {
+        return $this->hasMany(Program_Player::class, 'player_id');
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

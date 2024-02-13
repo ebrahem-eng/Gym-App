@@ -114,7 +114,8 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $expiresIn,
-            'user' => auth()->guard('trainer')->user()
+            'user' => auth()->guard('trainer')->user()->load('salary', 'time'),
+
         ]);
     }
 }
